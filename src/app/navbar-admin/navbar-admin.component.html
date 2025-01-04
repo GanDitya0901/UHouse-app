@@ -1,0 +1,60 @@
+<nav class="navbar navbar-expand-lg ">
+    <div class="container-fluid">
+      <div class="collapse navbar-collapse">
+         <!-- Right-aligned Profile Icon Dropdown -->
+         <div class="navbar-nav ms-auto justify-content-right">
+          <div class="nav-item dropdown">
+            <a
+              class="nav-link dropdown-toggle d-flex align-items-center"
+              href="#"
+              id="profileDropdown"
+              role="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              <!-- Circle Icon for Profile -->
+              <div
+                class="profile-icon rounded-circle d-flex justify-content-center align-items-center"
+              >
+                <ng-container *ngIf="user?.profilePhoto; else defaultIcon">
+                  <img
+                    [src]="'http://localhost:3000/' + user.profilePhoto"
+                    alt="Profile Photo"
+                    style="
+                      width: 35px;
+                      height: 35px;
+                      object-fit: cover;
+                      border-radius: 50%;
+                    "
+                  />
+                </ng-container>
+
+                <ng-template #defaultIcon>
+                  <i class="fa-solid fa-user"></i>
+                </ng-template>
+              </div>
+            </a>
+            <ul
+              class="dropdown-menu dropdown-menu-end"
+              aria-labelledby="profileDropdown"
+            >
+              <li>
+                <a class="dropdown-item" href="/manage-profile"
+                  >Manage Profile</a
+                >
+              </li>
+              <li>
+                <a
+                  class="dropdown-item"
+                  href="javascript:void(0)"
+                  (click)="logout()"
+                  >Logout</a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+

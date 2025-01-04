@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <title>Manage Profile</title>
+  </head>
+  <body>
+
+
+    <!-- NavBar-->
+<!-- 
+    <nav class="navbar navbar-expand-lg" id="navbar">
+      <div class="container">
+        <script src="https://unpkg.com/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+        <a class="navbar-brand" href="landing-page" id="logo"
+          ><img
+            src="../../assets/Images/logoFix.png"
+            alt=""
+            width="90px"
+          /><span>U </span>House</a
+        >
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#mynavbar"
+        >
+          <span><i class="fa-solid fa-bars"></i></span>
+        </button>
+        <div
+          class="collapse navbar-collapse justify-content-center"
+          id="mynavbar"
+        >
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link" href="dashboardGuest">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="dashboardGuest">Rooms</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="dashboardGuest">Services</a>
+            </li> -->
+
+            <!-- <li class="nav-item">
+                    <a class="nav-link" (click)="scrollToContact()">Contact</a>
+                  </li> -->
+
+            <!-- <li class="nav-item">
+              <a class="nav-link" href="dashboardGuest">About</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/manage-profile">Manage Profile</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="javascript:void(0)" (click)="logout()"
+                >Logout</a
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <script src="path/to/jquery.min.js"></script>
+    <script src="path/to/bootstrap.bundle.min.js"></script> -->
+    
+    <!--NavBar -->
+    <!-- <button class="back-button" (click)="goBack()">&larr; Back</button> -->
+
+    <div class="content">
+      <div class="row flex-lg-nowrap">
+        <div class="col">
+          <div class="row">
+            <div class="col mb-3">
+             
+              <div class="card">
+                <div class="card-body">
+                  <div class="e-profile">
+                    <div class="row">
+                      <div class="col-12 col-sm-auto mb-3">
+                        <div
+                          class="mx-auto"
+                          style="width: 140px; height: 140px"
+                        >
+                          <div
+                            class="d-flex justify-content-center align-items-center"
+                            style="width: 100%; height: 100%"
+                          >
+                            <!-- Profile Photo Display or Placeholder -->
+                            <img
+                              *ngIf="user.profilePhoto"
+                              [src]="
+                                'http://localhost:3000/' + user.profilePhoto
+                              "
+                              alt="Profile Photo"
+                              style="
+                                width: 100%;
+                                height: 100%;
+                                object-fit: cover;
+                              "
+                            />
+                            <div
+                              *ngIf="!user.profilePhoto"
+                              style="font-size: 24px; color: gray"
+                            >
+                              No Photo
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Profile Information -->
+                      <div
+                        class="col d-flex flex-column flex-sm-row justify-content-between mb-3"
+                      >
+                        <div class="text-center text-sm-left mb-2 mb-sm-0">
+                          <h4 class="pt-sm-2 pb-1 mb-0 text-nowrap">
+                            {{ user.fullname }}
+                          </h4>
+                          <p class="mb-0">{{ "@" + user.username }}</p>
+                          <button
+                            class="btn btn-primary mt-2"
+                            type="button"
+                            (click)="openPhotoModal()"
+                          >
+                            Edit Photo
+                          </button>
+                        </div>
+                        <div class="text-center text-sm-right">
+                          <span class="badge badge-secondary">{{
+                            user.role
+                          }}</span>
+                          <div class="text-muted">
+                            <small
+                              >Joined
+                              {{ user.date | date : "shortDate" }}</small
+                            >
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Modal Structure for Profile Photo -->
+<div
+class="modal fade show"
+*ngIf="isPhotoModalOpen"
+tabindex="-1"
+style="display: block"
+>
+<div class="modal-dialog" role="document">
+  <div class="modal-content">
+    <div class="modal-header" style="background-color: #D9C4AD;">
+      <h5 class="modal-title">Profile Photo</h5>
+      <button
+        type="button"
+        class="close"
+        (click)="closePhotoModal()"
+        aria-label="Close"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body text-center">
+      <img
+        *ngIf="user.profilePhoto"
+        [src]="'http://localhost:3000/' + user.profilePhoto"
+        alt="Profile Photo"
+        class="img-fluid"
+        style="width: 500px; height: 300px; object-fit: cover; border-radius: 0"
+      />
+      <div
+        *ngIf="!user.profilePhoto"
+        style="font-size: 24px; color: gray; height: 500px; display: flex; align-items: center; justify-content: center;"
+      >
+        No Photo
+      </div>
+    </div>
+    <div class="modal-footer" >
+      <button class="btn btn-primary" type="button" (click)="triggerFileInput()">
+        Change Photo
+      </button>
+      <input
+        type="file"
+        id="fileInput"
+        [hidden]="true"
+        (change)="onPhotoChange($event)"
+        accept="image/*"
+      />
+      <button
+        type="button"
+        class="btn btn-danger"
+        (click)="deletePhoto()"
+      >
+        Delete Photo
+      </button>
+      <button
+        type="button"
+        class="btn btn-secondary"
+        (click)="closePhotoModal()"
+      >
+        Close
+      </button>
+    </div>
+  </div>
+</div>
+</div>
+
+                    <!-- Photo Preview Modal -->
+                    <div
+                      class="modal fade"
+                      id="photoPreviewModal"
+                      tabindex="-1"
+                      aria-labelledby="photoPreviewModalLabel"
+                      aria-hidden="true"
+                    >
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="photoPreviewModalLabel">
+                              Preview Photo
+                            </h5>
+                            <button
+                              type="button"
+                              class="btn-close"
+                              (click)="cancelPhotoChange()"
+                            ></button>
+                          </div>
+                          <div class="modal-body text-center">
+                            <img
+                              *ngIf="temporaryPhotoUrl"
+                              [src]="temporaryPhotoUrl"
+                              alt="Preview Image"
+                              class="img-fluid"
+                              style="
+                                width: 500px;
+                                height: 500px;
+                                object-fit: cover;
+                                border-radius: 0;
+                              "
+                            />
+                          </div>
+
+                          <div class="modal-footer">
+                            <button
+                              class="btn btn-success"
+                              (click)="savePhoto()"
+                            >
+                              Save
+                            </button>
+                            <button
+                              class="btn btn-danger"
+                              (click)="cancelPhotoChange()"
+                            >
+                              Cancel
+                            </button>
+                          </div>
+                        </div>
+
+                        <div class="text-center text-sm-right">
+                          <span class="badge badge-secondary">{{
+                            user.role
+                          }}</span>
+                          <div class="text-muted">
+                            <small
+                              >Joined
+                              {{ user.date | date : "shortDate" }}</small
+                            >
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <ul class="nav nav-tabs">
+                      <li class="nav-item">
+                        <a href="" class="nav-link">Manage Profile</a>
+                      </li>
+                    </ul>
+
+                    <!-- Conditionally render profile details or edit form -->
+
+                    <br />
+                    <strong>Profile Details</strong>
+                    <div class="tab-content pt-3">
+                      <div class="tab-pane active">
+                        <div *ngIf="!editing">
+                          <div class="row">
+                            <div class="col-md-6 col-xs-6 b-r">
+                              <strong>Full Name </strong>
+                              <br />
+                              <p class="text-muted">{{ user.fullname }}</p>
+                            </div>
+                            <div class="col-md-6 col-xs-6 b-r">
+                              <strong>Username </strong>
+                              <br />
+                              <p class="text-muted">
+                                {{ "@" + user.username }}
+                              </p>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-6 col-xs-6 b-r">
+                              <strong>Email </strong>
+                              <br />
+                              <p class="text-muted">{{ user.email }}</p>
+                            </div>
+                            <div class="col-md-6 col-xs-6 b-r">
+                              <strong>Phone Number </strong>
+                              <br />
+                              <p class="text-muted">{{ user.phone }}</p>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-6 col-xs-6 b-r">
+                              <strong>Date of Birth</strong>
+                              <br />
+                              <p class="text-muted">{{ user.dateOfBirth }}</p>
+                            </div>
+                            <div class="col-md-6 col-xs-6 b-r">
+                              <strong>Gender</strong>
+                              <br />
+                              <p class="text-muted">{{ user.gender }}</p>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-6 col-xs-6 b-r">
+                              <strong>Address </strong>
+                              <br />
+                              <p class="text-muted">{{ user.address }}</p>
+                            </div>
+                            <div class="col-md-6 col-xs-6 b-r">
+                              <strong>Country </strong>
+                              <br />
+                              <p class="text-muted">{{ user.country }}</p>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-6 col-xs-6 b-r">
+                              <strong>Joined Date </strong>
+                              <br />
+                              <p class="text-muted">
+                                {{ user.date | date : "shortDate" }}
+                              </p>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col d-flex justify-content-end">
+                              <button
+                                class="btn btn-primary"
+                                (click)="editing = true"
+                              >
+                                Edit Profile
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+
+                        <form
+                          *ngIf="editing"
+                          class="form"
+                          (ngSubmit)="saveChanges()"
+                          novalidate
+                        >
+                          <div class="row">
+                            <div class="col">
+                              <div class="row">
+                                <div class="col-md-6">
+                                  <div class="form-group">
+                                    <label>Full Name</label>
+                                    <input
+                                      class="form-control"
+                                      type="text"
+                                      [(ngModel)]="user.fullname"
+                                      name="fullname"
+                                      placeholder="Jane Smith"
+                                      required
+                                    />
+                                  </div>
+                                </div>
+                                <div class="col-md-6">
+                                  <div class="form-group">
+                                    <label>Username</label>
+                                    <input
+                                      class="form-control"
+                                      type="text"
+                                      [(ngModel)]="user.username"
+                                      name="username"
+                                      placeholder="@jhenny.s"
+                                      required
+                                    />
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="row">
+                                <div class="col-md-6">
+                                  <div class="form-group">
+                                    <label>Email</label>
+                                    <input
+                                      class="form-control"
+                                      type="email"
+                                      [(ngModel)]="user.email"
+                                      name="email"
+                                      placeholder="jane.smith@mail.com"
+                                      required
+                                    />
+                                  </div>
+                                </div>
+                                <div class="col-md-6">
+                                  <div class="form-group">
+                                    <label>Phone Number</label>
+                                    <input
+                                      class="form-control"
+                                      type="tel"
+                                      [(ngModel)]="user.phone"
+                                      name="phone"
+                                      placeholder="Enter phone number"
+                                    />
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="row">
+                                <div class="col-md-6">
+                                  <div class="form-group">
+                                    <label>Date of Birth</label>
+                                    <input
+                                      class="form-control"
+                                      type="date"
+                                      [(ngModel)]="user.dateOfBirth"
+                                      name="dateOfBirth"
+                                      required
+                                    />
+                                  </div>
+                                </div>
+                                <div class="col-md-6">
+                                  <div class="form-group">
+                                    <label>Gender</label>
+                                    <div class="custom-select-wrapper">
+                                      <select
+                                        class="form-control custom-select"
+                                        [(ngModel)]="user.gender"
+                                        name="gender"
+                                        placeholder="Select Your Gender"
+                                        required
+                                      >
+                                        <option value="male">Male</option>
+                                        <option value="female">Female</option>
+                                        <option value="other">Other</option>
+                                      </select>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+
+                              <div class="row">
+                                <div class="col-md-6">
+                                  <div class="form-group">
+                                    <label>Address</label>
+                                    <textarea
+                                      class="form-control"
+                                      rows="5"
+                                      [(ngModel)]="user.address"
+                                      name="address"
+                                      placeholder="Gunung Andakasa St, Padangsambian, Bali"
+                                      required
+                                    ></textarea>
+                                  </div>
+                                </div>
+                                <div class="col-md-6">
+                                  <div class="form-group">
+                                    <label>Country</label>
+                                    <div class="custom-select-wrapper">
+                                      <select
+                                        class="form-control custom-select"
+                                        [(ngModel)]="user.country"
+                                        name="country"
+                                        placeholder="Select Your Country"
+                                        required
+                                      >
+                                        <option
+                                          *ngFor="let country of countryList"
+                                          [value]="country.name"
+                                        >
+                                          {{ country.name }}
+                                        </option>
+                                      </select>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="row">
+                                <div class="col-md-6">
+                                  <div class="form-group">
+                                    <label for="joinedDate">Joined Date</label>
+                                    <input
+                                      type="text"
+                                      class="form-control"
+                                      id="language"
+                                      [value]="user.date | date : 'shortDate'"
+                                      name="language"
+                                      readonly
+                                    />
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col" style="left: 70%">
+                              <button class="btn btn-primary" type="submit">
+                                Save Changes
+                              </button>
+                            </div>
+                            <div class="col" style="left: 35%">
+                              <button
+                                class="btn btn-secondary"
+                                type="button"
+                                (click)="editing = false"
+                              >
+                                Close
+                              </button>
+                            </div>
+                          </div>
+                        </form>
+
+                        <!-- Success Message -->
+                        <div
+                          *ngIf="successMessage"
+                          class="alert alert-success mt-3"
+                          role="alert"
+                        >
+                          <strong>Profile Updated!</strong> Your changes have
+                          been saved successfully. Thank you for keeping your
+                          information up to date.
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Separate column for the password change card -->
+          <div class="row">
+            <div class="col mb-3">
+              <div class="card">
+                <div class="card-body">
+                  <!-- Change Password Form -->
+                  <form class="form" (ngSubmit)="changePassword()" novalidate>
+                    <div class="mb-4">
+                      <h4 class="text-primary">Change Password</h4>
+                    </div>
+                    <div class="form-group">
+                      <label for="currentPassword">Current Password</label>
+                      <input
+                        id="currentPassword"
+                        class="form-control"
+                        type="password"
+                        [(ngModel)]="currentPassword"
+                        name="currentPassword"
+                        placeholder="••••••"
+                        required
+                      />
+                    </div>
+
+                    <div class="form-group">
+                      <label for="newPassword">New Password</label>
+                      <input
+                        id="newPassword"
+                        class="form-control"
+                        type="password"
+                        [(ngModel)]="newPassword"
+                        name="newPassword"
+                        placeholder="••••••"
+                        required
+                      />
+                    </div>
+
+                    <div class="form-group">
+                      <label for="confirmPassword">Confirm Password</label>
+                      <input
+                        id="confirmPassword"
+                        class="form-control"
+                        type="password"
+                        [(ngModel)]="confirmPassword"
+                        name="confirmPassword"
+                        placeholder="••••••"
+                        required
+                      />
+                    </div>
+
+                    <div class="d-flex justify-content-end">
+                      <button class="btn btn-primary" type="submit">
+                        Change Password
+                      </button>
+                    </div>
+
+                    <div class="col-12 mt-3">
+                      <div
+                        *ngIf="samePassMessage"
+                        class="text-danger text-lg-right"
+                      >
+                        <p>{{ samePassMessage }}</p>
+                      </div>
+                      <div
+                        *ngIf="successMessage"
+                        class="text-success text-lg-right"
+                      >
+                        <p>{{ successMessage }}</p>
+                      </div>
+                      <div
+                        *ngIf="errorMessage"
+                        class="text-danger text-lg-right"
+                      >
+                        <p>{{ errorMessage }}</p>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  </body>
+</html>

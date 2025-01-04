@@ -1,0 +1,227 @@
+/* Reset and Base Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+  background-color: #f4f4f4;
+}
+
+/* Navbar */
+#navbar {
+  background-color: rgba(202, 192, 180, 1);
+}
+
+#logo {
+  font-size: 36px;
+  font-weight: 550;
+  color: black;
+  text-shadow: 0px 1px 1px black;
+}
+
+#logo span {
+  color: #785025;
+}
+
+.nav-item .nav-link {
+  font-size: 16px;
+  font-weight: 550;
+  color: black;
+  padding: 10px 15px;
+  transition: 0.5s ease;
+}
+
+.nav-item .nav-link:hover {
+  background: #785025;
+  color: white;
+}
+
+/* Footer */
+#footer {
+  background: #f9f9f9;
+  text-align: center;
+}
+
+#footer h1 {
+  font-weight: 600;
+  padding-top: 30px;
+  text-shadow: 0px 0px 1px black;
+}
+
+#footer h1 span {
+  color: #ffa500;
+}
+
+.social-links i {
+  padding: 10px;
+  border-radius: 5px;
+  font-size: 20px;
+  background: #ffa500;
+  color: white;
+  margin: 5px;
+  transition: 0.5s ease;
+}
+
+.social-links i:hover {
+  background: #ff7a00;
+}
+
+/* Rating Stars */
+.rating-stars .fa {
+  font-size: 1.5rem;
+  color: #f39c12;
+  cursor: pointer;
+  margin-right: 5px;
+}
+
+.rating-stars .fa:hover {
+  color: #f39c12;
+}
+
+/* Buttons */
+.btn-primary {
+  background-color: #785025;
+  border-color: #785025;
+}
+
+.btn-primary:hover {
+  background-color: #6d4620;
+  border-color: #6d4620;
+}
+
+/* Reservation Container Styling */
+.reservation-container {
+  margin: 20px auto; /* Pusatkan kolom */
+  padding: 20px;
+  background-color: #ffffff; /* Background putih */
+  border-radius: 10px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Tambahkan bayangan untuk estetika */
+}
+
+.reservation-card {
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+
+.reservation-title {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #785025; /* Warna sesuai tema */
+  margin-bottom: 15px;
+  text-align: center; /* Pusatkan judul */
+}
+
+.reservation-item {
+  font-size: 1.1rem;
+  margin-bottom: 10px;
+  color: #333;
+  line-height: 1.6;
+}
+
+/* Tambahkan efek hover untuk estetika */
+.reservation-item:hover {
+  color: #785025;
+  transition: 0.3s ease;
+}
+
+@media (max-width: 768px) {
+  .reservation-container {
+    margin: 10px; /* Kurangi margin di layar kecil */
+    padding: 15px;
+  }
+
+  .reservation-title {
+    font-size: 1.5rem; /* Sesuaikan font untuk layar kecil */
+  }
+
+  .reservation-item {
+    font-size: 1rem;
+  }
+}
+
+/* Review Container Styling */
+/* Ensure the container respects the Bootstrap grid system */
+.review-container {
+  margin: 10px auto;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.review-title {
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #785025;
+  margin-bottom: 15px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-label {
+  font-weight: bold;
+  color: #555;
+  margin-bottom: 5px;
+}
+
+.form-control {
+  border-radius: 5px;
+  padding: 8px;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+}
+
+.form-control:focus {
+  border-color: #785025;
+  box-shadow: 0 0 5px rgba(120, 80, 37, 0.5);
+}
+
+.rating-stars {
+  display: flex;
+  gap: 8px; /* Space between stars */
+}
+
+.rating-stars .fa {
+  cursor: pointer;
+  font-size: 24px;
+  color: gold;
+  transition: transform 0.2s ease;
+}
+
+.rating-stars .fa:hover {
+  transform: scale(1.2); /* Enlarge star on hover */
+}
+
+.rating-stars .fa-star-o {
+  color: lightgray; /* Color for unselected stars */
+}
+
+
+.rating-stars .fa.fa-star-o {
+  color: #ddd;
+}
+
+.submit-button {
+  width: 100%;
+  background-color: #785025;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  font-size: 1rem;
+  font-weight: bold;
+  color: #ffffff;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.submit-button:hover {
+  background-color: #6d4620;
+}

@@ -1,0 +1,96 @@
+/* Gaya untuk sidebar */
+.side-navbar {
+    width: 180px;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #fefaf6;
+    border: 2px solid #90693E;
+    transition: 0.5s;
+    z-index: 1000; /* Pastikan z-index lebih tinggi dari konten utama */
+    overflow-y: auto; /* Make sidebar scrollable */
+    -ms-overflow-style: none;  /* Internet Explorer 10+ */
+    scrollbar-width: none;  /* Firefox */
+}
+
+/* Hide scrollbar for WebKit browsers */
+.side-navbar::-webkit-scrollbar {
+    display: none;
+}
+
+/* Style for the hamburger menu */
+.hamburger-menu {
+    font-size: 30px;
+    cursor: pointer;
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    z-index: 1001; /* Ensure it's above the sidebar */
+    color: white;
+    display: none; /* Hide by default */
+}
+
+.side-navbar a {
+    font-size: 24px;
+    color: #90693E;
+    font-weight: bolder;
+    text-decoration: none; /* Remove underline from links */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.side-navbar .nav-link button {
+    width: 100%;
+    background-color: transparent;
+    border: none;
+    color: #90693E;
+    text-align: left;
+    padding: 10px 15px;
+    font-size: 15px;
+    font-weight: normal;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.side-navbar .nav-link button:hover {
+    background-color: #90693E;
+    color: white;
+    border-radius: 5px; /* Slight rounding of the button edges */
+}
+.side-navbar .nav-link button.active {
+    background-color: #90693E;
+    color: white;
+    border-radius: 5px;
+}
+
+/* Show hamburger menu on smaller screens */
+@media (max-width: 768px) {
+    .hamburger-menu {
+        display: block;
+    }
+
+    .side-navbar {
+        margin-left: -180px; /* Hide sidebar by default on mobile */
+    }
+
+    .side-navbar.active-nav {
+        margin-left: 0;
+    }
+}
+
+/* Adjustments for larger screens */
+@media (min-width: 769px) {
+    .side-navbar {
+        margin-left: 0; /* Show sidebar by default on larger screens */
+    }
+
+    .side-navbar.active-nav {
+        margin-left: 0;
+    }
+
+    .content {
+        margin-left: 180px; /* Adjust content position when sidebar is visible */
+    }
+}

@@ -1,0 +1,60 @@
+
+.nav-link:hover {
+    background-color: #f0ebe6;
+    color: black;
+  }
+  
+  .nav-link {
+    color: #90693E; 
+  }
+  .nav-link:active{
+    color: #fefaf6;
+  }
+  #navbarDropdown{
+    color: #fefaf6;
+  }
+  #navbarDropdown:hover, #navbarDropdown:focus
+  {
+    background-color: #785025;
+  }
+  
+  /* Gaya untuk navbar */
+  .navbar {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 1000; /* Pastikan z-index lebih tinggi dari konten utama */
+      background-color: #90693E;
+  }
+  
+  .container-fluid {
+      display: inline;
+    }
+    /* Tambahkan CSS untuk menggeser dropdown ke kanan */
+    @media (min-width: 768px) {
+      .dropdown-menu {
+        right: 0;
+        left: auto;
+      }
+    }
+    
+    /* Untuk menampilkan navbar pada mode responsif mobile */
+    .navbar-collapse {
+      display: inline-flex;
+    }
+    
+    @media (max-width: 991.98px) {
+      .navbar-collapse {
+        display: inline-flex;
+      }
+    }
+    
+    /* Menggeser dropdown ke kanan pada mode responsif */
+    @media (max-width: 991.98px) {
+      .dropdown-menu {
+        left: auto;
+        right: 0;
+      }
+    }
+    
+  

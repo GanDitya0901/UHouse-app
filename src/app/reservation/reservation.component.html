@@ -1,0 +1,263 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Travel Website</title>
+
+    <link rel="stylesheet" href="reservation.component.css" />
+
+    <!-- Bootstrap Link -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <!-- Bootstrap Link -->
+
+    <!-- Font Awesome Cdn -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+    />
+    <!-- Font Awesome Cdn -->
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Google Fonts -->
+  </head>
+
+  <body>
+    <app-guest-navbar></app-guest-navbar>
+
+    <!--NavBar-->
+    <!-- <nav class="navbar navbar-expand-lg" id="navbar">
+            <div class="container">
+              <script src="https://unpkg.com/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+      
+              <a class="navbar-brand" href="landing-page" id="logo"
+                ><img
+                  src="../../assets/Images/logoFix.png"
+                  alt=""
+                  width="90px"
+                /><span>U </span>House</a
+              >
+              <button
+                class="navbar-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#mynavbar"
+              >
+                <span><i class="fa-solid fa-bars"></i></span>
+              </button>
+              <div
+                class="collapse navbar-collapse justify-content-center"
+                id="mynavbar"
+              >
+                <ul class="navbar-nav">
+                  <li class="nav-item">
+                    <a class="nav-link" href="dashboardGuest">Home</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="dashboardGuest">Rooms</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="dashboardGuest">Services</a>
+                  </li> -->
+
+    <!-- <li class="nav-item">
+                          <a class="nav-link" (click)="scrollToContact()">Contact</a>
+                        </li> -->
+
+    <!-- <li class="nav-item">
+                    <a class="nav-link" href="dashboardGuest">About</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="/manage-profile">Manage Profile</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="javascript:void(0)" (click)="logout()"
+                      >Logout</a
+                    >
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </nav>
+          <script src="path/to/jquery.min.js"></script>
+          <script src="path/to/bootstrap.bundle.min.js"></script> -->
+    <!--NavBar-->
+
+   <!--Content-->
+   <section class="reservation py-4" style="background-color: #f9f9f9;">
+    <h1 class="heading-title text-center mb-4" style="color: #B88917;">RESERVATION</h1>
+    <form class="reservation-form" (ngSubmit)="submitReservation()">
+      <div class="flex flex-wrap gap-3">
+        <div class="inputBox w-100 w-md-45">
+          <label for="name" class="form-label"><strong>Name:</strong></label>
+          <input
+            type="text"
+            id="name"
+            class="form-control"
+            placeholder="Enter your name"
+            [(ngModel)]="reservation.name"
+            name="name"
+            required
+          />
+        </div>
+        <div class="inputBox w-100 w-md-45">
+          <label for="email" class="form-label"><strong>E-mail:</strong></label>
+          <input
+            type="email"
+            id="email"
+            class="form-control"
+            placeholder="Enter your email address"
+            [(ngModel)]="reservation.email"
+            name="email"
+            required
+          />
+        </div>
+        <div class="inputBox w-100 w-md-45">
+          <label for="checkIn" class="form-label"><strong>Check-In:</strong></label>
+          <input
+            type="date"
+            id="checkIn"
+            class="form-control"
+            [(ngModel)]="reservation.checkInDate"
+            name="checkIn"
+            required
+            (change)="onDateChange()"
+          />
+        </div>
+        <div class="inputBox w-100 w-md-45">
+          <label for="checkOut" class="form-label"><strong>Check-Out:</strong></label>
+          <input
+            type="date"
+            id="checkOut"
+            class="form-control"
+            [(ngModel)]="reservation.checkOutDate"
+            name="checkOut"
+            required
+            (change)="onDateChange()"
+          />
+        </div>
+        <div class="inputBox w-100 w-md-45">
+          <label for="adults" class="form-label"><strong>Adults:</strong></label>
+          <input
+            type="number"
+            id="adults"
+            class="form-control"
+            [(ngModel)]="reservation.adults"
+            name="adults"
+            required
+          />
+        </div>
+        <div class="inputBox w-100 w-md-45">
+          <label for="children" class="form-label"><strong>Children:</strong></label>
+          <input
+            type="number"
+            id="children"
+            class="form-control"
+            [(ngModel)]="reservation.children"
+            name="children"
+          />
+        </div>
+        <div class="inputBox w-100 w-md-45">
+          <label for="roomType" class="form-label"><strong>Room Type:</strong></label>
+          <select
+            id="roomType"
+            class="form-select"
+            [(ngModel)]="reservation.roomType"
+            name="roomType"
+            required
+            (change)="onRoomTypeChange()"
+          >
+            <option *ngFor="let room of rooms" [value]="room.roomType">
+              {{ room.roomType }}
+            </option>
+          </select>
+        </div>
+        <div class="inputBox w-100">
+          <label class="form-label"><strong>Room Description:</strong></label>
+          <p class="form-text text-muted">{{ reservation.roomDesc }}</p>
+        </div>
+        <div class="inputBox w-100 w-md-45">
+          <label for="paymentMethod" class="form-label">
+            <strong>Payment Method:</strong>
+          </label>
+          <select
+            id="paymentMethod"
+            class="form-select"
+            [(ngModel)]="reservation.paymentMethod"
+            name="paymentMethod"
+            required
+            (change)="onPaymentMethodChange()"
+          >
+            <option value="" disabled selected>Select Payment Method</option>
+            <option value="On-site">On-site Payment</option>
+            <option value="online">Online Payment</option>
+          </select>
+        </div>
+        
+      </div>
+      <p class="total text-end mt-4" style="font-size: 1.25rem;;"><strong>Total: </strong>${{ totalPrice }}</p>
+      <div class="text-center mt-3">
+        <input type="submit" value="Proceed to Payment" class="btn" />      </div>
+    </form>
+  
+    
+  
+
+
+      <!-- Hidden Receipt Template -->
+      <div
+        id="receipt-content"
+        style="display: none; padding: 20px; border: 1px solid #ddd"
+      >
+        <h1 style="text-align: center">Reservation Receipt</h1>
+        <p><strong>Name:</strong> {{ reservation.name }}</p>
+        <p><strong>Email:</strong> {{ reservation.email }}</p>
+        <p><strong>Check-In Date:</strong> {{ reservation.checkInDate }}</p>
+        <p><strong>Check-Out Date:</strong> {{ reservation.checkOutDate }}</p>
+        <p><strong>Adults:</strong> {{ reservation.adults }}</p>
+        <p><strong>Children:</strong> {{ reservation.children }}</p>
+        <p><strong>Room Type:</strong> {{ reservation.roomType }}</p>
+        <p><strong>Room Description:</strong> {{ reservation.roomDesc }}</p>
+        <p><strong>Total:</strong> ${{ totalPrice }}</p>
+        <p style="text-align: center; margin-top: 20px">
+          Thank you for your reservation!
+        </p>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="footer">
+      <h1><span>U </span>House</h1>
+      <p></p>
+      <div class="social-links">
+        <i class="fa-brands fa-twitter"></i>
+        <i class="fa-brands fa-facebook"></i>
+        <i class="fa-brands fa-instagram"></i>
+      </div>
+      <div class="credit">
+        <p>Designed by <a href="#">UHouse Group</a></p>
+      </div>
+      <div class="copyright">
+        <p>Copyright &copy; U House. All Rights Reserved.</p>
+      </div>
+    </footer>
+    <!-- Footer End -->
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>

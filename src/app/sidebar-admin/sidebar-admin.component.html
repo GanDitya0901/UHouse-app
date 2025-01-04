@@ -1,0 +1,43 @@
+<div class="hamburger-menu" (click)="toggleSidebar()" *ngIf="isMobile">
+    &#9776;
+  </div>
+  
+  
+  <div class="side-navbar d-flex flex-column" [class.active-nav]="isSidebarActive || !isMobile">
+    <ul class="nav flex-column text-white w-100">
+      <img src="../../assets/Images/logoFix.png" class="card-img-top" alt="...">
+      <a href="#" class="nav-link ">
+        U House
+      </a>
+      <li class="nav-link">
+        <button routerLink="/dashboard"  routerLinkActive="active" class="mx-2">Home</button >
+      </li>
+      <li class="nav-link">
+        <button routerLink="/crudRoom"  routerLinkActive="active" class="mx-2">Room Management</button >
+      </li>
+      <li class="nav-link">
+        <button routerLink="/fasilitiesAndService"  routerLinkActive="active"  class="mx-2">Facilities and Service</button >
+      </li>
+      <li class="nav-link">
+        <button routerLink="/manageRoom"  routerLinkActive="active"  class="mx-2">Calendar</button >
+        </li>
+      <li class="nav-link">
+        <button  class="mx-2">Inbox</button >
+      </li>
+      <li class="nav-link">
+        <button  class="mx-2">Analytic Report</button >
+      </li>
+      <li class="nav-link">
+        <a href="/manage-request">
+          <button class="mx-2">Request Management</button>
+      </a>     
+      </li>
+      <!-- <li class="nav-link">
+        <button  class="mx-2">Transaction</button >
+      </li>
+      <li class="nav-link">
+        <button class="mx-2">Setting</button >
+      </li> -->
+    </ul>
+  </div>
+  

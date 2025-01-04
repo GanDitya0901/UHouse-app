@@ -1,0 +1,345 @@
+/* Base styles */
+body {
+    background-color: #fefaf6;
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* Title styles */
+.title h2 {
+    margin: 20px 0 10px;
+    font-size: 32px;
+    text-decoration: underline;
+    color: #90693E;
+    text-align: center;
+}
+
+/* Result container styles */
+.result {
+    border-top: 1px solid #90693E;
+    padding: 20px;
+    box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    margin-bottom: 20px;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Result header styles */
+.result-header {
+    background-color: #90693E;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 8px 8px 0 0;
+}
+
+/* Body text styles */
+.body-text {
+    text-align: left;
+    margin-left: 20px;
+    font-size: 16px;
+}
+
+/* Header text styles */
+.header-text {
+    font-size: 24px;
+    text-align: center;
+    padding: 10px 0;
+}
+
+/* Facilities section styles */
+.Facilities {
+    margin: 20px 20px;
+}
+
+/* Checkbox styles */
+.checkbox {
+    margin: 10px 0;
+    display: flex;
+    align-items: center;
+}
+
+.checkbox .form-check-input[type="checkbox"] {
+    appearance: none;
+    width: 25px;
+    height: 25px;
+    border: 2px solid #90693E;
+    background-color: #fefaf6;
+    border-radius: 5px;
+    outline: none;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.checkbox .form-check-input[type="checkbox"]:checked {
+    background-color: #90693E;
+    border-color: #90693E;
+}
+
+.checkbox .form-check-label::before {
+    content: '';
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    background-color: #fefaf6;
+    border-radius: 3px;
+    border: 2px solid #90693E;
+    margin-right: 10px;
+}
+
+.checkbox .form-check-input[type="checkbox"]:checked + .form-check-label::before {
+    background-color: #90693E;
+    border-color: #fff;
+}
+
+/* Responsive styles */
+@media screen and (max-width: 768px) {
+    .body-text {
+        margin-left: 10px;
+        font-size: 14px;
+    }
+    .header-text {
+        font-size: 20px;
+    }
+    .checkbox .form-check-input[type="checkbox"] {
+        width: 20px;
+        height: 20px;
+    }
+    .checkbox .form-check-label::before {
+        width: 12px;
+        height: 12px;
+        margin-right: 6px;
+    }
+}
+
+@media screen and (max-width: 576px) {
+    .header-text,
+    .title h2 {
+        font-size: 18px;
+    }
+    .body-text {
+        margin-left: 10px;
+        font-size: 14px;
+    }
+    .checkbox .form-check-input[type="checkbox"] {
+        width: 16px;
+        height: 16px;
+    }
+    .checkbox .form-check-label::before {
+        width: 10px;
+        height: 10px;
+        margin-right: 4px;
+    }
+}
+
+@media screen and (max-width: 375px) {
+    .header-text,
+    .title h2 {
+        font-size: 14px;
+    }
+    .body-text {
+        margin-left: 0;
+        font-size: 12px;
+    }
+    .checkbox .form-check-input[type="checkbox"] {
+        width: 14px;
+        height: 14px;
+    }
+    .checkbox .form-check-label::before {
+        width: 8px;
+        height: 8px;
+        margin-right: 2px;
+    }
+
+
+
+
+
+
+
+
+    /* versi 2 */
+
+    /* Base styles */
+body {
+    background-color: #fefaf6;
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* Title styles */
+.title h2 {
+    margin: 20px 0 10px;
+    font-size: 32px;
+    text-decoration: underline;
+    color: #90693E;
+    text-align: center;
+}
+
+/* Result container styles */
+.result {
+    border-top: 1px solid #90693E;
+    padding: 20px;
+    box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    margin-bottom: 20px;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Result header styles */
+.result-header {
+    background-color: #90693E;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 8px 8px 0 0;
+}
+
+/* Body text styles */
+.body-text {
+    text-align: left;
+    margin-left: 20px;
+    font-size: 16px;
+}
+
+/* Header text styles */
+.header-text {
+    font-size: 24px;
+    text-align: center;
+    padding: 10px 0;
+}
+
+/* Category header text styles */
+.header-text-category {
+    font-size: 16px;
+    display: inline-block;
+    width: 33%;
+    text-align: center;
+}
+
+/* Facilities section styles */
+.Facilities {
+    margin: 20px 20px;
+}
+
+/* Checkbox styles */
+.checkbox {
+    margin: 10px 0;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.checkbox .form-check {
+    margin-right: 20px;
+}
+
+.checkbox .form-check-input[type="checkbox"] {
+    appearance: none;
+    width: 25px;
+    height: 25px;
+    border: 2px solid #90693E;
+    background-color: #fefaf6;
+    border-radius: 5px;
+    outline: none;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.checkbox .form-check-input[type="checkbox"]:checked {
+    background-color: #90693E;
+    border-color: #90693E;
+}
+
+/* Responsive styles */
+@media screen and (max-width: 768px) {
+    .body-text {
+        margin-left: 10px;
+        font-size: 14px;
+    }
+    .header-text {
+        font-size: 20px;
+    }
+    .checkbox .form-check-input[type="checkbox"] {
+        width: 20px;
+        height: 20px;
+    }
+    .header-text-category {
+        font-size: 14px;
+    }
+}
+
+@media screen and (max-width: 576px) {
+    .header-text,
+    .title h2 {
+        font-size: 18px;
+    }
+    .body-text {
+        margin-left: 10px;
+        font-size: 14px;
+    }
+    .checkbox .form-check-input[type="checkbox"] {
+        width: 16px;
+        height: 16px;
+    }
+    .header-text-category {
+        font-size: 12px;
+    }
+}
+
+@media screen and (max-width: 375px) {
+    .header-text,
+    .title h2 {
+        font-size: 14px;
+    }
+    .body-text {
+        margin-left: 0;
+        font-size: 12px;
+    }
+    .checkbox .form-check-input[type="checkbox"] {
+        width: 14px;
+        height: 14px;
+    }
+    .header-text-category {
+        font-size: 10px;
+    }
+}
+
+.checkbox {
+    display: flex;
+    justify-content: center;
+}
+
+.form-check-label {
+    margin-bottom: 0.5rem; /* Adjust as needed */
+}
+
+.checkbox {
+    display: flex;
+    justify-content: center;
+}
+
+.form-check {
+    text-align: center;
+}
+.checkbox {
+    display: flex;
+    justify-content: center;
+}
+
+.form-check {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+
+}

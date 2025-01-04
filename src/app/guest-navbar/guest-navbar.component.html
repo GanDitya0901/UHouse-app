@@ -1,0 +1,170 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Travel Website</title>
+
+    <!-- Bootstrap Link -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+    <!-- Bootstrap Link -->
+
+    <!-- Font Awesome Cdn -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+    />
+    <!-- Font Awesome Cdn -->
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Google Fonts -->
+  </head>
+
+  <body>
+    <!--NavBar-->
+    <nav class="navbar navbar-expand-lg" id="navbar">
+      <div class="container">
+        <script src="https://unpkg.com/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+        <!-- Left-aligned Logo -->
+        <a
+          class="navbar-brand justify-content-left"
+          href="landing-page"
+          id="logo"
+        >
+          <img src="../../assets/Images/logoFix.png" alt="" width="90px" />
+          <span>U </span>House
+        </a>
+
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#mynavbar"
+        >
+          <span><i class="fa-solid fa-bars"></i></span>
+        </button>
+
+        <!-- Center-aligned Navbar Links -->
+        <div
+          class="collapse navbar-collapse justify-content-center"
+          id="mynavbar"
+        >
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link active" href="/dashboardGuest">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" (click)="scrollToRoom()">Rooms</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" (click)="scrollToService()">Services</a>
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                href="/additionalRequest"
+                [style.background]="
+                  isCurrentPage('/additionalRequest') ? '#785025' : ''
+                "
+                [style.color]="
+                  isCurrentPage('/additionalRequest') ? 'white' : ''
+                "
+              >
+                Request
+              </a>
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                href="/reservation"
+                [style.background]="
+                  isCurrentPage('/reservation') ? '#785025' : ''
+                "
+                [style.color]="isCurrentPage('/reservation') ? 'white' : ''"
+              >
+                Reservation
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Right-aligned Profile Icon Dropdown -->
+        <div class="navbar-nav ms-auto justify-content-right">
+          <div class="nav-item dropdown">
+            <a
+              class="nav-link dropdown-toggle d-flex align-items-center"
+              href="#"
+              id="profileDropdown"
+              role="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              <!-- Circle Icon for Profile -->
+              <div
+                class="profile-icon rounded-circle d-flex justify-content-center align-items-center"
+              >
+                <ng-container *ngIf="user?.profilePhoto; else defaultIcon">
+                  <img
+                    [src]="'http://localhost:3000/' + user.profilePhoto"
+                    alt="Profile Photo"
+                    style="
+                      width: 35px;
+                      height: 35px;
+                      object-fit: cover;
+                      border-radius: 50%;
+                    "
+                  />
+                </ng-container>
+
+                <ng-template #defaultIcon>
+                  <i class="fa-solid fa-user"></i>
+                </ng-template>
+              </div>
+            </a>
+            <ul
+              class="dropdown-menu dropdown-menu-end"
+              aria-labelledby="profileDropdown"
+            >
+              <li>
+                <a class="dropdown-item" href="/manage-profile"
+                  >Manage Profile</a
+                >
+              </li>
+              <li>
+                <a class="dropdown-item" href="/reserveHistory"
+                  >Reservation History</a
+                >
+              </li>
+              <li>
+                <a
+                  class="dropdown-item"
+                  href="javascript:void(0)"
+                  (click)="logout()"
+                  >Logout</a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>

@@ -1,0 +1,117 @@
+
+body{
+    background-color: #fefaf6;
+}
+.container1 {
+    flex: 1;
+    background-color: #efe9e2; /* Replace with your desired background color */
+    display: flex;
+    flex-direction: column;
+}
+.container{
+    margin-top: 100px;
+}
+.title h2 {
+    margin: 5px 0 0;
+    font-size: 40px;
+    text-decoration: underline;
+    color: #90693E;
+}
+
+.custom-btn {
+    background-color: #90693E; /* Gantilah dengan kode warna yang Anda inginkan */
+    color: white;             /* Warna teks */
+    outline: none !important;
+    margin-top: 20px;
+    margin-right: 20px;
+    font-size: 18px;
+    border: none;
+    min-width: 50px;
+    border-radius: 2px;
+}
+
+.custom-btn:hover {
+    background-color: #785025; /* Gantilah dengan kode warna yang Anda inginkan untuk efek hover */
+    border-color: #785025;    /* Gantilah dengan kode warna yang Anda inginkan untuk efek hover */
+}
+
+.main-title {
+    border: 2px solid #90693E; /* Menambahkan border solid berukuran 2px dengan warna hitam */
+    border-radius: 8px; /* Menambahkan border-radius untuk sudut melengkung */
+    padding: 20px; /* Padding di dalam elemen */
+    margin: 20px 0; /* Margin di luar elemen */
+    position: relative; /* Untuk memastikan posisi teks tidak tumpang tindih */
+}
+.title-text {
+    background: white; /* Background putih untuk memastikan teks terlihat dengan jelas */
+    padding: 0 5px; /* Padding kiri dan kanan untuk ruang antara teks dan border */
+    position: absolute; /* Posisi absolut untuk memposisikan teks relatif terhadap .Room */
+    top: -10px; /* Mengatur posisi vertikal teks */
+    left: 20px; /* Mengatur posisi horizontal teks */
+}
+.attention p {
+    padding-bottom: 20px;
+    font-size: 14px;
+}
+
+.modal-lg-custom {
+    max-width: 80%; /* Adjust width as needed */
+    background-color: #f0f0f0;
+}
+.modal-content-custom {
+    height: auto; /* Adjust height as needed */
+}
+.form-select {
+    margin-bottom: 20px;
+}
+select.form-select {
+    background-color: #D9C4AD; /* Ganti dengan warna yang diinginkan */
+}
+input[type="file"] {
+    background-color: #D9C4AD; /* Ganti dengan warna yang diinginkan */
+    border: 1px solid #D9C4AD; /* Ganti dengan warna border yang diinginkan */
+    color: #495057; /* Ganti dengan warna teks yang diinginkan */
+    padding: .375rem .75rem; /* Atur padding sesuai kebutuhan */
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out; /* Atur transisi efek */
+}
+
+/* CSS untuk tombol plus dan minus */
+button[type="button-plusminus"] {
+    background-color: #90693E; /* Ganti dengan warna yang diinginkan */
+    border: none;
+    color: white;
+    padding: 5px 10px; /* Atur padding sesuai kebutuhan */
+    font-size: 16px; /* Atur ukuran font sesuai kebutuhan */
+    cursor: pointer;
+}
+
+.plusMinus {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 15px;
+}
+
+/* CSS untuk input angka */
+input[type="text"] {
+    width: 50px; /* Atur lebar input sesuai kebutuhan */
+    text-align: center; /* Mengatur angka berada di tengah */
+}
+
+.result {
+    border-top: 1px solid #90693E; /* Change the color and width as needed */
+    padding: 20px;
+    margin-top: 20px;
+    box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.2); /* Add shadow */
+    border-radius: 8px;
+}
+.result-text{
+    margin-top: 10px; /* Atur jarak negatif dari atas */
+    margin-bottom: 20px;
+    padding: 5px; /* Padding */
+    font-size: 32px;
+    color: #90693E;
+
+    
+
+}

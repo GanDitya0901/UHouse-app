@@ -1,0 +1,841 @@
+<app-guest-navbar></app-guest-navbar>
+
+<div class="d-flex">
+  <!-- Sidebar -->
+  <nav class="sidebar bg-dark text-white p-4 d-flex flex-column align-items-start">
+    <h4 class="sidebar-title w-100 mb-4">Request</h4>
+    <button class="btn btn-back mb-4 w-100" (click)="goBack()">← Back</button>
+    <ul class="nav flex-column w-100">
+      <li class="nav-item mb-2">
+        <a class="nav-link" [ngClass]="{'active': activeSection === 'pending'}" href="javascript:void(0);" (click)="showSection('pending')">
+          Pending Requests
+        </a>
+      </li>
+      <li class="nav-item mb-2">
+        <a class="nav-link" [ngClass]="{'active': activeSection === 'approved'}" href="javascript:void(0);" (click)="showSection('approved')">
+          Approved Requests
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" [ngClass]="{'active': activeSection === 'declined'}" href="javascript:void(0);" (click)="showSection('declined')">
+          Declined Requests
+        </a>
+      </li>
+      
+    </ul>
+  </nav>
+</div>
+<div class="container">
+  <h2 class="text-center mb-4">Guest Request Management</h2>
+      <!-- Requests List -->
+      <div class="card">
+        <div class="card-header" style="background-color: #B88917; color: white;">
+          <i class="fas fa-list"></i> Guest Requests
+        </div>
+        <div class="card-body">
+          <ul class="list-group">
+            <!-- Loop through each guest's request -->
+            <ng-container *ngIf="hasAnyActiveRequest(); else noActiveRequests">
+              <ng-container *ngFor="let request of filteredRequestsData">
+                <li *ngIf="hasActiveStatus(request)" class="list-group-item">
+              <h4>{{ request.username }}'s Requests</h4>
+              <p>Requested on: {{ request.createdAt | date: 'MMMM d, y, h:mm a' }}</p>
+              
+    
+              <!-- Extra Bed Request -->
+              <div class="card mt-3" *ngIf="request.extraBedDetails">
+                <div class="card-header">Extra Bed Request</div>
+                <div class="card-body">
+                  <p>Adults: {{ request.extraBedDetails.adults }}</p>
+                  <p>Children: {{ request.extraBedDetails.children }}</p>
+                  <p>Bed Type: {{ request.extraBedDetails.bedType }}</p>
+                  <p>Instructions: {{ request.extraBedDetails.instructions }}</p>
+                  <span
+                    class="badge"
+                    [ngClass]="{
+                      'bg-warning':
+                        request.extraBedDetails?.status === 'pending' ||
+                        !request.extraBedDetails?.status,
+                      'bg-success': request.extraBedDetails?.status === 'approved',
+                      'bg-danger': request.extraBedDetails?.status === 'declined'
+                    }"
+                  >
+                    {{ request.extraBedDetails?.status || "pending" | titlecase }}
+                  </span>
+    
+                  <div class="mt-2">
+                    <button
+                      class="btn btn-outline-success btn-sm me-2"
+                      (click)="
+                        updateStatus(request._id, 'extraBedDetails', 'approved')
+                      "
+                      [disabled]="
+                        request.extraBedDetails.status === 'approved' ||
+                        request.extraBedDetails.status === 'declined'
+                      "
+                    >
+                      Approve
+                    </button>
+                    <button
+                      class="btn btn-outline-danger btn-sm"
+                      (click)="
+                        updateStatus(
+                          request._id,
+                          'extraBedDetails',
+                          'declined',
+                          request.extraBedDetails.declineReason
+                        );
+                        request.showDeclineReasonInput.extraBed = false;
+                        request.extraBedDetails.declineReason = ''
+                      "
+                                            [disabled]="
+                                            request.extraBedDetails.status === 'approved' ||
+                                            request.extraBedDetails.status === 'declined'
+                                          "
+                    >
+                      Decline
+                    </button>
+                  </div>
+    
+                  <!-- Decline Reason Input -->
+                  <div *ngIf="request.showDeclineReasonInput?.extraBed && request.extraBedDetails" class="mt-2">
+                    <input
+                      type="text"
+                      [(ngModel)]="request.extraBedDetails.declineReason"
+                      placeholder="Enter reason for decline"
+                      class="form-control mb-2"
+                    />
+                    <button
+                      class="btn btn-danger btn-sm"
+                      (click)="
+                        updateStatus(
+                          request._id,
+                          'extraBedDetails',
+                          'declined',
+                          request.extraBedDetails.declineReason
+                        );
+                        request.showDeclineReasonInput.extraBed = false;
+                        request.extraBedDetails.declineReason = ''
+                      "
+                    >
+                      Confirm Decline
+                    </button>
+                    <button
+                    class="btn btn-secondary btn-sm"
+                    (click)="
+                      request.showDeclineReasonInput.extraBed = false;
+                      request.extraBedDetails.declineReason = '';
+                    "
+                  >
+                    Cancel
+                  </button>
+                  </div>
+                </div>
+              </div>
+    
+              <!-- Early Check-In Request -->
+              <div class="card mt-3" *ngIf="request.earlyCheckInDetails">
+                <div class="card-header">Early Check-In Request</div>
+                <div class="card-body">
+                  <p>Time: {{ request.earlyCheckInDetails.time }}</p>
+                  <p>
+                    Instructions: {{ request.earlyCheckInDetails.instructions }}
+                  </p>
+                  <span
+                    class="badge"
+                    [ngClass]="{
+                      'bg-warning':
+                        request.earlyCheckInDetails?.status === 'pending' ||
+                        !request.earlyCheckInDetails?.status,
+                      'bg-success':
+                        request.earlyCheckInDetails?.status === 'approved',
+                      'bg-danger':
+                        request.earlyCheckInDetails?.status === 'declined'
+                    }"
+                  >
+                    {{
+                      request.earlyCheckInDetails?.status || "pending" | titlecase
+                    }}
+                  </span>
+    
+                  <div class="mt-2">
+                    <button
+                      class="btn btn-outline-success btn-sm me-2"
+                      (click)="
+                        updateStatus(request._id, 'earlyCheckInDetails', 'approved')
+                      "
+                      [disabled]="
+                        request.earlyCheckInDetails.status === 'approved' ||
+                        request.earlyCheckInDetails.status === 'declined'
+                      "
+                    >
+                      Approve
+                    </button>
+                    <button
+                      class="btn btn-outline-danger btn-sm"
+                      (click)="
+                        updateStatus(
+                          request._id,
+                          'earlyCheckInDetails',
+                          'declined',
+                          request.earlyCheckInDetails.declineReason
+                        );
+                        request.showDeclineReasonInput.earlyCheckIn = false;
+                        request.earlyCheckInDetails.declineReason = ''
+                      "
+                                            [disabled]="
+                                            request.earlyCheckInDetails.status === 'approved' ||
+                                            request.earlyCheckInDetails.status === 'declined'
+                                          "
+                    >
+                      Decline
+                    </button>
+                  </div>
+    
+                  <!-- Decline Reason Input -->
+                  <div *ngIf="request.showDeclineReasonInput?.earlyCheckIn && request.earlyCheckInDetails" class="mt-2">
+                    <input
+                      type="text"
+                      [(ngModel)]="request.earlyCheckInDetails.declineReason"
+                      placeholder="Enter reason for decline"
+                      class="form-control mb-2"
+                    />
+                    <button
+                      class="btn btn-danger btn-sm"
+                      (click)="
+                        updateStatus(
+                          request._id,
+                          'earlyCheckInDetails',
+                          'declined',
+                          request.earlyCheckInDetails.declineReason
+                        );
+                        request.showDeclineReasonInput.earlyCheckIn = false;
+                        request.earlyCheckInDetails.declineReason = ''
+                      "
+                    >
+                      Confirm Decline
+                    </button>
+                    <button
+                    class="btn btn-secondary btn-sm"
+                    (click)="
+                      request.showDeclineReasonInput.earlyCheckIn = false;
+                      request.earlyCheckInDetails.declineReason = '';
+                    "
+                  >
+                    Cancel
+                  </button>
+                  </div>
+                </div>
+              </div>
+    
+              <!-- Late Check-In Request -->
+              <div class="card mt-3" *ngIf="request.lateCheckInDetails">
+                <div class="card-header">Late Check-In Request</div>
+                <div class="card-body">
+                  <p>Time: {{ request.lateCheckInDetails.time }}</p>
+                  <p>Instructions: {{ request.lateCheckInDetails.instructions }}</p>
+                  <span
+                    class="badge"
+                    [ngClass]="{
+                      'bg-warning':
+                        request.lateCheckInDetails?.status === 'pending' ||
+                        !request.lateCheckInDetails?.status,
+                      'bg-success':
+                        request.lateCheckInDetails?.status === 'approved',
+                      'bg-danger': request.lateCheckInDetails?.status === 'declined'
+                    }"
+                  >
+                    {{
+                      request.lateCheckInDetails?.status || "pending" | titlecase
+                    }}
+                  </span>
+    
+                  <div class="mt-2">
+                    <button
+                      class="btn btn-outline-success btn-sm me-2"
+                      (click)="
+                        updateStatus(request._id, 'lateCheckInDetails', 'approved')
+                      "
+                      [disabled]="
+                        request.lateCheckInDetails.status === 'approved' ||
+                        request.lateCheckInDetails.status === 'declined'
+                      "
+                    >
+                      Approve
+                    </button>
+                    <button
+                      class="btn btn-outline-danger btn-sm"
+                      (click)="
+                        updateStatus(
+                          request._id,
+                          'lateCheckInDetails',
+                          'declined',
+                          request.lateCheckInDetails.declineReason
+                        );
+                        request.showDeclineReasonInput.lateCheckIn = false;
+                        request.lateCheckInDetails.declineReason = ''
+                      "
+                                            [disabled]="
+                                            request.lateCheckInDetails.status === 'approved' ||
+                                            request.lateCheckInDetails.status === 'declined'
+                                          "
+                    >
+                      Decline
+                    </button>
+                  </div>
+    
+                  <!-- Decline Reason Input -->
+                  <div *ngIf="request.showDeclineReasonInput?.lateCheckIn && request.lateCheckInDetails" class="mt-2">
+                    <input
+                      type="text"
+                      [(ngModel)]="request.lateCheckInDetails.declineReason"
+                      placeholder="Enter reason for decline"
+                      class="form-control mb-2"
+                    />
+                    <button
+                      class="btn btn-danger btn-sm"
+                      (click)="
+                        updateStatus(
+                          request._id,
+                          'lateCheckInDetails',
+                          'declined',
+                          request.lateCheckInDetails.declineReason
+                        );
+                        request.showDeclineReasonInput.lateCheckIn = false;
+                        request.lateCheckInDetails.declineReason = ''
+                      "
+                    >
+                      Confirm Decline
+                    </button>
+                    <button
+                    class="btn btn-secondary btn-sm"
+                    (click)="
+                      request.showDeclineReasonInput.lateCheckIn = false;
+                      request.lateCheckInDetails.declineReason = '';
+                    "
+                  >
+                    Cancel
+                  </button>
+                  </div>
+                </div>
+              </div>
+    
+              <!-- Late Check-Out Request -->
+              <div class="card mt-3" *ngIf="request.lateCheckOutDetails">
+                <div class="card-header">Late Check-Out Request</div>
+                <div class="card-body">
+                  <p>Time: {{ request.lateCheckOutDetails.time }}</p>
+                  <p>
+                    Instructions: {{ request.lateCheckOutDetails.instructions }}
+                  </p>
+                  <span
+                    class="badge"
+                    [ngClass]="{
+                      'bg-warning':
+                        request.lateCheckOutDetails?.status === 'pending' ||
+                        !request.lateCheckOutDetails?.status,
+                      'bg-success':
+                        request.lateCheckOutDetails?.status === 'approved',
+                      'bg-danger':
+                        request.lateCheckOutDetails?.status === 'declined'
+                    }"
+                  >
+                    {{
+                      request.lateCheckOutDetails?.status || "pending" | titlecase
+                    }}
+                  </span>
+    
+                  <div class="mt-2">
+                    <button
+                      class="btn btn-outline-success btn-sm me-2"
+                      (click)="
+                        updateStatus(request._id, 'lateCheckOutDetails', 'approved')
+                      "
+                      [disabled]="
+                        request.lateCheckOutDetails.status === 'approved' ||
+                        request.lateCheckOutDetails.status === 'declined'
+                      "
+                    >
+                      Approve
+                    </button>
+                    <button
+                      class="btn btn-outline-danger btn-sm"
+                      (click)="
+                      updateStatus(
+                        request._id,
+                        'lateCheckOutDetails',
+                        'declined',
+                        request.lateCheckOutDetails.declineReason
+                      );
+                      request.showDeclineReasonInput.lateCheckOut = false;
+                      request.lateCheckOutDetails.declineReason = ''
+                    "
+                                          [disabled]="
+                                          request.lateCheckOutDetails.status === 'approved' ||
+                                          request.lateCheckOutDetails.status === 'declined'
+                                        "
+                    >
+                      Decline
+                    </button>
+                  </div>
+    
+                  <!-- Decline Reason Input -->
+                  <div *ngIf="request.showDeclineReasonInput?.lateCheckOut && request.lateCheckOutDetails" class="mt-2">
+                    <input
+                      type="text"
+                      [(ngModel)]="request.lateCheckOutDetails.declineReason"
+                      placeholder="Enter reason for decline"
+                      class="form-control mb-2"
+                    />
+                    <button
+                      class="btn btn-danger btn-sm"
+                      (click)="
+                        updateStatus(
+                          request._id,
+                          'lateCheckOutDetails',
+                          'declined',
+                          request.lateCheckOutDetails.declineReason
+                        );
+                        request.showDeclineReasonInput.lateCheckOut = false;
+                        request.lateCheckOutDetails.declineReason = ''
+                      "
+                    >
+                      Confirm Decline
+                    </button>
+                    <button
+                    class="btn btn-secondary btn-sm"
+                    (click)="
+                      request.showDeclineReasonInput.lateCheckOut = false;
+                      request.lateCheckOutDetails.declineReason = '';
+                    "
+                  >
+                    Cancel
+                  </button>
+                  </div>
+                </div>
+              </div>
+    
+              <!-- Early Breakfast Request -->
+              <div class="card mt-3" *ngIf="request.earlyBreakfastDetails">
+                <div class="card-header">Early Breakfast Request</div>
+                <div class="card-body">
+                  <p>Menu Items: {{ request.earlyBreakfastDetails.menuItems }}</p>
+                  <p>Time: {{ request.earlyBreakfastDetails.time }}</p>
+                  <span
+                    class="badge"
+                    [ngClass]="{
+                      'bg-warning':
+                        request.earlyBreakfastDetails?.status === 'pending' ||
+                        !request.earlyBreakfastDetails?.status,
+                      'bg-success':
+                        request.earlyBreakfastDetails?.status === 'approved',
+                      'bg-danger':
+                        request.earlyBreakfastDetails?.status === 'declined'
+                    }"
+                  >
+                    {{
+                      request.earlyBreakfastDetails?.status || "pending" | titlecase
+                    }}
+                  </span>
+    
+                  <div class="mt-2">
+                    <button
+                      class="btn btn-outline-success btn-sm me-2"
+                      (click)="
+                        updateStatus(
+                          request._id,
+                          'earlyBreakfastDetails',
+                          'approved'
+                        )
+                      "
+                      [disabled]="
+                        request.earlyBreakfastDetails.status === 'approved' ||
+                        request.earlyBreakfastDetails.status === 'declined'
+                      "
+                    >
+                      Approve
+                    </button>
+                    <button
+                      class="btn btn-outline-danger btn-sm"
+                      (click)="
+                        updateStatus(
+                          request._id,
+                          'earlyBreakfastDetails',
+                          'declined',
+                          request.earlyBreakfastDetails.declineReason
+                        );
+                        request.showDeclineReasonInput.earlyBreakfast = false;
+                        request.earlyBreakfastDetails.declineReason = ''
+                      "
+                                            [disabled]="
+                                            request.earlyBreakfastDetails.status === 'approved' ||
+                                            request.earlyBreakfastDetails.status === 'declined'
+                                          "
+                    >
+                      Decline
+                    </button>
+                  </div>
+    
+                  <!-- Decline Reason Input -->
+                  <div *ngIf="request.showDeclineReasonInput?.earlyBreakfast && request.earlyBreakfastDetails" class="mt-2">
+                    <input
+                      type="text"
+                      [(ngModel)]="request.earlyBreakfastDetails.declineReason"
+                      placeholder="Enter reason for decline"
+                      class="form-control mb-2"
+                    />
+                    <button
+                      class="btn btn-danger btn-sm"
+                      (click)="
+                        updateStatus(
+                          request._id,
+                          'earlyBreakfastDetails',
+                          'declined',
+                          request.earlyBreakfastDetails.declineReason
+                        );
+                        request.showDeclineReasonInput.earlyBreakfast = false;
+                        request.earlyBreakfastDetails.declineReason = ''
+                      "
+                    >
+                      Confirm Decline
+                    </button>
+                    <button
+                    class="btn btn-secondary btn-sm"
+                    (click)="
+                      request.showDeclineReasonInput.earlyBreakfast = false;
+                      request.earlyBreakfastDetails.declineReason = '';
+                    "
+                  >
+                    Cancel
+                  </button>
+                  </div>
+                </div>
+              </div>
+    
+              <!-- Amenities Request -->
+              <div class="card mt-3" *ngIf="request.amenities">
+                <div class="card-header">Amenities Request</div>
+                <div class="card-body">
+                  <p>
+                    Extra Towels: {{ request.amenities.extraTowels ? "Yes" : "No" }}
+                  </p>
+                  <p>
+                    Toiletries: {{ request.amenities.toiletries ? "Yes" : "No" }}
+                  </p>
+                  <p>
+                    Coffee/Tea: {{ request.amenities.coffeeTea ? "Yes" : "No" }}
+                  </p>
+                  <p>
+                    Extra Pillows: {{ request.amenities.extraPillows ? "Yes" : "No" }}
+                  </p>
+                  <p>
+                    Extra Blanket: {{ request.amenities.extraBlanket ? "Yes" : "No" }}
+                  </p>
+                  <p>
+                    Crib: {{ request.amenities.crib ? "Yes" : "No" }}
+                  </p>
+                  <p>
+                    Iron Board: {{ request.amenities.ironBoard ? "Yes" : "No" }}
+                  </p>
+                  <span
+                    class="badge"
+                    [ngClass]="{
+                      'bg-warning':
+                        request.amenities?.status === 'pending' ||
+                        !request.amenities?.status,
+                      'bg-success': request.amenities?.status === 'approved',
+                      'bg-danger': request.amenities?.status === 'declined'
+                    }"
+                  >
+                    {{ request.amenities?.status || "pending" | titlecase }}
+                  </span>
+    
+                  <div class="mt-2">
+                    <button
+                      class="btn btn-outline-success btn-sm me-2"
+                      (click)="updateStatus(request._id, 'amenities', 'approved')"
+                      [disabled]="
+                        request.amenities.status === 'approved' ||
+                        request.amenities.status === 'declined'
+                      "
+                    >
+                      Approve
+                    </button>
+                    <button
+                      class="btn btn-outline-danger btn-sm"
+                      (click)="
+                        updateStatus(
+                          request._id,
+                          'amenities',
+                          'declined',
+                          request.amenities.declineReason
+                        );
+                        request.showDeclineReasonInput.amenities = false;
+                        request.amenities.declineReason = ''
+                        
+                      "
+                                            [disabled]="
+                                            request.amenities.status === 'approved' ||
+                                            request.amenities.status === 'declined'
+                                          "
+                    >
+                      Decline
+                    </button>
+                  </div>
+    
+                  <!-- Decline Reason Input -->
+                  <div *ngIf="request.showDeclineReasonInput?.amenities && request.amenities" class="mt-2">
+                    <input
+                      type="text"
+                      [(ngModel)]="request.amenities.declineReason"
+                      placeholder="Enter reason for decline"
+                      class="form-control mb-2"
+                    />
+                    <button
+                      class="btn btn-danger btn-sm"
+                      (click)="
+                        updateStatus(
+                          request._id,
+                          'amenities',
+                          'declined',
+                          request.amenities.declineReason
+                        );
+                        request.showDeclineReasonInput.amenities = false;
+                        request.amenities.declineReason = ''
+                      "
+                    >
+                      Confirm Decline
+                    </button>
+                    <button
+                    class="btn btn-secondary btn-sm"
+                    (click)="
+                      request.showDeclineReasonInput.amenities = false;
+                      request.amenities.declineReason = '';
+                    "
+                  >
+                    Cancel
+                  </button>
+                  </div>
+                </div>
+              </div>
+    
+              <!-- Special Requests -->
+              <div class="card mt-3" *ngIf="request.specialRequests?.description">
+                <div class="card-header">Special Requests</div>
+                <div class="card-body">
+                  <p>Description: {{ request.specialRequests.description }}</p>
+                  <span
+                    class="badge"
+                    [ngClass]="{
+                      'bg-warning':
+                        request.specialRequests?.status === 'pending' ||
+                        !request.specialRequests?.status,
+                      'bg-success': request.specialRequests?.status === 'approved',
+                      'bg-danger': request.specialRequests?.status === 'declined'
+                    }"
+                  >
+                    {{ request.specialRequests?.status || "pending" | titlecase }}
+                  </span>
+    
+                  <div class="mt-2">
+                    <button
+                      class="btn btn-outline-success btn-sm me-2"
+                      (click)="
+                        updateStatus(request._id, 'specialRequests', 'approved')
+                      "
+                      [disabled]="
+                        request.specialRequests.status === 'approved' ||
+                        request.specialRequests.status === 'declined'
+                      "
+                    >
+                      Approve
+                    </button>
+                    <button
+                      class="btn btn-outline-danger btn-sm"
+                      (click)="
+                        updateStatus(
+                          request._id,
+                          'specialRequests',
+                          'declined',
+                          request.specialRequests.declineReason
+                        );
+                        request.showDeclineReasonInput.specialRequests = false;
+                        request.specialRequests.declineReason = ''
+                      "
+                                            [disabled]="
+                                            request.specialRequests.status === 'approved' ||
+                                            request.specialRequests.status === 'declined'
+                                          "
+                    >
+                      Decline
+                    </button>
+                  </div>
+    
+                  <!-- Decline Reason Input -->
+                  <div *ngIf="request.showDeclineReasonInput?.specialRequests && request.specialRequests" class="mt-2">
+                    <input
+                      type="text"
+                      [(ngModel)]="request.specialRequests.declineReason"
+                      placeholder="Enter reason for decline"
+                      class="form-control mb-2"
+                    />
+                    <button
+                      class="btn btn-danger btn-sm"
+                      (click)="
+                        updateStatus(
+                          request._id,
+                          'specialRequests',
+                          'declined',
+                          request.specialRequests.declineReason
+                        );
+                        request.showDeclineReasonInput.specialRequests = false;
+                        request.specialRequests.declineReason = ''
+                      "
+                    >
+                      Confirm Decline
+                    </button>
+                    <button
+                    class="btn btn-secondary btn-sm"
+                    (click)="
+                      request.showDeclineReasonInput.specialRequests = false;
+                      request.specialRequests.declineReason = '';
+                    "
+                  >
+                    Cancel
+                  </button>
+                  </div>
+                </div>
+              </div>
+    
+              <!-- Special Services Request -->
+              <!-- Check if specialServices is present and has a valid service -->
+              <div *ngIf="request.specialServices" class="card mt-3">
+                <div class="card-header">Special Services Request</div>
+                <div class="card-body">
+                  <!-- Check if the service is 'airportPickup' -->
+                  <ng-container
+                    *ngIf="
+                      request.specialServices.service === 'airportPickup';
+                      else otherService
+                    "
+                  >
+                    <p><strong>Service:</strong> Airport Pickup</p>
+                    <p>
+                      <strong>Flight Number:</strong>
+                      {{ request.airportPickupDetails?.flightNumber }}
+                    </p>
+                    <p>
+                      <strong>Arrival Time:</strong>
+                      {{ request.airportPickupDetails?.arrivalTime }}
+                    </p>
+                    <p>
+                      <strong>Special Instructions:</strong>
+                      {{ request.airportPickupDetails?.specialInstructions }}
+                    </p>
+                  </ng-container>
+                  <!-- Template for other services -->
+                  <ng-template #otherService>
+                    <p>
+                      <strong>Service:</strong>
+                      {{ request.specialServices.service | titlecase }}
+                    </p>
+                    <p>
+                      <strong>Request Details:</strong> {{ request.requestDetails }}
+                    </p>
+                  </ng-template>
+    
+                  <!-- Special Requests Status and Action Buttons -->
+                  <span
+                    class="badge"
+                    [ngClass]="{
+                      'bg-warning':
+                        request.specialServices?.status === 'pending' ||
+                        !request.specialServices?.status,
+                      'bg-success': request.specialServices?.status === 'approved',
+                      'bg-danger': request.specialServices?.status === 'declined'
+                    }"
+                  >
+                    {{ request.specialServices?.status || "pending" | titlecase }}
+                  </span>
+                  <div class="mt-2">
+                    <button
+                      class="btn btn-outline-success btn-sm me-2"
+                      (click)="
+                        updateStatus(request._id, 'specialServices', 'approved')
+                      "
+                      [disabled]="
+                        request.specialServices?.status === 'approved' ||
+                        request.specialServices?.status === 'declined'
+                      "
+                    >
+                      Approve
+                    </button>
+                    <button
+                      class="btn btn-outline-danger btn-sm"
+                      (click)="
+                        updateStatus(
+                          request._id,
+                          'specialServices',
+                          'declined',
+                          request.specialServices.declineReason
+                        );
+                        request.showDeclineReasonInput.specialServices = false;
+                        request.specialServices.declineReason = ''
+                      "
+                                            [disabled]="
+                                            request.specialServices?.status === 'approved' ||
+                                            request.specialServices?.status === 'declined'
+                                          "
+                    >
+                      Decline
+                    </button>
+                  </div>
+    
+                  <!-- Decline Reason Input -->
+                  <div *ngIf="request.showDeclineReasonInput?.specialServices && request.specialServices" class="mt-2">
+                    <input
+                      type="text"
+                      [(ngModel)]="request.specialServices.declineReason"
+                      placeholder="Enter reason for decline"
+                      class="form-control mb-2"
+                    />
+                    <button
+                      class="btn btn-danger btn-sm"
+                      (click)="
+                        updateStatus(
+                          request._id,
+                          'specialServices',
+                          'declined',
+                          request.specialServices.declineReason
+                        );
+                        request.showDeclineReasonInput.specialServices = false;
+                        request.specialServices.declineReason = ''
+                      "
+                    >
+                      Confirm Decline
+                    </button>
+                    <button
+                    class="btn btn-secondary btn-sm"
+                    (click)="
+                      request.showDeclineReasonInput.specialServices = false;
+                      request.specialServices.declineReason = '';
+                    "
+                  >
+                    Cancel
+                  </button>
+                  </div>
+                </div>
+              </div>
+            </li>
+          </ng-container>
+        </ng-container>
+      
+        <ng-template #noActiveRequests>
+          <li class="list-group-item text-center text-muted">
+            No requests found.
+          </li>
+        </ng-template>
+          </ul>
+        </div>
+      </div>
+  </div>

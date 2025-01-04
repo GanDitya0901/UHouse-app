@@ -1,0 +1,1233 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Guest Request Form</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+  </head>
+  
+  <body>
+
+    <app-guest-navbar></app-guest-navbar>
+    <div class="d-flex">
+      <!-- Sidebar -->
+      <nav class="sidebar bg-dark text-white p-4 d-flex flex-column align-items-start">
+        <h4 class="sidebar-title w-100 mb-4">Request</h4>
+        <button class="btn btn-back mb-4 w-100" (click)="goBack()">← Back</button>
+        <ul class="nav flex-column w-100">
+          <li class="nav-item mb-2">
+            <a
+              class="nav-link"
+              [ngClass]="{'active': activeSection === 'form'}"
+              href="javascript:void(0);"
+              (click)="showSection('form')"
+            >
+              Request Form
+            </a>
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link"
+              [ngClass]="{'active': activeSection === 'list'}"
+              href="javascript:void(0);"
+              (click)="showSection('list')"
+            >
+              My Requests
+            </a>
+          </li>
+        </ul>
+      </nav>
+    
+    
+
+      <div class="container">
+<div class="content">
+  <div *ngIf="activeSection === 'form'">
+<br>
+    <form
+    class="request-form"
+    (ngSubmit)="onSubmit()"
+    #guestRequestForm="ngForm"
+  >
+    <h2>Guest Request Form</h2>
+    <div class="form-group">
+      <label for="username">Username:</label>
+      <input
+        type="text"
+        id="username"
+        name="username"
+        class="form-control"
+        value="{{ user.username }}"
+        readonly
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="requestType">Request Type:</label>
+      <select
+        id="requestType"
+        name="requestType"
+        class="form-control"
+        [(ngModel)]="selectedRequestType"
+        (change)="onRequestTypeChange($event)"
+        required
+      >
+        <option value="" disabled selected>Select request type</option>
+        <option value="earlyCheckIn">Early Check-In</option>
+        <option value="lateCheckIn">Late Check-In</option>
+        <option value="lateCheckout">Late Check-Out</option>
+        <option value="extraBed">Extra Bed</option>
+        <option value="earlyBreakfast">Early Breakfast</option>
+        <option value="addAmenities">Add Amenities</option>
+        <option value="specialRequests">Other Special Requests</option>
+      </select>
+      <!-- <button type="button" class="btn btn-link p-0 mt-1" (click)="viewSavedRequest()">
+        View Selected Request Details
+      </button> -->
+    </div>
+
+
+
+
+    <!-- Modal for Extra Bed Details -->
+    <div
+      class="modal fade"
+      id="extraBedModal"
+      tabindex="-1"
+      aria-labelledby="extraBedModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="extraBedModalLabel">
+              Extra Bed Details
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              (click)="closeModal('extraBedModal')"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <!-- Number of Adults Needing Extra Bed -->
+            <div class="form-group">
+              <label for="extraAdults"
+                >Enter Number of Adults Needing Extra Bed:</label
+              >
+              <input
+                type="number"
+                id="extraAdults"
+                [(ngModel)]="extraBedDetails.adults"
+                name="extraAdultsBed"
+                min="0"
+                class="form-control"
+                placeholder="e.g., 1"
+              />
+            </div>
+
+            <!-- Number of Children Needing Extra Bed -->
+            <div class="form-group">
+              <label for="extraChildren"
+                >Enter Number of Children Needing Extra Bed:</label
+              >
+              <input
+                type="number"
+                id="extraChildren"
+                [(ngModel)]="extraBedDetails.children"
+                name="extraChildrenBed"
+                min="0"
+                class="form-control"
+                placeholder="e.g., 1"
+              />
+            </div>
+
+            <!-- Preferred Bed Type -->
+            <div class="form-group">
+              <label for="bedType">Choose Preferred Bed Type:</label>
+              <select
+                id="bedType"
+                [(ngModel)]="extraBedDetails.bedType"
+                name="extraBedDetails"
+                class="form-control"
+              >
+                <option value="" disabled selected>Select bed type</option>
+                <option value="single">Single Bed</option>
+                <option value="double">Double Bed</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="specialInstructions"
+                >Enter Any Special Instructions:</label
+              >
+              <textarea
+                id="specialInstructions"
+                [(ngModel)]="extraBedDetails.instructions"
+                name="extraBedInstruction"
+                class="form-control"
+                placeholder="Add any special instructions..."
+              ></textarea>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              (click)="closeModal('extraBedModal')"
+            >
+              Close
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              (click)="saveExtraBedDetails()"
+            >
+              Save Details
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Early Check-In Modal -->
+    <div
+      class="modal fade"
+      id="earlyCheckInModal"
+      tabindex="-1"
+      aria-labelledby="earlyCheckInModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="earlyCheckInModalLabel">
+              Early Check-In Details
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              (click)="closeModal('earlyCheckInModal')"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="form-group">
+              <label for="earlyCheckInTime">Preferred Check-In Time:</label>
+              <input
+                type="time"
+                id="earlyCheckInTime"
+                [(ngModel)]="earlyCheckInDetails.time"
+                name="PreferredCheckInTime"
+                class="form-control"
+              />
+            </div>
+            <div class="form-group">
+              <label for="earlyCheckInInstructions"
+                >Special Instructions:</label
+              >
+              <textarea
+                id="earlyCheckInInstructions"
+                [(ngModel)]="earlyCheckInDetails.instructions"
+                name="earlyCheckInInstructions"
+                class="form-control"
+                placeholder="Any additional instructions..."
+              ></textarea>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              (click)="closeModal('earlyCheckInModal')"
+            >
+              Close
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              (click)="saveEarlyCheckInDetails()"
+            >
+              Save Details
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Late Check-In Modal -->
+    <div
+      class="modal fade"
+      id="lateCheckInModal"
+      tabindex="-1"
+      aria-labelledby="lateCheckInModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="lateCheckInModalLabel">
+              Late Check-In Details
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              (click)="closeModal('lateCheckInModal')"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="form-group">
+              <label for="lateCheckInTime">Expected Arrival Time:</label>
+              <input
+                type="time"
+                id="lateCheckInTime"
+                [(ngModel)]="lateCheckInDetails.time"
+                name="expectedArrivalTime"
+                class="form-control"
+              />
+            </div>
+            <div class="form-group">
+              <label for="lateCheckInInstructions"
+                >Special Instructions:</label
+              >
+              <textarea
+                id="lateCheckInInstructions"
+                [(ngModel)]="lateCheckInDetails.instructions"
+                name="lateCheckInInstructions"
+                class="form-control"
+                placeholder="Any additional instructions..."
+              ></textarea>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              (click)="closeModal('lateCheckInModal')"
+            >
+              Close
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              (click)="saveLateCheckInDetails()"
+            >
+              Save Details
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Late Check-Out Modal -->
+    <div
+      class="modal fade"
+      id="lateCheckOutModal"
+      tabindex="-1"
+      aria-labelledby="lateCheckOutModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="lateCheckOutModalLabel">
+              Late Check-Out Details
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              (click)="closeModal('lateCheckOutModal')"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="form-group">
+              <label for="lateCheckOutTime"
+                >Preferred Check-Out Time:</label
+              >
+              <input
+                type="time"
+                id="lateCheckOutTime"
+                [(ngModel)]="lateCheckOutDetails.time"
+                name="preferredCheckOutTime"
+                class="form-control"
+              />
+            </div>
+            <div class="form-group">
+              <label for="lateCheckOutInstructions"
+                >Special Instructions:</label
+              >
+              <textarea
+                id="lateCheckOutInstructions"
+                [(ngModel)]="lateCheckOutDetails.instructions"
+                name="lateCheckOutInstructions"
+                class="form-control"
+                placeholder="Any additional instructions..."
+              ></textarea>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              (click)="closeModal('lateCheckOutModal')"
+            >
+              Close
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              (click)="saveLateCheckOutDetails()"
+            >
+              Save Details
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Add Amenities Modal -->
+    <div
+      class="modal fade"
+      id="addAmenitiesModal"
+      tabindex="-1"
+      aria-labelledby="addAmenitiesModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="addAmenitiesModalLabel">
+              Select Room Amenities
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              (click)="closeModal('addAmenitiesModal')"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="form-check custom-checkbox">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  id="extraTowels"
+                  [(ngModel)]="amenities.extraTowels"
+                  name="extraTowels"
+                />
+                <label class="form-check-label" for="extraTowels"
+                  >Extra Towels</label
+                >
+              </div>
+              <div class="form-check custom-checkbox">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  id="toiletries"
+                  [(ngModel)]="amenities.toiletries"
+                  name="additionalToiletries"
+                />
+                <label class="form-check-label" for="toiletries"
+                  >Additional Toiletries</label
+                >
+              </div>
+              <div class="form-check custom-checkbox">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  id="coffeeTea"
+                  [(ngModel)]="amenities.coffeeTea"
+                  name="coffeeTeaService"
+                />
+                <label class="form-check-label" for="coffeeTea"
+                  >Coffee/Tea Service</label
+                >
+              </div>
+              <div class="form-check custom-checkbox">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  id="pillows"
+                  [(ngModel)]="amenities.extraPillows"
+                  name="extraPillows"
+                />
+                <label class="form-check-label" for="pillows"
+                  >Extra Pillows</label
+                >
+              </div>
+              <div class="form-check custom-checkbox">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  id="blanket"
+                  [(ngModel)]="amenities.extraBlanket"
+                  name="extraBlankets"
+                />
+                <label class="form-check-label" for="blanket"
+                  >Extra Blanket</label
+                >
+              </div>
+              <div class="form-check custom-checkbox">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  id="crib"
+                  [(ngModel)]="amenities.crib"
+                  name="crib"
+                />
+                <label class="form-check-label" for="crib"
+                  >Crib (for infants)</label
+                >
+              </div>
+              <div class="form-check custom-checkbox">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  id="ironBoard"
+                  [(ngModel)]="amenities.ironBoard"
+                  name="ironBoard"
+                />
+                <label class="form-check-label" for="ironBoard"
+                  >Iron and Ironing Board</label
+                >
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              (click)="closeModal('addAmenitiesModal')"
+            >
+              Close
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              (click)="saveAmenities()"
+            >
+              Save Amenities
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Early Breakfast Modal -->
+    <div
+      class="modal fade"
+      id="earlyBreakfastModal"
+      tabindex="-1"
+      aria-labelledby="earlyBreakfastModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="earlyBreakfastModalLabel">
+              Early Breakfast Details
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              (click)="closeModal('earlyBreakfastModal')"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="form-group">
+              <label for="breakfastMenu">Select Menu Items:</label>
+              <textarea
+                id="breakfastMenu"
+                [(ngModel)]="earlyBreakfastDetails.menuItems"
+                name="selectMenuItems"
+                class="form-control"
+                placeholder="List items like eggs, toast, coffee..."
+              ></textarea>
+            </div>
+            <div class="form-group mt-3">
+              <label for="breakfastTime">Preferred Breakfast Time:</label>
+              <input
+                type="time"
+                id="breakfastTime"
+                [(ngModel)]="earlyBreakfastDetails.time"
+                name="preferredBreakfastTime"
+                class="form-control"
+              />
+            </div>
+          </div>
+          <!-- Button to show the menu image -->
+          <button
+            type="button"
+            class="btn btn-info mt-3"
+            (click)="toggleMenuImage()"
+          >
+            Show Breakfast Menu
+          </button>
+          <!-- Image display area, only shown when showMenuImage is true -->
+          <div *ngIf="showMenuImage" class="mt-3">
+            <img
+              src="../../assets/Images/breakfast menu UHouse.png"
+              alt="Breakfast Menu"
+              class="img-fluid"
+            />
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              (click)="closeModal('earlyBreakfastModal')"
+            >
+              Close
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              (click)="saveEarlyBreakfastDetails()"
+            >
+              Save Details
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal for Other Special Requests -->
+    <div
+      class="modal fade"
+      id="specialRequestsModal"
+      tabindex="-1"
+      aria-labelledby="specialRequestsModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="specialRequestsModalLabel">
+              Other Special Requests
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              (click)="closeModal('specialRequestsModal')"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="form-group">
+              <label for="specialRequestDescription">Description:</label>
+              <textarea
+                id="specialRequestDescription"
+                [(ngModel)]="specialRequestDetails.description"
+                name="specialRequestDescription"
+                class="form-control"
+                placeholder="Describe your request..."
+              ></textarea>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              (click)="closeModal('specialRequestsModal')"
+            >
+              Close
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              (click)="saveSpecialRequestDetails()"
+            >
+              Save Details
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="specialServices"
+        >Special Services <span class="optional">(optional)</span>:</label
+      >
+      <select
+      id="specialServices"
+      name="specialServices"
+      class="form-control"
+      (change)="onSpecialServiceChange($event)"
+      (focus)="onSelectFocus($event)"
+      (blur)="onSelectBlur($event)"
+    >
+      <option value="" disabled selected>Select special service</option>
+      <option value="airportPickup">Airport Pickup</option>
+      <option value="spaPackage">Spa Package</option>
+      <option value="romanticSetup">Romantic Room Setup</option>
+      <option value="birthdaySurprise">Birthday Surprise</option>
+    </select>
+    
+
+    </div>
+
+<!-- Displaying saved airport pickup details -->
+<div *ngIf="airportPickupDetails.flightNumber" class="container mt-4">
+  <div class="card shadow-lg border-0">
+    <div class="card-body">
+      <h5 class="card-title text-primary">Saved Airport Pickup Details</h5>
+      <hr class="my-3">
+      <p class="mb-2"><strong class="text-muted">Flight Number:</strong> {{ airportPickupDetails.flightNumber }}</p>
+      <p class="mb-2"><strong class="text-muted">Arrival Time:</strong> {{ airportPickupDetails.arrivalTime }}</p>
+      <p class="mb-3"><strong class="text-muted">Special Instructions:</strong> {{ airportPickupDetails.specialInstructions }}</p>
+
+      <!-- Button to remove saved details with Font Awesome icon -->
+      <button (click)="removeAirportPickupDetails()" class="btn btn-outline-danger d-flex align-items-center">
+        <i class="fas fa-trash-alt me-2"></i> Remove Details
+      </button>
+    </div>
+  </div>
+</div>
+
+
+
+    <!-- Airport Pickup Modal -->
+    <div
+      class="modal fade"
+      id="airportPickupModal"
+      tabindex="-1"
+      aria-labelledby="airportPickupModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="airportPickupModalLabel">
+              Airport Pick-up Request
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              aria-label="Close"
+              (click)="closeModal('airportPickupModal')"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <!-- Flight Number -->
+              <div class="mb-3">
+                <label for="flightNumber" class="form-label"
+                  >Flight Number</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="flightNumber"
+                  [(ngModel)]="airportPickupDetails.flightNumber"
+                  name="flightNumber"
+                  placeholder="Enter flight number"
+                />
+              </div>
+
+              <!-- Arrival Time -->
+              <div class="mb-3">
+                <label for="arrivalTime" class="form-label"
+                  >Arrival Time</label
+                >
+                <input
+                  type="time"
+                  class="form-control"
+                  id="arrivalTime"
+                  [(ngModel)]="airportPickupDetails.arrivalTime"
+                  name="arrivalTime"
+                />
+              </div>
+
+              <!-- Special Instructions -->
+              <div class="mb-3">
+                <label for="specialInstructions" class="form-label"
+                  >Special Instructions</label
+                >
+                <textarea
+                  class="form-control"
+                  id="specialInstructions"
+                  [(ngModel)]="airportPickupDetails.specialInstructions"
+                  name="specialInstructions"
+                  rows="3"
+                  placeholder="Any additional details or requirements especially your WhatsApp number"
+                ></textarea>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              (click)="closeModal('airportPickupModal')"
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              (click)="saveAirportPickupDetails()"
+            >
+              Save
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="requestDetails">Request Details:</label>
+      <textarea
+        id="requestDetails"
+        name="requestDetails"
+        class="form-control"
+        placeholder="Provide additional details for your request"
+        [(ngModel)]="requestDetails"
+      ></textarea>
+    </div>
+
+    
+
+    <div class="form-group">
+      <button type="submit" class="btn btn-submit">Submit Request</button>
+    </div>
+
+    
+  </form>  
+  </div>
+
+  <!-- Selected Requests List -->
+<div *ngIf="selectedRequests.length > 0" class="mt-3">
+  <h5>Selected Requests</h5>
+  <ul class="list-group">
+    <li *ngFor="let request of selectedRequests; let i = index" class="list-group-item d-flex justify-content-between align-items-center">
+      <div>
+        <strong>{{ request.type }}</strong>:
+        <span *ngIf="request.type === 'Early Check-In'">
+          Time - {{ request.details.time }}, Instructions - {{ request.details.instructions }}
+        </span>
+        <span *ngIf="request.type === 'Late Check-In'">
+          Time - {{ request.details.time }}, Instructions - {{ request.details.instructions }}
+        </span>
+        <span *ngIf="request.type === 'Late Check-Out'">
+          Time - {{ request.details.time }}
+        </span>
+        <span *ngIf="request.type === 'Extra Bed'">
+          Bed Type - {{ request.details.bedType }}
+        </span>
+        <span *ngIf="request.type === 'Add Amenities'">
+          Amenities - {{ request.details.amenities.join(', ') }}
+        </span>
+        <span *ngIf="request.type === 'Early Breakfast'">
+          Time - {{ request.details.time }}, Menu - {{ request.details.menuItems }}
+        </span>
+        <span *ngIf="request.type === 'Other Special Requests'">
+          Request - {{ request.details.description }}
+        </span>
+      </div>
+      <!-- Remove Button -->
+      <button class="btn btn-danger btn-sm" (click)="removeRequest(i)">
+        Remove
+      </button>
+    </li>
+  </ul>
+
+  <!-- Clear All Button -->
+  <button class="btn btn-warning mt-2" (click)="clearAllRequests()">
+    Clear All
+  </button>
+</div>
+
+  <div *ngIf="activeSection === 'list'">
+    <!-- My Requests HTML content -->
+    <h2>My Requests</h2>
+    <!-- Add your requests list content here -->
+                 <!-- Request Form Section -->
+                 <div class="">
+
+    
+                  <!-- Requests List Section -->
+                  <section id="request-list" class="mt-5">
+                      <!-- Requests List -->
+              <div class="card">
+                <div class="card-header bg-dark text-white">
+                  <i class="fas fa-list"></i> My Requests
+                </div>
+                <div class="card-body">
+                  <ul class="list-group">
+                    <!-- Loop through each guest's request -->
+                    <ng-container *ngIf="guestRequests && guestRequests.length > 0; else noRequests">
+
+                    <li *ngFor="let request of guestRequests" class="list-group-item">
+                      <!-- <h4>{{ request.username }}'s Requests</h4>
+                  <h4>{{ request.username }}'s Requests</h4> -->
+                      <p>
+                        Requested on:
+                        {{ request.createdAt | date : "MMMM d, y, h:mm a" }}
+                      </p>
+        
+                      <!-- Extra Bed Request -->
+                      <div class="card mt-3" *ngIf="request.extraBedDetails">
+                        <div class="card-header">Extra Bed Request</div>
+                        <div class="card-body">
+                          <p>Adults: {{ request.extraBedDetails.adults }}</p>
+                          <p>Children: {{ request.extraBedDetails.children }}</p>
+                          <p>Bed Type: {{ request.extraBedDetails.bedType }}</p>
+                          <p>
+                            Instructions: {{ request.extraBedDetails.instructions }}
+                          </p>
+                          <span
+                            class="badge"
+                            [ngClass]="{
+                              'bg-warning':
+                                request.extraBedDetails?.status === 'pending' ||
+                                !request.extraBedDetails?.status,
+                              'bg-success':
+                                request.extraBedDetails?.status === 'approved',
+                              'bg-danger':
+                                request.extraBedDetails?.status === 'declined'
+                            }"
+                          >
+                            {{
+                              request.extraBedDetails?.status || "pending" | titlecase
+                            }}
+                          </span>
+                              <!-- Show declineReason if status is declined -->
+    <p *ngIf="request.extraBedDetails?.status === 'declined'">
+      Decline Reason: {{ request.extraBedDetails?.declineReason }}
+    </p>
+
+    <!-- Show approveMessage if status is approved -->
+    <p *ngIf="request.extraBedDetails?.status === 'approved'">
+      Approval Message: {{ request.extraBedDetails?.approveMessage }}
+    </p>
+                        </div>
+                      </div>
+        
+                      <!-- Early Check-In Request -->
+                      <div class="card mt-3" *ngIf="request.earlyCheckInDetails">
+                        <div class="card-header">Early Check-In Request</div>
+                        <div class="card-body">
+                          <p>Time: {{ request.earlyCheckInDetails.time }}</p>
+                          <p>
+                            Instructions: {{ request.earlyCheckInDetails.instructions }}
+                          </p>
+                          <span
+                            class="badge"
+                            [ngClass]="{
+                              'bg-warning':
+                                request.earlyCheckInDetails?.status === 'pending' ||
+                                !request.earlyCheckInDetails?.status,
+                              'bg-success':
+                                request.earlyCheckInDetails?.status === 'approved',
+                              'bg-danger':
+                                request.earlyCheckInDetails?.status === 'declined'
+                            }"
+                          >
+                            {{
+                              request.earlyCheckInDetails?.status || "pending"
+                                | titlecase
+                            }}
+                          </span>
+                              <!-- Show declineReason if status is declined -->
+    <p *ngIf="request.earlyCheckInDetails?.status === 'declined'">
+      Decline Reason: {{ request.earlyCheckInDetails?.declineReason }}
+    </p>
+
+    <!-- Show approveMessage if status is approved -->
+    <p *ngIf="request.earlyCheckInDetails?.status === 'approved'">
+      Approval Message: {{ request.earlyCheckInDetails?.approveMessage }}
+    </p>
+                        </div>
+                      </div>
+        
+                      <!-- Late Check-In Request -->
+                      <div class="card mt-3" *ngIf="request.lateCheckInDetails">
+                        <div class="card-header">Late Check-In Request</div>
+                        <div class="card-body">
+                          <p>Time: {{ request.lateCheckInDetails.time }}</p>
+                          <p>
+                            Instructions: {{ request.lateCheckInDetails.instructions }}
+                          </p>
+                          <span
+                            class="badge"
+                            [ngClass]="{
+                              'bg-warning':
+                                request.lateCheckInDetails?.status === 'pending' ||
+                                !request.lateCheckInDetails?.status,
+                              'bg-success':
+                                request.lateCheckInDetails?.status === 'approved',
+                              'bg-danger':
+                                request.lateCheckInDetails?.status === 'declined'
+                            }"
+                          >
+                            {{
+                              request.lateCheckInDetails?.status || "pending"
+                                | titlecase
+                            }}
+                          </span>
+                              <!-- Show declineReason if status is declined -->
+    <p *ngIf="request.lateCheckInDetails?.status === 'declined'">
+      Decline Reason: {{ request.lateCheckInDetails?.declineReason }}
+    </p>
+
+    <!-- Show approveMessage if status is approved -->
+    <p *ngIf="request.lateCheckInDetails?.status === 'approved'">
+      Approval Message: {{ request.lateCheckInDetails?.approveMessage }}
+    </p>
+                        </div>
+                      </div>
+        
+                      <!-- Late Check-Out Request -->
+                      <div class="card mt-3" *ngIf="request.lateCheckOutDetails">
+                        <div class="card-header">Late Check-Out Request</div>
+                        <div class="card-body">
+                          <p>Time: {{ request.lateCheckOutDetails.time }}</p>
+                          <p>
+                            Instructions: {{ request.lateCheckOutDetails.instructions }}
+                          </p>
+                          <span
+                            class="badge"
+                            [ngClass]="{
+                              'bg-warning':
+                                request.lateCheckOutDetails?.status === 'pending' ||
+                                !request.lateCheckOutDetails?.status,
+                              'bg-success':
+                                request.lateCheckOutDetails?.status === 'approved',
+                              'bg-danger':
+                                request.lateCheckOutDetails?.status === 'declined'
+                            }"
+                          >
+                            {{
+                              request.lateCheckOutDetails?.status || "pending"
+                                | titlecase
+                            }}
+                          </span>
+                              <!-- Show declineReason if status is declined -->
+    <p *ngIf="request.lateCheckOutDetails?.status === 'declined'">
+      Decline Reason: {{ request.lateCheckOutDetails?.declineReason }}
+    </p>
+
+    <!-- Show approveMessage if status is approved -->
+    <p *ngIf="request.lateCheckOutDetails?.status === 'approved'">
+      Approval Message: {{ request.lateCheckOutDetails?.approveMessage }}
+    </p>
+                        </div>
+                      </div>
+        
+                      <!-- Early Breakfast Request -->
+                      <div class="card mt-3" *ngIf="request.earlyBreakfastDetails">
+                        <div class="card-header">Early Breakfast Request</div>
+                        <div class="card-body">
+                          <p>
+                            Menu Items: {{ request.earlyBreakfastDetails.menuItems }}
+                          </p>
+                          <p>Time: {{ request.earlyBreakfastDetails.time }}</p>
+                          <span
+                            class="badge"
+                            [ngClass]="{
+                              'bg-warning':
+                                request.earlyBreakfastDetails?.status === 'pending' ||
+                                !request.earlyBreakfastDetails?.status,
+                              'bg-success':
+                                request.earlyBreakfastDetails?.status === 'approved',
+                              'bg-danger':
+                                request.earlyBreakfastDetails?.status === 'declined'
+                            }"
+                          >
+                            {{
+                              request.earlyBreakfastDetails?.status || "pending"
+                                | titlecase
+                            }}
+                          </span>
+                              <!-- Show declineReason if status is declined -->
+    <p *ngIf="request.earlyBreakfastDetails?.status === 'declined'">
+      Decline Reason: {{ request.earlyBreakfastDetails?.declineReason }}
+    </p>
+
+    <!-- Show approveMessage if status is approved -->
+    <p *ngIf="request.earlyBreakfastDetails?.status === 'approved'">
+      Approval Message: {{ request.earlyBreakfastDetails?.approveMessage }}
+    </p>
+                        </div>
+                      </div>
+        
+                      <!-- Amenities Request -->
+                      <div class="card mt-3" *ngIf="request.amenities">
+                        <div class="card-header">Amenities Request</div>
+                        <div class="card-body">
+                          <p>
+                            Extra Towels:
+                            {{ request.amenities.extraTowels ? "Yes" : "No" }}
+                          </p>
+                          <p>
+                            Toiletries:
+                            {{ request.amenities.toiletries ? "Yes" : "No" }}
+                          </p>
+                          <p>
+                            Coffee/Tea: {{ request.amenities.coffeeTea ? "Yes" : "No" }}
+                          </p>
+                          <span
+                            class="badge"
+                            [ngClass]="{
+                              'bg-warning':
+                                request.amenities?.status === 'pending' ||
+                                !request.amenities?.status,
+                              'bg-success': request.amenities?.status === 'approved',
+                              'bg-danger': request.amenities?.status === 'declined'
+                            }"
+                          >
+                            {{ request.amenities?.status || "pending" | titlecase }}
+                          </span>
+                              <!-- Show declineReason if status is declined -->
+    <p *ngIf="request.amenities?.status === 'declined'">
+      Decline Reason: {{ request.amenities?.declineReason }}
+    </p>
+
+    <!-- Show approveMessage if status is approved -->
+    <p *ngIf="request.amenities?.status === 'approved'">
+      Approval Message: {{ request.amenities?.approveMessage }}
+    </p>
+                        </div>
+                      </div>
+        
+                      <!-- Special Requests -->
+                      <div
+                        class="card mt-3"
+                        *ngIf="request.specialRequests?.description"
+                      >
+                        <div class="card-header">Special Requests</div>
+                        <div class="card-body">
+                          <p>Description: {{ request.specialRequests.description }}</p>
+                          <span
+                            class="badge"
+                            [ngClass]="{
+                              'bg-warning':
+                                request.specialRequests?.status === 'pending' ||
+                                !request.specialRequests?.status,
+                              'bg-success':
+                                request.specialRequests?.status === 'approved',
+                              'bg-danger':
+                                request.specialRequests?.status === 'declined'
+                            }"
+                          >
+                            {{
+                              request.specialRequests?.status || "pending" | titlecase
+                            }}
+                          </span>
+                              <!-- Show declineReason if status is declined -->
+    <p *ngIf="request.specialRequests?.status === 'declined'">
+      Decline Reason: {{ request.specialRequests?.declineReason }}
+    </p>
+
+    <!-- Show approveMessage if status is approved -->
+    <p *ngIf="request.specialRequests?.status === 'approved'">
+      Approval Message: {{ request.specialRequests?.approveMessage }}
+    </p>
+                        </div>
+                      </div>
+        
+                      <!-- Special Services Request -->
+                      <!-- Check if specialServices is present and has a valid service -->
+                      <div *ngIf="request.specialServices" class="card mt-3">
+                        <div class="card-header">Special Services Request</div>
+                        <div class="card-body">
+                          <!-- Check if the service is 'airportPickup' -->
+                          <ng-container
+                            *ngIf="
+                              request.specialServices.service === 'airportPickup';
+                              else otherService
+                            "
+                          >
+                            <p><strong>Service:</strong> Airport Pickup</p>
+                            <p>
+                              <strong>Flight Number:</strong>
+                              {{ request.airportPickupDetails?.flightNumber }}
+                            </p>
+                            <p>
+                              <strong>Arrival Time:</strong>
+                              {{ request.airportPickupDetails?.arrivalTime }}
+                            </p>
+                            <p>
+                              <strong>Special Instructions:</strong>
+                              {{ request.airportPickupDetails?.specialInstructions }}
+                            </p>
+                          </ng-container>
+                          <!-- Template for other services -->
+                          <ng-template #otherService>
+                            <p>
+                              <strong>Service:</strong>
+                              {{ request.specialServices.service | titlecase }}
+                            </p>
+                            <p>
+                              <strong>Request Details:</strong>
+                              {{ request.requestDetails }}
+                            </p>
+                          </ng-template>
+        
+                          <!-- Special Requests Status and Action Buttons -->
+                          <span
+                            class="badge"
+                            [ngClass]="{
+                              'bg-warning':
+                                request.specialServices?.status === 'pending' ||
+                                !request.specialServices?.status,
+                              'bg-success':
+                                request.specialServices?.status === 'approved',
+                              'bg-danger':
+                                request.specialServices?.status === 'declined'
+                            }"
+                          >
+                            {{
+                              request.specialServices?.status || "pending" | titlecase
+                            }}
+                          </span>
+                              <!-- Show declineReason if status is declined -->
+    <p *ngIf="request.specialServices?.status === 'declined'">
+      Decline Reason: {{ request.specialServices?.declineReason }}
+    </p>
+
+    <!-- Show approveMessage if status is approved -->
+    <p *ngIf="request.specialServices?.status === 'approved'">
+      Approval Message: {{ request.specialServices?.approveMessage }}
+    </p>
+                        </div>
+                      </div>
+                    </li>
+                  </ng-container>
+                  <ng-template #noRequests>
+                    <li class="list-group-item d-flex justify-content-center align-items-center bg-light text-secondary p-4">
+                      <div class="text-center">
+                        <i class="bi bi-exclamation-circle" style="font-size: 2rem;"></i>
+                        <p class="mb-0 mt-2">There are no Requests</p>
+                      </div>
+                    </li>
+                  </ng-template>
+                  </ul>
+                </div>
+              </div>
+                      
+                  </section>
+              </div>
+  </div>
+</div>
+
+  </div>
+
+
+  
+
+      <!-- show request list -->
+
+    
+    </div>
+  </body>
+</html>

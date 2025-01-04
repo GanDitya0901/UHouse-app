@@ -1,0 +1,170 @@
+
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+    list-style: none;
+    scroll-behavior: smooth;
+    font-family: 'Lato', sans-serif;
+}
+
+.image img {
+    height: 100%;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+
+
+p {
+    margin-top: 20px;
+    font-size: large;
+}
+
+/* Content */
+.roomDesc h3 {
+    color: #ffa500; 
+    font-weight: bold;
+}
+
+.card {
+    border: 0px;
+}
+
+.card i {
+    margin: 10px 0 0 0; 
+    color: #ffa500; 
+    font-size: 35px;
+    text-align: center;
+}
+
+.card-body p {
+    margin: 0 0 0 0; 
+    text-align: center;
+    font-size: medium;
+}
+
+/* Availability Section End */
+
+.grid{
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-gap: 20px; 
+}
+
+input{
+    outline: none;
+    border: none;
+    width: 100%;
+}
+
+#availability {
+    background-color: rgba(202, 192, 180, 0.8); /* Adjusted opacity */
+}
+.book {
+    background-color: #CAC0B4;
+    padding: 50px;
+    display: flex; /* Add flex display */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    flex-direction: column; /* Ensure content is in a column */
+}
+
+.book h1{
+    font-weight: 600;
+    font-size: 28px;
+    margin-bottom: 10px;
+}
+
+.book h1 span{
+    color: #ffa500;
+}
+.book input{
+    padding: 20px;
+
+}
+.book input:nth-last-child(1){
+    background: #ffa500;
+    color: #fff;
+}
+
+/* Availability Section End */
+
+/* Footer */ 
+#footer{
+    width: 100%;
+    margin-top: 150px;
+    text-align: center;
+    background: #f9f9f9;
+}
+#footer h1{
+    font-weight: 600;
+    padding-top: 30px;
+    text-shadow: 0px 0px 1px black;
+}
+
+#footer p{
+    margin-bottom: 10px;
+}
+
+#footer h1 span{
+    color: #ffa500;
+}
+.social-links i{
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 20px;
+    background: #ffa500;
+    color: white;
+    text-align: center;
+    margin: 5px;
+    margin-bottom: 10px;
+    transition: 0.5s ease;
+    cursor: pointer;
+}
+.social-links i:hover{
+    background: #ffa500;
+}
+/* Nav Bar */
+
+#navbar {
+    background-color: rgba(202, 192, 180, 1);
+  
+    }
+    
+    #logo {
+      font-size: 36px;
+      font-weight: 550;
+      color: black;
+      text-shadow: 0px 1px 1px black;
+      margin-bottom: 5px;
+    }
+    
+    #logo span {
+      color: #785025;
+    }
+    
+    .navbar-toggler span {
+      color: #785025;
+    }
+    
+    .navbar-nav {
+      gap: 20px;
+    }
+    
+    .nav-item .nav-link {
+      font-size: 16px;
+      font-weight: 550;
+      color: black;
+      letter-spacing: 1px;
+      border-radius: 3px;
+      transition: 0.5s ease;
+      padding: 10px 15px;
+    }
+    
+    .nav-item .nav-link:hover {
+      background: #785025;
+      color: white;
+    }

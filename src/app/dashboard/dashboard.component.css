@@ -1,0 +1,734 @@
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #fefaf6;
+  }
+.container1 {
+    flex: 1;
+    background-color: #efe9e2; /* Replace with your desired background color */
+    display: flex;
+    flex-direction: column;
+    width: 120%; 
+ 
+}
+.container2{
+ 
+    text-align: left;
+    margin-top: 50px;
+    border-radius: 8px;
+    margin-left: -60px;
+
+}
+.container{
+    width: 100%; 
+    max-width: 1500px;
+    margin: 0 auto; 
+    padding: 20px;
+    background-color: #f9f9f9; 
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1); 
+    overflow-x: auto;
+    margin-top: 50px;
+    margin-right: 60px;
+
+}
+
+.title h2 {
+    margin-bottom: 20px;
+    font-size: 40px;
+    color: #90693E;
+}
+
+
+
+
+
+.main-title {
+    border: 2px solid #90693E; /* Menambahkan border solid berukuran 2px dengan warna hitam */
+    border-radius: 8px; /* Menambahkan border-radius untuk sudut melengkung */
+    padding: 20px; /* Padding di dalam elemen */
+    margin: 20px 0; /* Margin di luar elemen */
+    position: relative; /* Untuk memastikan posisi teks tidak tumpang tindih */
+}
+.title-text {
+    background: white; /* Background putih untuk memastikan teks terlihat dengan jelas */
+    padding: 0 5px; /* Padding kiri dan kanan untuk ruang antara teks dan border */
+    position: absolute; /* Posisi absolut untuk memposisikan teks relatif terhadap .Room */
+    top: -10px; /* Mengatur posisi vertikal teks */
+    left: 20px; /* Mengatur posisi horizontal teks */
+}
+.attention p {
+    padding-bottom: 20px;
+    font-size: 14px;
+}
+
+.modal-lg-custom {
+    max-width: 80%; /* Adjust width as needed */
+    background-color: #f0f0f0;
+}
+.modal-content-custom {
+    height: auto; /* Adjust height as needed */
+}
+.form-select {
+    margin-bottom: 20px;
+}
+select.form-select {
+    background-color: #D9C4AD; /* Ganti dengan warna yang diinginkan */
+}
+input[type="file"] {
+    background-color: #D9C4AD; /* Ganti dengan warna yang diinginkan */
+    border: 1px solid #D9C4AD; /* Ganti dengan warna border yang diinginkan */
+    color: #495057; /* Ganti dengan warna teks yang diinginkan */
+    padding: .375rem .75rem; /* Atur padding sesuai kebutuhan */
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out; /* Atur transisi efek */
+}
+
+/* CSS untuk tombol plus dan minus */
+button[type="button-plusminus"] {
+    background-color: #90693E; /* Ganti dengan warna yang diinginkan */
+    border: none;
+    color: white;
+    padding: 5px 10px; /* Atur padding sesuai kebutuhan */
+    font-size: 16px; /* Atur ukuran font sesuai kebutuhan */
+    cursor: pointer;
+}
+
+.plusMinus {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 15px;
+}
+
+/* CSS untuk input angka */
+input[type="text"] {
+    width: 50px; /* Atur lebar input sesuai kebutuhan */
+    text-align: center; /* Mengatur angka berada di tengah */
+}
+
+.result {
+    border-top: 1px solid #90693E; /* Change the color and width as needed */
+    padding: 20px;
+    margin-top: 20px;
+    box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.2); /* Add shadow */
+    border-radius: 8px;
+}
+.result-text{
+    margin-top: 10px; /* Atur jarak negatif dari atas */
+    margin-bottom: 20px;
+    padding: 5px; /* Padding */
+    font-size: 32px;
+    color: #90693E;
+
+    
+
+}
+
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+    list-style: none;
+    scroll-behavior: smooth;
+    font-family: 'Lato', sans-serif;
+}
+
+
+
+
+
+/* Home Section Start */
+.home {
+    width: 100%;
+    height: 60vh;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative;
+    overflow: hidden;
+    animation: slideShow 20s infinite;
+}
+.home .content{
+    text-align: center;
+    padding-top: 200px;
+}
+.home .content h5{
+    color: white;
+    font-size: 38px;
+    font-weight: 550;
+    text-shadow: 0px 1px 1px black;
+}
+.home .content h1{
+    color: white;
+    font-size: 70px;
+    font-weight: 550;
+    text-shadow: 0px 1px 1px black;
+    margin-top: 5px;
+}
+.changecontent::after{
+    content: ' ';
+    color: #ffa500;
+    text-shadow: 0px 1px 1px black;
+    animation: changetext 20s infinite linear;
+}
+@keyframes slideShow {
+    0% { background-image: url('../../assets/Images/img1.jpg'); }
+    20% { background-image: url('../../assets/Images/img1.jpg'); }
+    25% { background-image: url('../../assets/Images/img2.jpg'); }
+    45% { background-image: url('../../assets/Images/img2.jpg'); }
+    50% { background-image: url('/assets/Images/img3.jpeg'); }
+    70% { background-image: url('/assets/Images/img3.jpeg'); }
+    75% { background-image: url('/assets/Images/img4.jpeg'); }
+    95% { background-image: url('/assets/Images/img4.jpeg'); }
+    100% { background-image: url('/assets/Images/img1.jpeg'); }
+}
+
+.home .content p{
+    color: white;
+    font-size: 15px;
+    font-weight: 600;
+    text-shadow: 0px 1px 1px black;
+    margin-bottom: 30px;
+    margin-top: 5px;
+}
+.home .content a{
+    padding: 10px;
+    background: white;
+    color: black;
+    letter-spacing: 2px;
+    font-weight: 550;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: 0.5s;
+}
+.home .content a:hover{
+    background: #ffa500;
+    color: white;
+}
+@media (max-width:850px){
+    .home{
+        background-position: 50%;
+    }
+}
+@media (max-width:450px){
+    .home .content h5{
+        font-size: 25px;
+    }
+    .home .content h1{
+        font-size: 38px;
+    }
+    .home .content p{
+        font-size: 13px;
+    }
+}
+/* Home Section End */
+
+
+/* Availability Section End */
+
+.grid{
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-gap: 20px; 
+}
+
+input{
+    outline: none;
+    border: none;
+    width: 100%;
+}
+
+#availability {
+    background-color: rgba(202, 192, 180, 0.8); /* Adjusted opacity */
+}
+.book {
+    background-color: #CAC0B4;
+    padding: 50px;
+    display: flex; /* Add flex display */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    flex-direction: column; /* Ensure content is in a column */
+}
+
+
+h1{
+    font-family: serif;
+}
+
+.book h1{
+    font-weight: 600;
+    font-size: 28px;
+    margin-bottom: 10px;
+}
+
+.book h1 span{
+    color: #ffa500;
+}
+.book input{
+    padding: 20px;
+
+}
+.book input:nth-last-child(1){
+    background: #ffa500;
+    color: #fff;
+}
+
+/* Availability Section End */
+
+/* Section Book Start */
+.book{
+    background: #f9f9f9;
+    padding: 50px;
+}
+.main-text h1{
+    text-align: center;
+    text-shadow: 0px 1px 1px black;
+    font-weight: 600;
+}
+.main-text h1 span{
+    color: #ffa500;
+}
+.book .card{
+    border-radius: 10px;
+    box-shadow: 0px 5px 5px -6px black;
+}
+.book .row{
+    margin-top: 30px;
+}
+.book form input{
+    padding: 10px;
+    color: black;
+    border: none;
+    outline: none;
+    font-size: 15px;
+    border-radius: 10px;
+    box-shadow: 0px 5px 5px -6px black;
+}
+.book form textarea{
+    border: none;
+    border-radius: 10px;
+    resize: none;
+    box-shadow: 0px 5px 5px -6px black;
+    height: 200px;
+}
+.book .submit{
+    width: 160px;
+    font-size: 16px;
+    font-weight: 550;
+    background: #ffa500;
+    color: white;
+    margin-top: 10px;
+    transition: 0.5s;
+}
+.book .submit:hover{
+    width: 170px;
+}
+@media (max-width:765px){
+    .book{
+        padding: 0;
+    }
+    .main-text h1{
+        padding: 20px;
+    }
+}
+/* Section Book End */
+
+
+
+
+
+
+/* Section Packages Start */
+.main-txt h1{
+    text-align: center;
+    margin-top: 30px;
+    font-weight: 600;
+    text-shadow: 0px 1px 1px black;
+}
+.main-txt h1 span{
+    color: #ffa500;
+}
+.packages .card{
+    height: 490px;
+    border-radius: 5px;
+    border: none;
+    box-shadow: rgba(0,0,0,0.1) 0px 4px 12px;
+}
+.packages .card img{
+    border-radius: 5px;
+}
+.packages .card .card-body{
+    background: transparent;
+}
+.packages .card .card-body h3{
+    font-size: 25px;
+    font-weight: 600;
+}
+.packages .card .card-body p{
+    font-size: 15px;
+}
+.checked{
+    color: #ffa500;
+}
+.star i{
+    font-size: 15px;
+}
+.packages .card .card-body h6{
+    font-size: 20px;
+}
+.packages .card .card-body a{
+    padding: 10px;
+    text-decoration: none;
+    background: #ffa500;
+    color: white;
+    border-radius: 5px;
+    position: absolute;
+    margin-top: 15px;
+}
+/* Section Packages End */
+
+
+
+
+/* Section Services Start */
+
+#service .card{
+    box-shadow: rgba(0,0,0,0.1) 0px 4px 12px;
+    border: none;
+}
+
+#service .card i{
+    font-size: 50px;
+    text-align: center;
+    color: #ffa500;
+    margin-top: 20px;
+}
+
+#service .card .card-body h3{
+    font-weight: 600;
+}
+
+#service .card .card-body{
+    text-align: center;
+}
+/* Section Services End */
+
+
+
+
+
+/* Section Gallery Start */
+.gallery{
+    margin-top: 50px;
+}
+.gallery .card{
+    border-radius: 10px;
+    box-shadow: rgba(0,0,0,0.1) 0px 4px 12px;
+    cursor: pointer;
+}
+.gallery .card img{
+    border-radius: 10px;
+    transition: 0.5s;
+}
+.gallery .card img:hover{
+    transform: scale(1.1);
+}
+/* Section Gallery End */
+
+
+
+
+/* About Start */
+
+#about .card{
+    border-radius: 10px;
+}
+#about .card img{
+    border-radius: 10px;
+}
+#about h2{
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+#about p{
+    font-weight: 500;
+    margin-top: 10px;
+}
+#about-btn{
+    margin-top: 10px;
+    width: 150px;
+    height: 38px;
+    border: none;
+    border-radius: 5px;
+    background: #ffa500;
+    color: white;
+    letter-spacing: 2px;
+    font-weight: 550;
+    transition: 0.5s ease;
+    cursor: pointer;
+}
+#about-btn:hover{
+    width: 170px;
+}
+@media (max-width:765px){
+    #about{
+        padding: 0;
+    }
+}
+/* About End */
+
+
+/* Footer Start */
+#footer{
+    width: 100%;
+    margin-top: 150px;
+    text-align: center;
+    background: #f9f9f9;
+}
+#footer h1{
+    font-weight: 600;
+    padding-top: 30px;
+    text-shadow: 0px 0px 1px black;
+}
+
+#footer p{
+    margin-bottom: 10px;
+}
+
+#footer h1 span{
+    color: #ffa500;
+}
+.social-links i{
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 20px;
+    background: #ffa500;
+    color: white;
+    text-align: center;
+    margin: 5px;
+    margin-bottom: 10px;
+    transition: 0.5s ease;
+    cursor: pointer;
+}
+.social-links i:hover{
+    background: #ffa500;
+}
+.nav-link .active {
+    background-color: #90693E;
+    color: white;
+    border-radius: 5px;
+}
+
+/* Footer End */
+
+/* Nav Bar */
+
+#navbar {
+    background-color: rgba(202, 192, 180, 1);
+  
+    }
+    
+    #logo {
+      font-size: 36px;
+      font-weight: 550;
+      color: black;
+      text-shadow: 0px 1px 1px black;
+      margin-bottom: 5px;
+    }
+    
+    #logo span {
+      color: #785025;
+    }
+    
+    .navbar-toggler span {
+      color: #785025;
+    }
+    
+    .navbar-nav {
+      gap: 20px;
+    }
+    
+    .nav-item .nav-link {
+      font-size: 16px;
+      font-weight: 550;
+      color: black;
+      letter-spacing: 1px;
+      border-radius: 3px;
+      transition: 0.5s ease;
+      padding: 10px 15px;
+    }
+    
+    .nav-item .nav-link:hover {
+      background: #785025;
+      color: white;
+    }
+    
+/* isi */
+.container {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+  }
+  
+  h2 {
+    color: #333;
+    margin-bottom: 15px;
+  }
+  
+  .top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .filters {
+    display: flex;
+    gap: 8px;
+    flex-wrap: nowrap;
+    align-items: center;
+  }
+  
+  .filter-input,
+  .filter-select {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    min-width: 120px;
+  }
+  
+  .filter-input-wrapper {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+  }
+  
+  .filter-input-wrapper .fa-calendar-alt {
+    position: absolute;
+    left: 10px;
+    color: #888;
+    font-size: 16px;
+    pointer-events: none;
+  }
+  
+  .filter-input-select {
+    padding-left: 30px; /* Space for the icon */
+    padding-right: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    color: #333;
+    min-width: 120px;
+    height: 36px;
+  }
+  
+  
+  
+  .actions {
+    display: flex;
+    gap: 8px;
+    margin-left: 20px;
+  }
+  
+  .action-button {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    color: #fff;
+    background-color: #6c757d;
+    transition: background-color 0.2s;
+    min-width: 120px; /* Ensures buttons have similar width to inputs */
+    height: 36px; /* Ensures buttons align in height with inputs */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .action-button:hover {
+    background-color: #5a6268;
+  }
+  
+  .action-button:hover {
+    background-color: #5a6268;
+  }
+  
+  .new-appointment {
+    background-color: #28a745;
+  }
+  
+  .new-appointment:hover {
+    background-color: #218838;
+  }
+  
+  .table-container {
+    overflow-x: auto;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  th,
+  td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #eee;
+    text-align: left;
+    font-size: 14px;
+  }
+  
+  th {
+    background-color: #f7f7f7;
+    color: #555;
+  }
+  
+  tbody tr {
+    transition: background-color 0.3s;
+  }
+  
+  tbody tr:hover {
+    background-color: #f1f1f1;
+  }
+  
+  tbody tr.approved td {
+    color: #4CAF50;
+  }
+  
+  tbody tr.pending td {
+    color: #FFC107;
+  }
+  
+  tbody tr.canceled td {
+    color: #F44336;
+  }
+  
+  .action-btn {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .action-btn.view {
+    background-color: #2196F3;
+    color: #fff;
+  }
+  
+  .action-btn.review {
+    background-color: #4CAF50;
+    color: #fff;
+    margin-left: 5px;
+  }
+  
+  .action-btn:hover {
+    opacity: 0.8;
+  }

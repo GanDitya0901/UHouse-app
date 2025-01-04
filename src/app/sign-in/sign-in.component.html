@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="sign-in.component.css">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
+</head>
+<body>
+  <!-- Navbar Component (Assuming you have a navbar component) -->
+  <app-navbar></app-navbar>
+
+  <section class="p-2 p-md-3 p-xl-5">
+    <div class="container">
+      <div class="card border-light-subtle shadow-sm">
+        <div class="row g-0">
+          <div class="col-12 col-md-6">
+            <!-- Your Image -->
+            <img class="img-fluid rounded-start w-100 h-100 object-fit-cover" loading="lazy" src="../../assets/Images/img1.jpg" alt="BootstrapBrain Logo">
+          </div>
+          <div class="col-12 col-md-6 right-column">
+            <div class="card-body p-3 p-md-4 p-xl-5" style="height: auto;">
+              <div class="row">
+                <div class="col-12">
+                  <h3 *ngIf="!isResetPasswordMode">Sign In to UHouse</h3>
+                  <h3 *ngIf="isResetPasswordMode">Reset Password</h3>
+                </div>
+              </div>
+
+              <!-- Sign In Form -->
+              <form (ngSubmit)="onSubmit()" [formGroup]="signinForm" *ngIf="!isResetPasswordMode">
+                <div class="row gy-3 gy-md-4">
+                  <div class="col-12">
+                    <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
+                    <div class="input-group">
+                      <span class="input-group-text">
+                        <i class="fas fa-envelope"></i>
+                      </span>
+                      <input type="email" class="form-control" formControlName="email" id="email" placeholder="Email">
+                    </div>
+                    <div class="text-danger" *ngIf="f['email'].touched && f['email'].invalid">{{ getError(f['email']) }}</div>
+                  </div>
+                  <div class="col-12">
+                    <label for="password" class="form-label">Password <span class="text-danger">*</span></label>
+                    <div class="input-group">
+                      <span class="input-group-text">
+                        <i class="fas fa-lock"></i>
+                      </span>
+                      <input type="password" class="form-control" formControlName="password" id="password" placeholder="Password">
+                    </div>
+                    <div class="text-danger" *ngIf="f['password'].touched && f['password'].invalid">{{ getError(f['password']) }}</div>
+                  </div>
+                  <div class="col-12">
+                    <div class="text-danger" *ngIf="generalError">{{ generalError }}</div>
+                  </div>
+                  <div class="col-12" *ngIf="successMessage" class="success-message text-success text-center">
+                    <p>{{ successMessage }}</p>
+                  </div>
+                  <div class="form-link">
+                    <a href="javascript:void(0);" class="forgot-pass" style="color: #785025; text-decoration: none;" (click)="openForgotPasswordModal()">Forgot password?</a>
+                  </div>
+                  <div class="col-12">
+                    <div class="d-grid">
+                      <button id="custom-signin-btn" class="btn btn-primary" type="submit" [disabled]="signinForm.invalid">Sign In</button>
+                    </div>
+                  </div>
+                  <div class="form-link text-center mt-3">
+                    <span>Don't have an account? <a href="signUp" class="link login-link" style="color: #785025; text-decoration: none;">Sign Up</a></span>
+                  </div>
+                  <div class="separator">or</div>
+                  <div class="media-options">
+                    <a href="#" class="field google">
+                      <img src="../../assets/Images/google.png" alt="" class="google-img">
+                      <span>Sign In with Google</span>
+                    </a>
+                  </div>
+                </div>
+              </form>
+
+              <!-- Reset Password Form -->
+              <form (ngSubmit)="onResetPassword()" [formGroup]="resetPasswordForm" *ngIf="isResetPasswordMode">
+                <div class="row gy-3 gy-md-4">
+                  <div class="col-12">
+                    <label for="password" class="form-label">New Password <span class="text-danger">*</span></label>
+                    <div class="input-group">
+                      <span class="input-group-text">
+                        <i class="fas fa-lock"></i>
+                      </span>
+                      <input type="password" class="form-control" formControlName="password" id="password" placeholder="New Password">
+                    </div>
+                    <div class="text-danger" *ngIf="resetPasswordForm.get('password')?.touched && resetPasswordForm.get('password')?.invalid">
+                      {{ getError(resetPasswordForm.get('password')!) }}
+                    </div>
+                  </div>
+                  <div class="col-12">
+                    <label for="confirmPassword" class="form-label">Confirm New Password <span class="text-danger">*</span></label>
+                    <div class="input-group">
+                      <span class="input-group-text">
+                        <i class="fas fa-lock"></i>
+                      </span>
+                      <input type="password" class="form-control" formControlName="confirmPassword" id="confirmPassword" placeholder="Confirm New Password">
+                    </div>
+                    <div class="text-danger" *ngIf="resetPasswordForm.hasError('mismatch') && resetPasswordForm.get('confirmPassword')!.touched">Passwords must match.</div>
+                  </div>
+                  <div class="col-12">
+                    <div class="text-danger" *ngIf="generalError">{{ generalError }}</div>
+                  </div>
+                  <div class="col-12" *ngIf="successMessage" class="success-message text-success text-center">
+                    <p>{{ successMessage }}</p>
+                  </div>
+                  <div class="col-12">
+                    <div class="d-grid">
+                      <button id="custom-reset-btn" class="btn btn-primary" type="submit" [disabled]="resetPasswordForm.invalid">Reset Password</button>
+                    </div>
+                  </div>
+                </div>
+              </form>
+
+              <div class="row">
+                <div class="col-12">
+                  <hr class="mt-5 mb-4 border-secondary-subtle">
+                  <div class="d-flex gap-2 gap-md-4 flex-column flex-md-row justify-content-md-end">
+                  </div>
+                </div>
+              </div>
+              
+             <!-- Forgot Password Modal -->
+<div
+#forgotPasswordModal
+class="modal fade"
+tabindex="-1"
+aria-labelledby="forgotPasswordModalLabel"
+aria-hidden="true"
+>
+<div class="modal-dialog modal-dialog-centered"> <!-- Add 'modal-dialog-centered' for vertical centering -->
+  <div class="modal-content custom-modal"> <!-- Add a custom class for additional styling -->
+    <div class="modal-header">
+      <h5 class="modal-title" id="forgotPasswordModalLabel">Forgot Password</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+    <div class="modal-body">
+      <form (ngSubmit)="onForgotPasswordSubmit()">
+        <div class="mb-3">
+          <label for="forgotPasswordEmail" class="form-label">Email address</label>
+          <input
+            type="email"
+            class="form-control"
+            id="forgotPasswordEmail"
+            [(ngModel)]="forgotPasswordEmail"
+            name="forgotPasswordEmail"
+            required
+          />
+        </div>
+        <button type="submit" class="btn btn-primary w-100">Send Reset Link</button>
+      </form>
+      <div class="text-success mt-2" *ngIf="forgotPasswordMessage">
+        {{ forgotPasswordMessage }}
+      </div>
+      <div class="text-danger mt-2" *ngIf="forgotPasswordError">
+        {{ forgotPasswordError }}
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Bootstrap JS -->
+  <script src="https://unpkg.com/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

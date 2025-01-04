@@ -1,0 +1,142 @@
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Travel Website Admin</title>
+    
+            <!-- Bootstrap Link -->
+            <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+            crossorigin="anonymous"
+          />
+          <!-- Bootstrap Link -->
+
+              <!-- Bootstrap CSS -->
+            <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+             <!-- Google Fonts -->
+            <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+      
+          <!-- Font Awesome Cdn -->
+          <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+          />
+          <!-- Font Awesome Cdn -->
+      
+          <!-- Google Fonts -->
+          <link rel="preconnect" href="https://fonts.googleapis.com" />
+          <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+          <link
+            href="https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap"
+            rel="stylesheet"
+          />
+          <!-- Google Fonts -->
+
+    </head>
+
+    <body>
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+        <app-navbar-admin></app-navbar-admin>
+        <div class="container1">
+            <div class="row ">
+                <div class="col-md-2">
+                <app-sidebar-admin></app-sidebar-admin>
+            </div>
+            <div class="col-md-10">
+                <div class="container">
+                    <div class="row-result">
+                        <div class="col-12">
+                            <div class="result-header">
+                                <div class="row">
+                                    <div class="col text-center">
+                                        <p class="header-text"><i class="material-icons">hotel</i> Facility and Service</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="result-body flex-container">
+                                <div class="col-md-6">
+                                    <div class="card">
+                                      <div class="card-body">
+                                        <h5 class="card-title">Facilities</h5>
+                                        <div class="facility-list">
+                                          <p style="font-size: 1rem;">Rooms include these facilities:</p>
+                                          <hr style="margin-top: 26px;">
+                                          <form [formGroup]="facilitiesForm">
+                                            <div class="form-check">
+                                              <input class="form-check-input" type="checkbox" formControlName="parking">
+                                              <label class="form-check-label"><i class="material-icons">local_parking</i> Parking</label>
+                                            </div>
+                                            <div class="form-check">
+                                              <input class="form-check-input" type="checkbox" formControlName="swimmingPool">
+                                              <label class="form-check-label"><i class="material-icons">pool</i> Swimming Pool</label>
+                                            </div>
+                                            <div class="form-check">
+                                              <input class="form-check-input" type="checkbox" formControlName="airConditioner">
+                                              <label class="form-check-label"><i class="material-icons">ac_unit</i> Air Conditioner</label>
+                                            </div>
+                                            <div class="form-check">
+                                              <input class="form-check-input" type="checkbox" formControlName="balcony">
+                                              <label class="form-check-label"><i class="material-icons">deck</i> Balcony</label>
+                                            </div>
+                                            <div class="form-check">
+                                              <input class="form-check-input" type="checkbox" formControlName="towel">
+                                              <label class="form-check-label"><i class="material-icons">inventory_2</i> Towel</label>
+                                            </div>
+                                            <div class="form-check">
+                                              <input class="form-check-input" type="checkbox" formControlName="bathAmenities">
+                                              <label class="form-check-label"><i class="material-icons">bathtub</i> Bath Amenities</label>
+                                            </div>
+                                            <div class="form-check">
+                                              <input class="form-check-input" type="checkbox" formControlName="sunBed">
+                                              <label class="form-check-label"><i class="material-icons">local_hotel</i> Sun Bed</label>
+                                            </div>
+                                            <div class="form-check">
+                                              <input class="form-check-input" type="checkbox" formControlName="outdoorShower">
+                                              <label class="form-check-label"><i class="material-icons">shower</i> Outdoor Shower</label>
+                                            </div>
+                                          </form>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="col-md-6">
+                                    <div class="card">
+                                      <div class="card-body">
+                                        <h5 class="card-title">Room Types</h5>
+                                        <form [formGroup]="facilitiesForm" (ngSubmit)="addFacility()">
+                                          <div class="form-group">
+                                            <label for="roomType">Room Type</label>
+                                            <select class="form-control" formControlName="roomType" id="roomType">
+                                              <option value="Standard">Standard</option>
+                                              <option value="Queen">Queen</option>
+                                              <option value="Family">Family</option>
+                                            </select>
+                                          </div>
+                                          <button type="submit" class="btn btn-primary mt-3">Save changes</button>
+                                        </form>
+                                      </div>
+                                    </div>
+                                  </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+          </div>
+        </div>
+
+        
+    </body>
+</html>
+
+
+
+

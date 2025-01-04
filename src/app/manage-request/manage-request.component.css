@@ -1,0 +1,138 @@
+.container {
+    max-width: 900px;
+    margin-top: 20px;
+    
+  }
+  
+  
+  .request-list-item {
+    padding: 15px;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .request-list-item:last-child {
+    border-bottom: none;
+  }
+  
+  .request-actions i {
+    margin-right: 10px;
+    cursor: pointer;
+  }
+  
+  .status-badge {
+    font-size: 0.9em;
+  }
+  
+  .decline-reason {
+    display: block;
+    margin-top: 10px;
+  }
+
+  .btn-outline-success:hover {
+    color: white;
+    background-color: #28a745;
+    border-color: #28a745;
+}
+
+.btn-outline-danger:hover {
+    color: white;
+    background-color: #dc3545;
+    border-color: #dc3545;
+}
+
+
+
+
+/* Sidebar Container */
+.sidebar {
+  background-color: #EFE9E2 !important; /* Light background */
+  color: #000000; /* Dark text for readability */
+  width: 250px; /* Wider sidebar */
+  height: 100vh;
+  border-right: 1px solid #B88917; /* Accent border */
+  position: fixed;
+  transition: all 0.3s ease; /* Smooth transition */
+}
+/* Sidebar Title */
+.sidebar-title {
+  font-size: 1.6rem;
+  color: #B88917; /* Darkgoldenrod */
+  font-weight: bold;
+  text-align: center;
+  width: 100%;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #B88917;
+  padding-bottom: 10px;
+}
+
+/* Back Button */
+.btn-back {
+  background-color: transparent;
+  color: #B88917;
+  border: 2px solid #B88917;
+  font-weight: bold;
+  border-radius: 5px;
+  width: 100%;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.btn-back:hover {
+  background-color: #B88917;
+  color: #FFFFFF;
+}
+
+/* Navigation Title Styling */
+h4 {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+/* Back Button Styling */
+.btn-outline-light {
+  color: #ffffff;
+  border-color: #6c757d;
+  transition: all 0.3s;
+}
+
+.btn-outline-light:hover {
+  color: #343a40;
+  background-color: #ffffff;
+  border-color: #ffffff;
+  font-weight: bold;
+}
+
+/* Nav Links */
+.nav-link {
+  color: #000000;
+  font-size: 1.1rem;
+  padding: 10px 15px;
+  border-radius: 5px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  font-weight: 500;
+  margin-bottom: 5px;
+}
+
+.nav-link:hover {
+  background-color: #B88917;
+  color: #FFFFFF;
+}
+.nav-link.active {
+  background-color: #B88917;
+  color: #FFFFFF;
+  font-weight: bold;
+}
+
+
+nav {
+  position: fixed;
+}
+
+/* Sidebar Responsiveness */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 100%;
+    height: auto;
+    border-right: none;
+    border-bottom: 1px solid #B88917;
+  }
+}

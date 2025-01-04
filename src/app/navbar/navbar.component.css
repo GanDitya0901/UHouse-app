@@ -1,0 +1,41 @@
+#navbar {
+  background-color: rgba(202, 192, 180, 1);
+
+  }
+  
+  #logo {
+    font-size: 36px;
+    font-weight: 550;
+    color: black;
+    text-shadow: 0px 1px 1px black;
+    margin-bottom: 5px;
+  }
+  
+  #logo span {
+    color: #785025;
+  }
+  
+  .navbar-toggler span {
+    color: #785025;
+  }
+  
+  .navbar-nav {
+    gap: 20px;
+  }
+  
+  .nav-item .nav-link {
+    font-size: 16px;
+    font-weight: 550;
+    color: black;
+    letter-spacing: 1px;
+    border-radius: 3px;
+    transition: 0.5s ease;
+    padding: 10px 15px;
+  }
+  
+  .nav-item .nav-link:hover {
+    background: #785025;
+    color: white;
+  }
+  
+  

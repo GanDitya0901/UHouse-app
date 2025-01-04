@@ -1,0 +1,512 @@
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 20px;
+  background-color: #f4f4f4;
+}
+
+.container1 {
+  flex: 1;
+  background-color: #efe9e2; /* Replace with your desired background color */
+  display: flex;
+  flex-direction: column;
+  margin-top: 50px;
+}
+.calendar-container {
+  width: 100%; 
+  max-width: 1250px;
+  margin: 0 auto; 
+  padding: 20px;
+  background-color: #f9f9f9; 
+  border-radius: 8px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1); 
+  margin-left: 0px;
+  margin-right: 10px;
+  margin-top: 30px;
+  
+
+}
+
+/* baru ditambahkan */
+.filters {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+
+.date-input, .room-filter {
+  padding: 8px 12px; /* Memberikan padding yang konsisten */
+  border: 1px solid #ccc;
+  border-radius: 15px;
+  font-size: 14px;
+  width: 220px; /* Ukuran tetap agar input dan select memiliki lebar yang sama */
+  box-sizing: border-box; /* Pastikan padding tidak mempengaruhi lebar total */
+}
+
+.date-range-container label {
+  margin-right: 5px;
+  font-weight: bold;
+}
+
+.date-range-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+
+.room-filter {
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 15px;
+  font-size: 14px;
+  width: 220px;
+  /* margin-left: 89px;  */
+  box-sizing: border-box;
+}
+
+.room-type-container {
+  gap: 10px;
+  display: flex;
+  flex-direction: column;
+  font-weight: bold;
+}
+/* .room-filter {
+  padding: 1px;
+  border: 1px solid #ccc;
+  border-radius: 15px;
+  font-size: 14px;
+}
+.filters select {
+  margin-bottom: 15px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 15px;
+} */
+/* end baru ditambahkan */
+
+
+
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.date-range {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+#dateInput {
+  padding: 5px 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+#restrictionsToggle {
+  margin-left: 5px;
+}
+
+
+.settings button {
+  margin-left: 10px;
+  padding: 10px 15px;
+  border: none;
+  background-color: #007bff;
+  color: #fff;
+  border-radius: 5px;
+}
+
+
+
+/* Table styles */
+.booking-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: center;
+}
+/* Header styling */
+.booking-table thead tr {
+  background-color: #f4f4f4;
+}
+/* Memastikan kolom non-tanggal memiliki lebar minimum */
+.booking-table th:first-child,
+.booking-table td:first-child {
+  min-width: 180px; /* Lebar lebih besar untuk kolom 'sell' */
+  font-weight: bold;
+  text-align: left;
+}
+
+.booking-table td input[type="number"] {
+  width: 100%; /* Memastikan input memenuhi kolom */
+  padding: 8px;
+  box-sizing: border-box;
+}
+
+.booking-table th, .booking-table td {
+  border: 1px solid #ddd;
+  text-align: center;
+  padding: 12px 15px; 
+  min-width: 100px; 
+}
+
+.booking-table th {
+  padding: 10px;
+  border: 1px solid #ddd;
+  font-weight: bold;
+  background-color: #fafafa;
+  min-width: 80px; /* Adjust width as necessary */
+}
+
+/* Styling for the day of the week and date in the header */
+.booking-table th {
+  background-color: #ececec;
+  font-size: 14px;
+  font-weight: normal;
+}
+/* Table rows */
+.booking-table tbody td {
+  padding: 10px;
+  border: 1px solid #ddd;
+  font-size: 14px;
+}
+
+
+
+/* Add responsiveness */
+@media (max-width: 768px) {
+  .booking-table th:first-child,
+  .booking-table td:first-child {
+    min-width: 120px; /* Sesuaikan untuk layar kecil */
+  }
+  .booking-table th,
+  .booking-table td {
+    padding: 10px;
+  }
+}
+/* Menjaga agar sel tanggal tetap lebih kecil */
+.booking-table th:nth-child(n+2),
+.booking-table td:nth-child(n+2) {
+  min-width: 80px; /* Lebar tetap untuk tanggal */
+}
+/* Week styling - ensures that we properly separate each week with a clear visual distinction */
+.booking-table thead tr:nth-child(1) {
+  background-color: #e2e2e2;
+  font-weight: bold;
+}
+
+.booking-table thead tr:nth-child(2) {
+  background-color: #f9f9f9;
+  font-weight: normal;
+}
+
+
+.sold-out {
+  background-color: #ffcccc;
+  color: rgb(219, 41, 41);
+}
+
+.bookable {
+  background-color: #ccffcc;
+  color: green;
+}
+
+
+.closed {
+  background-color: #ffcccc; /* Light red to indicate a 'closed' status */
+  color: #990000; /* Dark red text for contrast */
+  text-align: center;
+  font-weight: bold;
+}
+
+
+.scrollable-row {
+  display: flex;
+  flex-direction: column; /* Stack items vertically */
+  overflow-x: visible; /* Avoid horizontal scrolling */
+  overflow-y: auto; /* Optional: Add vertical scrolling if needed */
+}
+
+
+/* Scrollable area for the table */
+.scroll-bar {
+  max-height: 300px; /* Adjust this to control visible area height */
+  overflow-x: auto;
+  overflow-y: auto;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 5px;
+}
+
+.scroll-area {
+  flex-grow: 1;
+  overflow-x: auto;
+  margin: 0 10px;
+}
+
+.scroll-left, .scroll-right {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+
+.bulk-edit-btn {
+  margin-top: 20px;
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+}
+
+.bulk-edit-modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  justify-content: center;
+  align-items: center;
+}
+
+.bulk-edit-modal .modal-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  width: 400px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.bulk-edit-modal form label {
+  display: block;
+  margin: 10px 0 5px;
+}
+
+.bulk-edit-modal form input, .bulk-edit-modal form button {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.close-modal {
+  background-color: #dc3545;
+  color: #fff;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.table-container {
+  overflow-x: auto; /* Enable horizontal scrolling */
+  max-width: 100%; /* Prevent table from exceeding its container's width */
+  display: block; /* Ensure the table behaves like a block element for scrolling */
+}
+
+
+.booking-table th,
+.booking-table td {
+  padding: 8px;
+  text-align: left;
+  border: 1px solid #ddd; /* Optional: add borders */
+}
+
+.booking-table thead th {
+  position: sticky;
+  top: 0;
+  background: #f9f9f9; /* Sticky header background */
+  z-index: 1; /* Ensure header stays above content */
+}
+
+/* Responsive Styles */
+@media (max-width: 1024px) {
+  .calendar-container {
+    padding: 15px;
+  }
+
+  .filters {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .date-input,
+  .room-filter {
+    width: 100%;
+  }
+}
+
+
+@media (max-width: 1124px) {
+  .calendar-container {
+    width: 80%; 
+    max-width: 1224px;
+    margin: 0 auto; 
+    padding: 20px;
+    background-color: #f9f9f9; 
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1); 
+    margin-left: 5px;
+    margin-right: 10px;
+    margin-top: 55px;
+    
+  
+  }
+
+  .container1 {
+    flex: 1;
+    background-color: #efe9e2; /* Replace with your desired background color */
+    display: flex;
+    flex-direction: column;
+    margin-top: 50px;
+    margin: 20px;
+  }
+}
+
+
+@media (max-width: 768px) {
+  .booking-table th:first-child,
+  .booking-table td:first-child {
+    min-width: 120px;
+  }
+
+  .booking-table th,
+  .booking-table td {
+    font-size: 12px;
+    padding: 10px;
+  }
+}
+
+@media (max-width: 576px) {
+  .calendar-container {
+    padding: 10px;
+  }
+}
+
+@media (max-width: 768px) {
+  .calendar-container {
+    width: 75%; 
+    max-width: 1250px;
+    margin: 0 auto; 
+    padding: 20px;
+    background-color: #f9f9f9; 
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1); 
+    margin-left: 55px;
+    margin-right: 0px;
+    margin-top: 45px;
+    
+  
+  }
+
+  .container1 {
+    flex: 1;
+    background-color: #efe9e2; /* Replace with your desired background color */
+    display: flex;
+    flex-direction: column;
+    margin-top: 50px;
+    margin: 20px;
+  }
+}
+
+@media (max-width: 415px) {
+  .calendar-container {
+    width: 90%; 
+    max-width: 1250px;
+    margin: 0 auto; 
+    padding: 20px;
+    background-color: #f9f9f9; 
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1); 
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-top: 45px;
+    
+  
+  }
+
+  .container1 {
+    flex: 1;
+    background-color: #efe9e2; /* Replace with your desired background color */
+    display: flex;
+    flex-direction: column;
+    margin-top: 50px;
+    margin: 20px;
+  }
+  .date-range-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+
+  .room-filter {
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 15px;
+    font-size: 14px;
+    width: 110px;
+    box-sizing: border-box;
+  }
+  
+  .room-type-container {
+    gap: 10px;
+    display: flex;
+    flex-direction: column;
+    font-weight: bold;
+  }
+
+  .date-input, .room-filter {
+    padding: 8px 12px; /* Memberikan padding yang konsisten */
+    border: 1px solid #ccc;
+    border-radius: 15px;
+    font-size: 14px;
+    width: 110px; /* Ukuran tetap agar input dan select memiliki lebar yang sama */
+    box-sizing: border-box; /* Pastikan padding tidak mempengaruhi lebar total */
+  }
+  
+}
+
+
+
+@media (max-aspect-ratio: 4/3), (max-width: 768px) {
+  .date-range-container {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+  }
+
+  .room-type-container {
+   flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+  }
+
+  .room-filter {
+    flex-direction: column;
+    align-items: flex-start;
+    
+  }
+  .room-type-container {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+  }
+  
+.date-input, .room-filter {
+  flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+}
+  
+}

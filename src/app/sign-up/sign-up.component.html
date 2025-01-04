@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://unpkg.com/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/bs-brain@2.0.4/components/logins/login-4/assets/css/login-4.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
+  <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
+
+  <title>Sign Up</title>
+</head>
+
+<body>
+  <app-navbar></app-navbar>
+  <section class="p-2 p-md-3 p-xl-4">
+    <div class="container">
+      <div class="card border-light-subtle shadow-sm">
+        <div class="row g-0">
+          <div class="col-12 col-md-6">
+            <img class="img-fluid rounded-start w-100 h-100 object-fit-cover" loading="lazy" src="../../assets/Images/img1.jpg" alt="BootstrapBrain Logo">
+          </div>
+          <div class="col-12 col-md-6 right-column">
+            <div class="card-body p-3 p-md-4 p-xl-5">
+              <div class="row">
+                <div class="col-12">
+                  <h6 style="color: #cac0b4;">Start for free</h6>
+                  <h3>Sign Up to UHouse</h3>
+                </div>
+              </div>
+              <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+                <div class="row gy-3 gy-md-4 overflow-hidden">
+                  <div class="col-12">
+                    <label for="username" class="form-label">Username <span class="text-danger">*</span></label>
+                    <div class="input-group">
+                      <span class="input-group-text"><i class="fas fa-user"></i></span>
+                      <input type="text" class="form-control" id="username" placeholder="Username" formControlName="username">
+                    </div>
+                    <div *ngIf="f.username.touched && f.username.invalid" class="text-danger">
+                      {{ getError(f.username) }}
+                    </div>
+                  </div>
+                  <div class="col-12">
+                    <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
+                    <div class="input-group">
+                      <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                      <input type="email" class="form-control" id="email" placeholder="Email" formControlName="email">
+                    </div>
+                    <div *ngIf="f.email.touched && f.email.invalid" class="text-danger d-flex align-items-center">
+                      <i class="fas fa-exclamation-circle me-2"></i> {{ getError(f.email) }}
+                    </div>
+                  </div>
+                  <div class="col-12">
+                    <label for="phone" class="form-label">Phone <span class="text-danger">*</span></label>
+                    <div class="input-group">
+                      <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                      <input type="text" class="form-control" id="phone" placeholder="Phone" formControlName="phone">
+                    </div>
+                    <div *ngIf="f.phone.touched && f.phone.invalid" class="text-danger">
+                      {{ getError(f.phone) }}
+                    </div>
+                  </div>
+                  <div class="col-12">
+                    <label for="password" class="form-label">Password <span class="text-danger">*</span></label>
+                    <div class="input-group">
+                      <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                      <input [type]="passwordFieldType" class="form-control" id="password" placeholder="Password" formControlName="password">
+                      <span class="input-group-text" (click)="togglePasswordVisibility()">
+                        <i *ngIf="passwordFieldType === 'password'" class="fas fa-eye"></i>
+                        <i *ngIf="passwordFieldType === 'text'" class="fas fa-eye-slash"></i>
+                      </span>
+                    </div>
+                    <div class="mt-2">
+                      <span *ngIf="f.password.value?.length >= 6" class="text-success">
+                        <i class="fas fa-check-circle"></i> Password length is sufficient
+                      </span>
+                    </div>
+                    <div *ngIf="f.password.touched && f.password.invalid" class="text-danger mt-2">
+                      {{ getError(f.password) }}
+                    </div>
+                  </div>
+                  <div class="col-12">
+                    <div class="form-check">
+                      <input type="checkbox" class="form-check-input" id="terms" formControlName="terms">
+                      <label class="form-check-label" for="terms">
+                        I agree to the <a routerLink="/terms-and-conditions" target="_blank" style="color: #785025;">terms and conditions</a> <span class="text-danger">*</span>
+                      </label>
+                    </div>
+                    <div *ngIf="f.terms.touched && f.terms.invalid" class="text-danger">
+                      {{ getError(f.terms) }}
+                    </div>
+                  </div>
+                  <div class="col-12" *ngIf="successMessage" class="success-message text-success text-center">
+                    <p>{{ successMessage }}</p>
+                  </div>
+                  <div class="col-12" *ngIf="errorMessage" class="text-danger text-center">
+                    <p>{{ errorMessage }}</p>
+                  </div>
+                  
+                  <div class="col-12 d-grid ">
+                    <button id="custom-signin-btn" class="btn btn-primary" type="submit" [disabled]="signupForm.invalid">Sign Up</button>
+                  </div>
+                  <div class="form-link text-center mt-3">
+                    <span>Already have an account? <a href="signIn" class="link login-link" style="color: #785025;">Sign In</a></span>
+                  </div>
+                  <div class="separator">or</div>
+                  <div class="media-options" >
+                    <a href="#" class="field google">
+                      <img src="../../assets/Images/google.png" alt="" class="google-img">
+                      <span >Sign Up with Google</span>
+                    </a>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <script src="js/script.js"></script>
+
+</body>
+
+</html>

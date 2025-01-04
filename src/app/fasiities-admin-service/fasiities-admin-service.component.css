@@ -1,0 +1,147 @@
+.container1 {
+    flex: 1;
+    background-color: #efe9e2; /* Replace with your desired background color */
+    display: flex;
+    flex-direction: column;
+    margin-top: 50px;
+}
+.row-result{
+    margin-top: 30px;
+}
+.title h2 {
+    margin: 40px 0;
+    font-size: 2.5rem;
+}
+.result-header {
+    margin-bottom: 20px;
+    padding: 20px;
+    background-color: #b5732c;
+    color: white;
+    border-radius: 5px;
+}
+.header-text {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: bold;
+}
+.card {
+    margin-bottom: 20px;
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+.card-body {
+    padding: 30px;
+}
+.card-title {
+    margin-bottom: 20px;
+    font-size: 1.75rem;
+    font-weight: bold;
+    color: #b5732c;
+}
+.facility-list p {
+    display: flex;
+    align-items: center;
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+}
+.material-icons {
+    margin-right: 10px;
+}
+.form-check {
+    display: inline-block;
+    margin-right: 8px;
+    margin-bottom: 10px;
+}
+.checkbox-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 5.5px;
+}
+.checkbox-grid .form-check p {
+    margin-bottom: 0;
+}
+.flex-container {
+    display: flex;
+    gap: 20px;
+}
+.flex-item {
+    flex: 1;
+}
+.result-body {
+    padding: 20px;
+    border-radius: 10px;
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+.form-check-input {
+    transform: scale(1.5);
+}
+.container{
+    margin-bottom: 50px;
+    margin-top: 20px;
+}
+
+  
+  .card {
+    margin-bottom: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+  }
+  
+  .card-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+  
+  .facility-list {
+    margin-top: 15px;
+  }
+  
+  .form-check {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+  }
+  
+  .form-check-input {
+    margin-right: 10px;
+  }
+  
+  .form-check-label {
+    display: flex;
+    align-items: center;
+    font-size: 1rem;
+  }
+  
+  .form-check-label i {
+    margin-right: 10px;
+    font-size: 1.5rem;
+  }
+  
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  select.form-control {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ced4da;
+    font-size: 1rem;
+  }
+  
+  button {
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+    border-radius: 5px;
+  }
+  
+
+@media (max-width: 768px) {
+    .flex-item {
+        flex: 0 0 100%; /* Full width on smaller screens */
+        max-width: 100%; /* Full width on smaller screens */
+    }
+}

@@ -1,0 +1,357 @@
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Travel Website</title>
+    
+        <link rel="stylesheet" href="dashboard-guest.component.css" />
+    
+        <!-- Bootstrap Link -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        <!-- Bootstrap Link -->
+    
+    
+        <!-- Font Awesome Cdn -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
+        <!-- Font Awesome Cdn -->
+    
+    
+        <!-- Google Fonts -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap" rel="stylesheet">
+        <!-- Google Fonts -->
+    </head>
+
+  <body>
+
+
+<!--NavBar-->
+<nav class="navbar navbar-expand-lg" id="navbar">
+  <div class="container">
+      <script src="https://unpkg.com/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+      <!-- Left-aligned Logo -->
+      <a class="navbar-brand justify-content-left" href="landing-page" id="logo">
+          <img src="../../assets/Images/logoFix.png" alt="" width="90px">
+          <span>U </span>House
+      </a>
+
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
+          <span><i class="fa-solid fa-bars"></i></span>    
+      </button>
+
+      <!-- Center-aligned Navbar Links -->
+      <div class="collapse navbar-collapse justify-content-center" id="mynavbar">
+          <ul class="navbar-nav">
+              <li class="nav-item">
+                  <a class="nav-link active" href="/dashboardGuest">Home</a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" (click)="scrollToRoom()">Rooms</a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" (click)="scrollToService()">Services</a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" href="/additionalRequest">Request</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/reservation">Reservation</a>
+
+                  <!-- <a class="nav-link" (click)="scrollToAbout()">About</a> -->
+              </li>
+              <!-- <li class="nav-item">
+                <a class="nav-link" href="/reservation">Reservation</a>
+              </li> -->
+              
+              <li class="nav-item">
+                <a class="nav-link" (click)="scrollToAbout()">About</a>
+            </li>
+          </ul>
+      </div>
+
+      <!-- Right-aligned Profile Icon Dropdown -->
+      <div class="navbar-nav ms-auto justify-content-right">
+          <div class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+<!-- Circle Icon for Profile -->
+<div class="profile-icon rounded-circle d-flex justify-content-center align-items-center">
+  <ng-container *ngIf="user?.profilePhoto; else defaultIcon">
+    <img [src]="'http://localhost:3000/' + user.profilePhoto" 
+         alt="Profile Photo" 
+         style="width: 35px; height: 35px; object-fit: cover; border-radius: 50%;" />
+  </ng-container>
+  
+  <ng-template #defaultIcon>
+    <i class="fa-solid fa-user"></i>
+  </ng-template>
+</div>
+
+              </a>
+              <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
+                  <li><a class="dropdown-item" href="/manage-profile">Manage Profile</a></li>
+                  <li><a class="dropdown-item" href="/reserveHistory">Reservation History</a></li>
+                  <li><a class="dropdown-item" href="javascript:void(0)" (click)="logout()">Logout</a></li>
+              </ul>
+          </div>
+      </div>
+  </div>
+</nav>
+
+
+
+    <!-- Home Section Start -->
+    <div class="home">
+      <div class="content">
+        <h1>Welcome To UHouse {{ username }}</h1>
+        <h1><span class="changecontent"></span></h1>
+        <p>
+
+        </p>
+
+      </div>
+    </div>
+    <!-- Home Section End -->
+
+<!--availability section start-->
+<section class="book" id="availability">
+  <div class="container flex_space">
+    <div class="text">
+      <h1><span>Book </span> Your Rooms</h1>
+    </div>
+    <div class="form">
+      <form class="grid">
+        <input
+          type="text"
+          id="arrival"
+          placeholder="Arrival Date"
+          onfocus="(this.type='date')"
+          onblur="(this.type='text')"
+        />
+        <input
+          type="text"
+          id="departure"
+          placeholder="Departure Date"
+          onfocus="(this.type='date')"
+          onblur="(this.type='text')"
+        />
+        <input type="number" placeholder="Adults" />
+        <input type="number" placeholder="Children" />
+        <input type="submit" value="CHECK AVAILABILITY" />
+      </form>
+    </div>
+  </div>
+</section>
+<!--availability section end-->
+
+    <!-- Section Room Start -->
+    <section class="packages" id="packages" #room>
+        <div class="container centered-container">
+          <div class="main-txt">
+            <h1><span>R</span>ooms</h1>
+          </div>
+      
+        <div class="row centered-row" style="margin-top: 30px">
+          <div class="col-md-4 py-3 py-md-0" *ngFor="let room of rooms">
+            <div class="card" style="width: 100%;">
+              <img [src]="room.roomImgUrl" alt="Room Image"/>
+              <div class="card-body">
+                <h3>{{ room.roomType }}</h3>
+                <p>
+                  {{ room.roomDesc }}
+                </p>
+                <div class="star">
+                  <i class="fa-solid fa-star checked"></i>
+                  <i class="fa-solid fa-star checked"></i>
+                  <i class="fa-solid fa-star checked"></i>
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star"></i>
+                </div>
+                <a href="javascript:void(0)" (click)="viewRoom(room)" style="margin-top: 50px;">View</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Section Room End -->
+
+    <!-- Section Service Start -->
+    <section id="service" #service>
+      <div class="container">
+        <div class="main-txt">
+          <h1><span>S</span>ervices</h1>
+        </div>
+
+        <div class="row" style="margin-top: 30px">
+          <div class="col-md-4 py-3 py-md-0">
+            <div class="card">
+              <i class="fas fa-hotel"></i>
+              <div class="card-body">
+                <h3>Affordable Hotel</h3>
+                <p>
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4 py-3 py-md-0">
+            <div class="card">
+              <i class="fas fa-utensils" style="margin: 10px; color: #ffa500;"></i>
+              <div class="card-body">
+                <h3>Food & Drinks</h3>
+                <p>
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4 py-3 py-md-0">
+            <div class="card">
+              <i class="fas fa-bullhorn" style="margin: 10px; color: #ffa500;"></i>
+              <div class="card-body">
+                <h3>Safety Guide</h3>
+                <p>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row" style="margin-top: 30px">
+          <div class="col-md-4 py-3 py-md-0">
+            <div class="card">
+              <i class="fas fa-globe-asia" style="margin: 10px; color: #ffa500;"></i>
+              <div class="card-body">
+                <h3>Around The World</h3>
+                <p>
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4 py-3 py-md-0">
+            <div class="card">
+              <i class="fas fa-plane" style="margin: 10px; color: #ffa500;"></i>
+              <div class="card-body">
+                <h3>Fastest Travel</h3>
+                <p>
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4 py-3 py-md-0">
+            <div class="card">
+              <i class="fas fa-hiking" style="margin: 10px; color: #ffa500;"></i>
+              <div class="card-body">
+                <h3>Adventures</h3>
+                <p>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Section service End -->
+
+    <!-- Section Gallery Start -->
+    <section class="gallery" id="gallery" #gallery>
+      <div class="container">
+        <div class="main-txt">
+          <h1><span>G</span>allery</h1>
+        </div>
+
+        <div class="row" style="margin-top: 30px">
+          <div class="col-md-4 py-3 py-md-0">
+            <div class="card">
+              <img src="../../assets/Images/img1.jpg" alt="" height="230px" />
+            </div>
+          </div>
+          <div class="col-md-4 py-3 py-md-0">
+            <div class="card">
+              <img src="../../assets/Images/img2.jpg" alt="" height="230px" />
+            </div>
+          </div>
+          <div class="col-md-4 py-3 py-md-0">
+            <div class="card">
+              <img src="../../assets/Images/img3.jpeg" alt="" height="230px" />
+            </div>
+          </div>
+        </div>
+
+        <div class="row" style="margin-top: 30px">
+          <div class="col-md-4 py-3 py-md-0">
+            <div class="card">
+              <img src="../../assets/Images/img4.jpeg" alt="" height="230px" />
+            </div>
+          </div>
+          <div class="col-md-4 py-3 py-md-0">
+            <div class="card">
+              <img src="../../assets/Images/img5.jpg" alt="" height="230px" />
+            </div>
+          </div>
+          <div class="col-md-4 py-3 py-md-0">
+            <div class="card">
+              <img src="../../assets/Images/img6.jpg" alt="" height="230px" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Section Gallary End -->
+
+    <!-- About Start -->
+    <section id="about" #about>
+      <div class="container">
+        <div class="main-txt">
+          <h1>About <span>Us</span></h1>
+        </div>
+
+        <div class="row" style="margin-top: 30px">
+          <div class="col-md-6 py-3 py-md-0">
+            <div class="card">
+              <img src="../../assets/Images/img1.jpg" alt="" />
+            </div>
+          </div>
+
+          <div class="col-md-6 py-3 py-md-0">
+            <h2>UHouse</h2>
+            <p>
+              Uhouse is a guest house, which is a type of accommodation that has a concept like a house that is owned by an individual or company. 
+              Uhouse itself is a building with quite complete facilities like a hotel. 
+              Uhouse is a one-star accommodation because guest houses usually have a minimum of 15 rooms which can be rented out either daily or for a certain period according to needs, 
+              so in one house several guests stay overnight and occupy the rooms provided. 
+            </p>
+            <button id="about-btn">Read More...</button>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- About End -->
+
+    <!-- Footer Start -->
+    <footer id="footer">
+      <h1><span>U </span>House</h1>
+      <p>
+      </p>
+      <div class="social-links">
+        <i class="fa-brands fa-twitter"></i>
+        <i class="fa-brands fa-facebook"></i>
+        <i class="fa-brands fa-instagram"></i>
+      </div>
+      <div class="credit">
+        <p>Designed by <a href="#">UHouse Group</a></p>
+      </div>
+      <div class="copyright">
+        <p> Copyright &copy; U House. All Rights Reserved. </p>
+      </div>
+    </footer>
+    <!-- Footer End -->
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>

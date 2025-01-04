@@ -1,0 +1,293 @@
+<title>Manage Room Availability</title>
+<meta name="description" content="Effortlessly manage room bookings and availability.">
+
+
+<app-navbar-admin></app-navbar-admin>
+<div class="container1">
+    <div class="row ">
+        <div class="col-md-2">
+        <app-sidebar-admin></app-sidebar-admin>
+    </div>
+
+<div class="calendar-container">
+  <div class="header">
+    <h2 style="color: #b5732c; font-weight: bold;">Calendar</h2>
+  </div>
+
+  <div class="filters">
+    <!-- Date Range Section (Start Date & End Date berdampingan) -->
+    <div class="date-range-container">
+      <label for="startDate">Start Date</label>
+      <input
+        id="startDate"
+        type="date"
+        [(ngModel)]="dateRange.start"
+        (change)="onDateRangeChange()"
+        class="date-input"
+      />
+
+      <label for="endDate">End Date</label>
+      <input
+        id="endDate"
+        type="date"
+        [(ngModel)]="dateRange.end"
+        (change)="onDateRangeChange()"
+        class="date-input"
+      />
+    </div>
+
+    <!-- Room Type Section (Di bawah input tanggal) -->
+    <div class="room-type-container">
+      <label for="roomType">Room Type </label>
+      <select
+        id="roomType"
+        class="room-filter"
+        (change)="adjustRoomNumbers($event)"
+        [(ngModel)]="selectedRoomType"
+      >
+        <option value="all">All Room Types</option>
+        <option *ngFor="let room of rooms" [value]="room.roomType">
+          {{ room.roomType }}
+        </option>
+      </select>
+    </div>
+  </div>
+
+  <!-- <div class="cards-container">
+  <div *ngFor="let room of filteredRooms" class="room-card">
+    <h3>{{ room.roomType }}</h3>
+    <p>Available: {{ room.availability }}</p>
+    <button (click)="openEditModal(room)">Edit</button>
+  </div>
+</div> -->
+  <div>
+    <hr />
+
+    <div *ngFor="let room of filteredRooms" class="room-calendar">
+      <hr />
+      <h2>{{ room.roomType }} - Room {{ room.roomNumber }}</h2>
+
+      <button
+        class="btn btn-primary bulk-edit-btn"
+        (click)="openModal('bulkEditModal', room.roomType)"
+      >
+        Bulk Edit
+      </button>
+      <div class="scrollable-row">
+        <!-- Calendar Section -->
+
+        <div class="table-container">
+          <table class="booking-table">
+            <thead>
+              <!-- Month Row -->
+              <tr>
+                <th></th>
+                <th *ngFor="let date of dates; let i = index">
+                  <ng-container *ngIf="isFirstDateOfMonth(date.date, i)">
+                    {{ getMonthForDate(date.date) }}
+                  </ng-container>
+                </th>
+              </tr>
+              <!-- Weekdays Row -->
+              <tr>
+                <th></th>
+                <th *ngFor="let day of getWeekDays()">{{ day }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Room Status</td>
+                <td
+                  *ngFor="let date of dates; let i = index"
+                  [class.bookable]="room.roomsToSell?.[i] > 0 && room.statuses?.[i] === 'bookable'"
+                  [class.closed]="room.statuses?.[i] === 'closed'"
+                  [class.sold-out]="room.roomsToSell?.[i] === 0"
+                  (click)="toggleRoomStatus(room, date.date, i)"
+                >
+                  {{ room.roomsToSell?.[i] === 0 ? 'Sold Out' : room.statuses?.[i] === 'bookable' ? 'Bookable' : 'Closed' }}
+                </td>
+              </tr>
+
+              <tr>
+                <td>Room to Sell</td>
+                <td *ngFor="let date of dates; let i = index">
+                  <input
+                    type="number"
+                    [(ngModel)]="room.roomsToSell[i]"
+                    (ngModelChange)="onRoomsToSellChange(room, date.date, i)"
+                    [max]="room.roomNum"
+                    [min]="room.netBooked[i]"
+                    [disabled]="room.netBooked[i] >= room.roomNum"
+                  />
+                </td>
+              </tr>
+
+              <tr>
+                <td>Net Booked</td>
+                <td *ngFor="let i of room.netBooked">{{ i }}</td>
+              </tr>
+
+              <!-- // Display "IDR" for standard rates and handle input changes -->
+              <tr>
+                <td><strong>Standard Rate</strong></td>
+                <td *ngFor="let date of dates; let i = index">
+                  <div class="input-group">
+                    <span class="input-group-text">IDR</span>
+                    <input
+                      type="number"
+                      class="form-control"
+                      [(ngModel)]="room.standardRates[i]"
+                      (ngModelChange)="onStandardRateChange(room, i)"
+                      placeholder="Enter Rate"
+                    />
+                  </div>
+                </td>
+              </tr>
+
+              <!-- Weekly Rate - calculated and displayed read-only -->
+              <tr>
+                <td>Weekly Rate</td>
+                <td *ngFor="let date of dates; let i = index">
+                  <span>{{ calculateWeeklyRate(room.standardRates[i]) }}</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div
+          id="bulkEditModal"
+          class="modal fade"
+          tabindex="-1"
+          aria-labelledby="bulkEditModalLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="bulkEditModalLabel">
+                  Bulk Edit - {{ currentBulkRoomType }}
+                </h5>
+
+                <button
+                  type="button"
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                ></button>
+              </div>
+              <div class="modal-body">
+                <form>
+                  <!-- Date Range Selector -->
+                  <div class="mb-3">
+                    <label for="startDate" class="form-label">Start Date</label>
+                    <input
+                      id="startDate"
+                      type="date"
+                      [(ngModel)]="bulkEditData.startDate"
+                      class="form-control"
+                      [ngModelOptions]="{ standalone: true }"
+                    />
+                  </div>
+                  <div class="mb-3">
+                    <label for="endDate" class="form-label">End Date</label>
+                    <input
+                      id="endDate"
+                      type="date"
+                      [(ngModel)]="bulkEditData.endDate"
+                      class="form-control"
+                      [ngModelOptions]="{ standalone: true }"
+                    />
+                  </div>
+                  <!-- Room Status -->
+                  <div class="mb-3">
+                    <label for="roomStatus" class="form-label"
+                      >Room Status</label
+                    >
+                    <select
+                      id="roomStatus"
+                      [(ngModel)]="bulkEditData.roomStatus"
+                      class="form-control"
+                      [ngModelOptions]="{ standalone: true }"
+                    >
+                      <option value="1">Bookable</option>
+                      <option value="0">Closed</option>
+                    </select>
+                  </div>
+
+                  <!-- Rooms to Sell -->
+                  <div class="mb-3">
+                    <label for="roomsToSell" class="form-label"
+                      >Rooms to Sell</label
+                    >
+                    <input
+  id="roomsToSell"
+  type="number"
+  [(ngModel)]="bulkEditData.roomsToSell"
+  class="form-control"
+  [ngModelOptions]="{ standalone: true }"
+  min="0"
+  placeholder="Enter rooms to sell"
+  [ngClass]="{ 'is-invalid': bulkEditData.roomsToSell !== null && bulkEditData.roomsToSell < 0 }"
+/>
+
+                  </div>
+
+                  <!-- Standard Rate -->
+                  <div class="mb-3">
+                    <label for="standardRate" class="form-label"
+                      >Standard Rate</label
+                    >
+                    <input
+                      id="standardRate"
+                      type="number"
+                      [(ngModel)]="bulkEditData.standardRate"
+                      class="form-control"
+                      [ngModelOptions]="{ standalone: true }"
+                      min="0"
+                      placeholder="Enter standard rate"
+                    />
+                  </div>
+<!-- Weekly Rate (Calculated) -->
+<div class="mb-3">
+  <label for="weeklyRate" class="form-label">Weekly Rate (Calculated)</label>
+  <input
+    id="weeklyRate"
+    type="text"
+    class="form-control"
+    [value]="calculateWeeklyRate(bulkEditData.standardRate ?? 0)" 
+    readonly
+  />
+</div>
+
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-bs-dismiss="modal"
+                >
+                  Close
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-primary"
+                  (click)="saveBulkChanges()"
+                >
+                  Save Changes
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"
+    ></script>
+    
