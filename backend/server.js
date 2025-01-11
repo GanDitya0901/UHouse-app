@@ -8,10 +8,12 @@ const jwt = require('jsonwebtoken');
 const { OAuth2Client } = require('google-auth-library');
 const nodemailer = require('nodemailer');
 const crypto = require('crypto');
+const cron = require('node-cron');
 
 
 const fs = require ('fs');
 const multer = require('multer');
+const { parseHTML } = require('jquery');
 const app = express();
 
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -30,7 +32,6 @@ const transporter = nodemailer.createTransport({
   }
 });
 
-
 // Multer configuration for file uploads
 const storage = multer.diskStorage({
   destination: function(req, file, cb) {
@@ -46,7 +47,7 @@ const upload = multer({ storage: storage });
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 //connection to MongoDB
-mongoose.connect('mongodb://127.0.0.1:27017/user')
+mongoose.connect('mongodb+srv://ganaaditya:29aG8pasnlIsQiUZ@uhousedb.st9wn.mongodb.net/user')
   .then(() => console.log('Connected to MongoDB'))
   .catch(err => console.error('Failed to connect to MongoDB', err));
 
@@ -429,7 +430,12 @@ app.put('/requests/update/:id', async (req, res) => {
 
 
 // Facility Schema
-const facilitySchema = new mongoose.Schema({
+const FacilitySchema = new mongoose.Schema({
+  roomTypeId: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    ref: 'RoomType'
+  },
   parking: Boolean,
   swimmingPool: Boolean,
   airConditioner: Boolean,
@@ -452,7 +458,7 @@ const RoomManageSchema = new mongoose.Schema({
   bedType: String,
   numBeds: Number,
   roomPrice: Number,
-  facilitySchema: facilitySchema,
+  facilitySchema: FacilitySchema,
 });
 
 
@@ -478,6 +484,7 @@ const RoomAvailability = mongoose.model('RoomAvailability', RoomAvailabilitySche
 // 1. **Fetch Room Availability**:
 app.get('/availability', async (req, res) => {
   const { roomType, startDate, endDate } = req.query;
+  console.log('Avail : ', req.query);
 
   try {
     // Build the filter for room availability
@@ -499,6 +506,8 @@ app.get('/availability', async (req, res) => {
       checkOutDate: { $gte: new Date(startDate) },
       status: 'confirmed',
     });
+
+    console.log('reservations : ', reservations);
 
     // Group reservations by roomType and date
     const reservationCounts = reservations.reduce((counts, reservation) => {
@@ -522,14 +531,13 @@ app.get('/availability', async (req, res) => {
       const key = `${entry.roomType}-${entry.date.toISOString().split('T')[0]}`;
       const netBooked = reservationCounts[key] || 0;
 
-      // Calculate updated rooms to sell and status
-      const adjustedRoomsToSell = Math.max(entry.roomsToSell - netBooked, 0);
-      const status = adjustedRoomsToSell === 0 ? 'sold-out' : entry.status;
+      // Check if the room availability is closed
+      const status = entry.status === 'closed' ? 'closed' : (entry.roomsToSell - netBooked <= 0 ? 'sold-out' : 'bookable');
 
       return {
         ...entry,
         netBooked,
-        roomsToSell: adjustedRoomsToSell,
+        roomsToSell: Math.max(entry.roomsToSell - netBooked, 0),
         status,
         standardRate: entry.standardRate || 0, // Ensure standardRate is included as a number
         formattedStandardRate: `IDR ${entry.standardRate || 0}`, // Add formatted standard rate
@@ -542,6 +550,7 @@ app.get('/availability', async (req, res) => {
     res.status(500).json({ message: 'Error fetching availability', error });
   }
 });
+
 
 
 
@@ -679,6 +688,8 @@ const ReservationSchema = new mongoose.Schema({
     enum: ['On-site', 'online'],
     required: true,
   },
+
+  roomManageId: { type: mongoose.Schema.Types.ObjectId, ref: 'RoomManage', required: true },
   name: { type: String, required: true },
   email: { type: String, required: true },
   checkInDate: { type: Date, required: true },
@@ -690,7 +701,9 @@ const ReservationSchema = new mongoose.Schema({
   total: { type: Number, required: true },
  // paymentMethod: { type: String, required: true, enum: ['On-site', 'online'] }, 
   status: { type: String, enum: ['pending', 'confirmed', 'canceled'], default: 'pending' }
-}, { timestamps: true });
+}, 
+
+{ timestamps: true });
   /*paymentStatus: {
     type: String, 
     enum: ["pending", "paid"], 
@@ -724,14 +737,15 @@ const ReviewRatingSchema = new mongoose.Schema({
     unique: true // Ensure one review per reservation
   },
   reviewerName: { type: String, required: true },
-  reviewTitle: { type: String, required: true },
+  // reviewTitle: { type: String, required: true },
   reviewText: { type: String, required: true },
   rating: { type: Number, min: 1, max: 5, required: true },
+  reviewRatingImg: { type: String, required: false, default: null },
   createdAt: { type: Date, default: Date.now }
 });
 
-
 // Define Mongoose Model 
+const Facility = mongoose.model('Facility', FacilitySchema);
 const RoomManage = mongoose.model('RoomManage', RoomManageSchema);
 const User = mongoose.model('User', UserSchema);
 const Reservation = mongoose.model("Reservation", ReservationSchema);
@@ -1177,10 +1191,18 @@ app.post('/roommanages', upload.single('roomImg'), verifyToken, async (req, res)
 });
 
 // Endpoint to fetch all rooms
-app.get('/roommanages', verifyToken, async (req, res) => {
+app.get('/roommanages', async (req, res) => {
   try {
     const rooms = await RoomManage.find();
-    res.status(200).json(rooms);
+    const facilities = await Facility.find();
+    const roomsWithFacilities = rooms.map((room) => {
+      const roomFacilities = facilities.find(
+        (facility) => facility.roomTypeId.toString() === room._id.toString()
+      );
+      return { ...room.toObject(), facilities: roomFacilities || {} };
+    });
+
+    res.status(200).json(roomsWithFacilities);
   } catch (error) {
     console.error('Error fetching rooms:', error);
     res.status(500).json({ message: 'Internal server error' });
@@ -1237,7 +1259,154 @@ app.delete('/roommanages/:id', verifyToken, async (req, res) => {
   }
 });
 
+app.get('/generate-fav-room', async (req, res) => {
+  try {    
+    const results = await ReviewRating.aggregate([
+        {
+            $lookup: {
+                from: "reservations",
+                localField: "reservationId",
+                foreignField: "_id",
+                as: "reservationDetails",
+            },
+        },
+        {
+            $group: {
+                _id: "$reservationDetails.roomManageId",
+                averageRating: { $avg: "$rating" },
+                count: { $sum: 1 },
+            },
+        },
+        { $sort: { averageRating: -1 } },
+        {
+            $lookup: {
+                from: "roommanages",
+                localField: "roomManageId",
+                foreignField: "_id",
+                as: "roomDetails",
+            },
+        },
+        {
+            $project: {
+                _id: 0,
+                roomId: "$_id",
+                averageRating: 1,
+                reviewCount: "$count",
+            },
+        },
+    ]);
 
+    res.json(results[0]);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: error });
+  }
+});
+
+// Get all facilities
+app.get('/api/facilities', async (req, res) => {
+  try {
+    const facilities = await Facility.find();
+    res.json(facilities);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+
+app.get('/api/facilities/room/:roomTypeId', async (req, res) => {
+  try {
+    const roomTypeId = req.params.roomTypeId;
+    console.log('Received roomTypeId:', roomTypeId); // Log for debugging
+
+    // Validasi format ObjectId
+    if (!mongoose.Types.ObjectId.isValid(roomTypeId)) {
+      console.log('Invalid ObjectId format:', roomTypeId);
+      return res.status(400).json({ message: 'Invalid roomTypeId format' });
+    }
+
+    // Konversi roomTypeId menjadi ObjectId menggunakan 'new'
+    const facility = await Facility.findOne({ roomTypeId: new mongoose.Types.ObjectId(roomTypeId) });
+    if (!facility) {
+      console.log('Facility not found for roomTypeId:', roomTypeId); // Log jika tidak ditemukan
+      return res.status(404).json({ message: 'Facility not found' });
+    }
+
+    res.json(facility);
+  } catch (error) {
+    console.error('Error fetching facility:', error);
+    res.status(500).json({ message: error.message });
+  }
+});
+
+
+// Add new facility
+// Endpoint untuk menambah fasilitas baru
+app.post('/api/facilities', async (req, res) => {
+  console.log('Received data:', req.body); // Tambahkan log ini
+  const { roomTypeId, parking, swimmingPool, airConditioner, balcony, towel, bathAmenities, sunBed, outdoorShower } = req.body;
+
+  // Konversi roomTypeId menjadi ObjectId
+  let formattedRoomTypeId;
+  if (mongoose.Types.ObjectId.isValid(roomTypeId)) {
+    formattedRoomTypeId = new mongoose.Types.ObjectId(roomTypeId);
+  } else {
+    return res.status(400).json({ message: 'Invalid roomTypeId format' });
+  }
+
+  const newFacility = new Facility({
+    roomTypeId: formattedRoomTypeId,
+    parking,
+    swimmingPool,
+    airConditioner,
+    balcony,
+    towel,
+    bathAmenities,
+    sunBed,
+    outdoorShower
+  });
+
+  try {
+    const savedFacility = await newFacility.save();
+    console.log('Facility saved successfully:', savedFacility); // Log data yang tersimpan
+    res.status(201).json(savedFacility);
+  } catch (error) {
+    console.error('Error saving facility:', error); // Log error jika ada
+    res.status(400).json({ message: error.message });
+  }
+});
+
+
+// Update facility by roomTypeId
+app.put('/api/facilities/:roomTypeId', async (req, res) => {
+  console.log('Received data for updateFacility:', req.body);
+  console.log('Room Type ID:', req.params.roomTypeId);
+  const { roomTypeId } = req.params;
+  const updateData = req.body;
+
+  // Log untuk memastikan data diterima dengan benar
+  console.log('Update request received with data:', updateData);
+
+  // Konversi roomTypeId menjadi ObjectId
+  if (!mongoose.Types.ObjectId.isValid(roomTypeId)) {
+    return res.status(400).json({ message: 'Invalid roomTypeId format' });
+  }
+
+  try {
+    const updatedFacility = await Facility.findOneAndUpdate(
+      { roomTypeId: new mongoose.Types.ObjectId(roomTypeId) },
+      updateData,
+      { new: true }
+    );
+
+    if (!updatedFacility) {
+      return res.status(404).json({ message: 'Facility not found' });
+    }
+    res.json(updatedFacility);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+});
 
 app.delete('/api/user/delete-photo', verifyToken, async (req, res) => {
   console.log('Request body:', req.body); // Expected to log: {}
@@ -1303,14 +1472,15 @@ app.get('/api/reservation/:_id', async (req, res) => {
 
 
 // New reservation
-app.post('/reservation', async (req, res) => {
+app.post('/reservation', verifyToken, async (req, res) => {
   try {
     const { roomType, checkInDate, checkOutDate, paymentMethod } = req.body;
 
     console.log('Received reservation data:', req.body);
 
     // If payment method is "On-site", allow unauthenticated reservation
-    const userId = req.user ? req.user.id : null; // Optional user ID
+    const userId = req.user.id; // Optional user ID
+    console.log('user res id: ', userId)
 
     // Check if roomType, checkInDate, or checkOutDate is missing
     if (!roomType || !checkInDate || !checkOutDate || !paymentMethod) {
@@ -1388,7 +1558,17 @@ app.post('/reservation', async (req, res) => {
     const reservation = new Reservation({
       user: userId, // Allow null for Pay at Hotel reservations
       ...req.body,
-      status: paymentMethod === 'On-site' ? 'pending' : 'confirmed', // Set status based on payment method
+      status: 'confirmed', // Set status based on payment method
+      roomManageId: req.body.roomManageId,  
+      name: req.body.name,
+      email: req.body.email,
+      checkInDate: req.body.checkInDate,
+      checkOutDate: req.body.checkOutDate,
+      adults: req.body.adults,
+      children: req.body.children,
+      roomType: req.body.roomType,
+      roomDesc: req.body.roomDesc,
+      total: req.body.total,
     });
 
     await reservation.save();
@@ -1421,6 +1601,112 @@ app.delete('/:id', verifyToken, async(req, res) => {
     res.status(500).json({ message: 'Internal server error' });
   }
 })
+
+// Send Booking Reminder Email
+app.get('/api/reservation/send-booking-reminder/:id', async (req, res) =>{
+  try {
+    const reservationId = req.params.id;
+    const reservation = await Reservation.findById(reservationId);
+
+    const sendSuccess = await sendReminderEmail(reservation)
+
+    if(sendSuccess){
+      return res.status(200).json({ message: 'Reservation reminder email successfully sent!' });
+    }else{
+      return res.status(500).json({ message: 'Error sending email' });
+    }
+  } catch (error) {
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+async function sendReminderEmail(reservation){
+  try {
+    console.log('send email to ', reservation.email)
+
+    const subject = 'Reminder: Your stay at UHouse is just around the corner!';
+    const html = `
+      <!DOCTYPE html>
+      <html lang="en">
+      <head>
+        <title>
+          Reminder Reservation Email
+        </title>
+      </head>
+      <body>
+            <h2>Hello ${reservation.name},</h2>
+  
+            <p>We're thrilled to welcome you to UHouse on ${formatDate(reservation.checkInDate)}. Here's a quick reminder of your booking details:</p>
+  
+            <ul>
+              <li>Check-in: ${formatDate(reservation.checkInDate)}</li>
+              <li>Check-out: ${formatDate(reservation.checkInDate)}</li>
+              <li>Room Type: ${reservation.roomType}</li>
+            </ul>
+            
+            <p>If you have any special requests or need assistance, feel free to contact us at <a href="mailto:uhouse@gmail.com" target="_blank">uhouse@gmail.com</a></p>
+            <hr/>
+            <p>Looking forward to hosting you!</p>
+            <p>UHouse</p>
+      </body>
+      </html>
+    `;
+  
+    // Send the email notification
+    const mailOptions = {
+      from: 'uhousbali@gmail.com',
+      to: reservation.email,
+      subject,
+      html: html,
+    };
+  
+    await transporter.sendMail(mailOptions)
+    return true
+  } catch (error) {
+    return false
+  }
+
+}
+
+function formatDate(date) {
+  const formatDate = new Date(date);
+
+  const options = {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',    
+    day: '2-digit',  
+  };
+
+  return new Intl.DateTimeFormat('en-US', options).format(formatDate);
+}
+
+cron.schedule('0 8 * * *', async () => {
+  try {
+    console.log('Running daily job to check reservations...');
+
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    tomorrow.setHours(0, 0, 0, 0);
+    const endOfTomorrow = new Date(tomorrow);
+    endOfTomorrow.setHours(23, 59, 59, 999);
+  
+    const reservations = await Reservation.find({
+      checkInDate: { $gte: tomorrow, $lte: endOfTomorrow },
+    });
+  
+    if(reservations.length != 0){
+      reservations.forEach((reservation) => {
+        sendReminderEmail(reservation);
+      })
+    }else{
+      console.log('There is no Reservation for tommorow');
+    }
+  } catch (error) {
+    console.log('Error when running cron');
+  }
+});
+
 
 // Pay reservation 
 app.post('/:id/pay', verifyToken, async(req,res) => {
@@ -1455,10 +1741,11 @@ app.put('/:id/status', verifyToken, async(res, req) => {
 
 
 // Endpoint untuk menambahkan review
-app.post('/reviews/:reservationId', verifyToken, async (req, res) => {
+app.post('/reviews/:reservationId', upload.single('reviewRatingImg'), verifyToken, async (req, res) => {
   try {
     const { reservationId } = req.params;
     const { reviewerName, reviewTitle, reviewText, rating } = req.body;
+    const reviewRatingImg = req.file ? req.file.path : ''; 
 
     // Ensure the reservation exists
     const reservation = await Reservation.findById(reservationId);
@@ -1470,8 +1757,8 @@ app.post('/reviews/:reservationId', verifyToken, async (req, res) => {
     const newReview = new ReviewRating({
       reservationId,
       reviewerName,
-      reviewTitle,
       reviewText,
+      reviewRatingImg,
       rating,
     });
     await newReview.save();
@@ -1515,6 +1802,19 @@ const snap = new midtransClient.Snap({
   serverKey: 'SB-Mid-server-ROvEC7z5VqzvfQXy8q3oqFWS',
 });
 
+app.get('/reviews', async (req, res) => {
+  try {
+    const reviews = await ReviewRating.find()
+      .populate('reservationId', 'email') // Populate email from Reservation
+      .exec();
+    
+    console.log(reviews); // Debugging: Tampilkan data yang diambil
+    res.json(reviews);
+  } catch (error) {
+    console.error('Error fetching reviews:', error);
+    res.status(500).json({ message: 'Failed to fetch reviews' });
+  }
+});
 
 // Endpoint to handle payment request
 app.post('/create-transaction', async (req, res) => {
@@ -1545,6 +1845,48 @@ app.post('/create-transaction', async (req, res) => {
   }
 });
 
+app.get('/api/report/range', verifyToken, async (req, res) => {
+  try {
+    const { startYear, startMonth, endYear, endMonth } = req.query;
+
+    const startDate = new Date(parseInt(startYear, 10), parseInt(startMonth, 10) - 1, 1);
+    const endDate = new Date(parseInt(endYear, 10), parseInt(endMonth, 10), 1); // End of the last month
+
+    const revenueData = await Reservation.aggregate([
+      {
+        $match: {
+          checkInDate: {
+            $gte: startDate,
+            $lt: endDate
+          },
+          status: { $ne: 'canceled' }
+        }
+      },
+      {
+        $group: {
+          _id: {
+            year: { $year: "$checkInDate" },
+            month: { $month: "$checkInDate" }
+          },
+          totalRevenue: { $sum: "$total" }
+        }
+      },
+      {
+        $sort: { "_id.year": 1, "_id.month": 1 }
+      }
+    ]);
+
+    const formattedData = revenueData.map(entry => ({
+      year: entry._id.year,
+      month: entry._id.month,
+      totalRevenue: entry.totalRevenue
+    }));
+
+    res.status(200).json({ revenue: formattedData });
+  } catch (err) {
+    res.status(500).json({ message: 'Error fetching revenue data', error: err.message });
+  }
+});
 
   const port = process.env.PORT || 3000;
   app.listen(port, () => console.log(`Server running on port ${port}`));

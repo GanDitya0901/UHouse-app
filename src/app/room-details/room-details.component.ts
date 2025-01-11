@@ -1,6 +1,7 @@
 import { Component, ViewChild, ElementRef, AfterViewInit, ChangeDetectorRef, OnInit } from '@angular/core';
 import { UserService } from '../services/user.service';
 import { Router } from '@angular/router';
+import { FacilitiesService } from '../services/facilities.service';
 
 @Component({
   selector: 'app-room-details',
@@ -12,15 +13,19 @@ export class RoomDetailsComponent implements OnInit {
   token: string | null = null;
 
   rooms: any[] = [];
-
+  facilities: any[] = []; // Array untuk menyimpan daftar fasilitas
   roomType: string = '';
   roomDesc: string = '';
   roomImgUrl: string = '';
 
-  constructor(private cdr: ChangeDetectorRef, 
+  constructor(
+    private cdr: ChangeDetectorRef, 
     private userService: UserService, 
     private el: ElementRef,
-    private router: Router) {}
+    private router: Router,
+    private facilitiesService: FacilitiesService // Marked as injected and used directly
+  ) {}
+  
 
   ngOnInit(): void {
     this.userService.tokenEmitter.subscribe((token: string) => {
@@ -34,6 +39,7 @@ export class RoomDetailsComponent implements OnInit {
     }
 
     this.fetchRooms();
+    this.fetchFacilities(); 
 
     const roomDetails = JSON.parse(localStorage.getItem('roomDetails') || '{}');
     if (roomDetails) {
@@ -41,8 +47,28 @@ export class RoomDetailsComponent implements OnInit {
       this.roomDesc = roomDetails.roomDesc;
       this.roomImgUrl = roomDetails.roomImgUrl;
     }
+    
   }
 
+
+  fetchFacilities(roomTypeId?: string): void {
+    if (!roomTypeId) {
+      console.warn('No room type ID provided. Skipping facilities fetch.');
+      return;
+    }
+  
+    this.facilitiesService.getFacilityByRoomTypeId(roomTypeId).subscribe({
+      next: (facilities) => {
+        this.facilities = facilities; // Store facilities data
+        console.log('Facilities fetched successfully:', this.facilities);
+      },
+      error: (error) => {
+        console.error('Error fetching facilities:', error);
+      },
+    });
+  }
+  
+  
   fetchRooms() {
     this.userService.getRooms().subscribe({
       next: rooms => {

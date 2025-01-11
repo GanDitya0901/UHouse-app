@@ -220,6 +220,37 @@ h1{
 }
 /* Section Book End */
 
+/*secction Rooms */
+.card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: #fff;
+}
+
+.card img {
+  width: 100%;
+  height: auto;
+}
+
+.most-favourite {
+  border-color: #f39c12;
+}
+
+.most-favourite-text {
+  background-color: #f39c12;
+  color: #fff;
+  padding: 5px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.checked {
+  color: gold;
+}
+
+/*end Section Rooms */
+
 
 
 
@@ -235,31 +266,65 @@ h1{
 .main-txt h1 span{
     color: #ffa500;
 }
-.packages .card{
-    height: 490px;
+.packages .card {
+    height: 550px;
     border-radius: 5px;
     border: none;
-    box-shadow: rgba(0,0,0,0.1) 0px 4px 12px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+  }
+
+  .packages .card.most-favourite {
+    border: 10px solid #ffa500;
+    position: relative;
+  }
+
+  .packages .card.most-favourite .most-favourite-text {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: #ffa500;
+    color: #fff;
+    padding: 5px 10px;
+    border-bottom-right-radius: 5px;
+  }
+
+.packages .card.most-favourite img{
+    border-radius: 0px;
 }
-.packages .card img{
+
+.packages .card img {
     border-radius: 5px;
+    width: 100%;
+    height: 60%;
+    object-fit: cover;
+  }
+
+.packages .card .card-body {
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 40%;
 }
-.packages .card .card-body{
-    background: transparent;
-}
-.packages .card .card-body h3{
+
+.packages .card .card-body h3 {
     font-size: 25px;
-    font-weight: 600;
+    font-weight: bold;
+  }
+
+
+.packages .card .card-body p {
+  font-size: 15px;
 }
-.packages .card .card-body p{
-    font-size: 15px;
-}
+
+
 .checked{
     color: #ffa500;
 }
-.star i{
+.star i {
     font-size: 15px;
-}
+    color: #ffa500;
+  }
 .packages .card .card-body h6{
     font-size: 20px;
 }
@@ -270,8 +335,13 @@ h1{
     color: white;
     border-radius: 5px;
     position: absolute;
-    margin-top: 15px;
 }
+
+.error-message {
+    color: red;
+    text-align: center;
+    margin: 20px 0;
+  }
 /* Section Packages End */
 
 
@@ -401,3 +471,154 @@ h1{
     background: #ffa500;
 }
 /* Footer End */
+
+/* Styling for Star Rating */
+.star-rating {
+    font-size: 20px; /* Adjust size of stars */
+  }
+  
+  .star {
+    color: #ccc; /* Grey color for empty stars */
+  }
+  
+  .star.filled {
+    color: gold; /* Gold color for filled stars */
+  }
+  
+  /* Optional: Add some spacing between stars */
+  .star + .star {
+    margin-left: 5px;
+  }
+    
+  .star-rating .star {
+    color: #ffa500;
+  }
+  
+  .star-rating .star.filled {
+    color: #ffa500;
+  }   
+
+  /* Reviews Section */
+  .reviews-section {
+    margin-top: 50px;
+  }
+  
+  .section-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  .reviews-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+  }
+  
+  .review-card {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 16px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .review-card:hover {
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+  }
+  
+  .review-header {
+    margin-bottom: 10px;
+  }
+  
+  .reviewer-name {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .reviewer-email {
+    font-size: 14px;
+    color: #888;
+  }
+
+  
+  .reviewer-info {
+    margin-left: 15px;
+  }
+  
+
+  .review-body {
+    margin-top: 10px;
+  }
+  
+  
+  .review-text {
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 10px;
+  }
+  
+  .star-rating .star {
+    font-size: 20px;
+    color: #f0ad4e;
+  }
+  
+  .review-image img {
+    width: 100%;
+    max-height: 200px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-top: 10px;
+  }
+  .star-rating .star.filled {
+    color: #ffc107;
+  }
+  
+  .no-reviews {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #666;
+    margin-top: 30px;
+  }
+  
+
+  
+  .more-reviews {
+    text-align: right; /* Align content to the right */
+    margin-top: 10px; /* Add some spacing */
+  }
+  
+  .more-reviews button {
+    background-color: #f89c1c; /* Customize button color */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 6px 12px;
+    cursor: pointer;
+  }
+  
+  .more-reviews button:hover {
+    background-color: #e87b0c; /* Hover effect */
+  }
+  
+
+  .toggle-reviews {
+    text-align: right; /* Align the button to the right */
+    margin-top: 10px;
+  }
+  
+  .toggle-reviews button {
+    background-color: #f89c1c; /* Customize button color */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 6px 12px;
+    cursor: pointer;
+  }
+  
+  .toggle-reviews button:hover {
+    background-color: #e87b0c; /* Hover effect */
+  }
+  

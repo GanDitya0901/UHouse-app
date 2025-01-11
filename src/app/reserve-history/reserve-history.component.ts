@@ -6,7 +6,8 @@ import { HttpClient } from '@angular/common/http';
 
 
 interface Reservation {
-  _id: string;  // Ensure `id` is part of the Reservation interface
+  id: number;  // Ensure `id` is part of the Reservation interface
+  _id: string,
   name: string;
   email: string;
   checkInDate: string;
@@ -17,7 +18,9 @@ interface Reservation {
   roomDesc: string;
   total: number;
   status?: string; 
+  paymentMethod:string;
 }
+
 
 @Component({
   selector: 'app-reserve-history',
@@ -90,42 +93,37 @@ export class ReserveHistoryComponent implements AfterViewInit, OnInit {
       this.token = token;
       console.log('Token received:', this.token);
     });
-  
+
     this.token = this.userService.getToken();
     if (this.token) {
       console.log('Token retrieved from storage:', this.token);
       this.fetchReservations();  // Fetch reservation data when token is available
     }
   }
-
-  // Method to fetch reservation history from server
-  // Fetch reservation history from the server
-  fetchReservations(): void {
-    const token = this.userService.getToken(); // Retrieve the token
   
-    if (!token) {
-      console.error('Token is missing');
-      alert('Error: Token is missing. Please log in again.');
+  fetchReservations(): void {
+    if (!this.token) {
+      console.error('Token is missing. Unable to fetch reservations.');
       return;
     }
   
-    this.userService.fetchReservations(token).subscribe({
-      next: (reservations: any[]) => {
-        console.log('Reservations fetched:', reservations);  // Debugging line
-  
-        // Periksa setiap reservation untuk memastikan ID ada
-        reservations.forEach(reservation => {
-          console.log('Reservation _id:', reservation._id);  // Debugging
-        });
-  
-        this.reservations = reservations;
+    this.userService.fetchReservations(this.token).subscribe(
+      (response: any) => {
+        console.log('Reservations fetched successfully:', response);
+        this.reservations = Array.isArray(response) ? response : [];
+        if (this.reservations.length === 0) {
+          console.warn('No reservations found for the current user.');
+        }
       },
-      error: (error: any) => {
+      (error) => {
         console.error('Error fetching reservations:', error);
-        alert('Error fetching reservation history. Please try again later.');
+        this.reservations = []; // Clear reservations on error
       }
-    });
+    );
   }
+  
+  
+  
   
   goToReview(reservation: Reservation) {
     const reservationId = reservation._id;  // Mengambil _id dari reservation yang dipilih
@@ -241,5 +239,9 @@ export class ReserveHistoryComponent implements AfterViewInit, OnInit {
     });
   }
 
+
+  navigateToReservation() {
+    this.router.navigate(['/reservation']);
+  }
 }
 

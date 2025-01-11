@@ -16,67 +16,6 @@
   <body>
 
 
-    <!-- NavBar-->
-<!-- 
-    <nav class="navbar navbar-expand-lg" id="navbar">
-      <div class="container">
-        <script src="https://unpkg.com/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
-        <a class="navbar-brand" href="landing-page" id="logo"
-          ><img
-            src="../../assets/Images/logoFix.png"
-            alt=""
-            width="90px"
-          /><span>U </span>House</a
-        >
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#mynavbar"
-        >
-          <span><i class="fa-solid fa-bars"></i></span>
-        </button>
-        <div
-          class="collapse navbar-collapse justify-content-center"
-          id="mynavbar"
-        >
-          <ul class="navbar-nav">
-            <li class="nav-item">
-              <a class="nav-link" href="dashboardGuest">Home</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="dashboardGuest">Rooms</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="dashboardGuest">Services</a>
-            </li> -->
-
-            <!-- <li class="nav-item">
-                    <a class="nav-link" (click)="scrollToContact()">Contact</a>
-                  </li> -->
-
-            <!-- <li class="nav-item">
-              <a class="nav-link" href="dashboardGuest">About</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/manage-profile">Manage Profile</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="javascript:void(0)" (click)="logout()"
-                >Logout</a
-              >
-            </li>
-          </ul>
-        </div>
-      </div>
-    </nav>
-    <script src="path/to/jquery.min.js"></script>
-    <script src="path/to/bootstrap.bundle.min.js"></script> -->
-    
-    <!--NavBar -->
-    <!-- <button class="back-button" (click)="goBack()">&larr; Back</button> -->
-
     <div class="content">
       <div class="row flex-lg-nowrap">
         <div class="col">
@@ -129,13 +68,16 @@
                           </h4>
                           <p class="mb-0">{{ "@" + user.username }}</p>
                           <button
-                            class="btn btn-primary mt-2"
+                            class="btn btn-submit mt-2"
                             type="button"
                             (click)="openPhotoModal()"
                           >
                             Edit Photo
                           </button>
+                          <button routerLink="/dashboardGuest" routerLinkActive="routerLinkActive" class="btn btn-submit mt-2">Back</button>
+
                         </div>
+                      
                         <div class="text-center text-sm-right">
                           <span class="badge badge-secondary">{{
                             user.role
@@ -280,16 +222,14 @@ style="display: block"
                       </div>
                     </div>
 
-                    <ul class="nav nav-tabs">
-                      <li class="nav-item">
-                        <a href="" class="nav-link">Manage Profile</a>
-                      </li>
-                    </ul>
+                    <div class="mb-4">
+                      <h4 class="sidebar-title">Manage Profile</h4>
+                    </div>
 
                     <!-- Conditionally render profile details or edit form -->
 
                     <br />
-                    <strong>Profile Details</strong>
+                    <strong class="">Profile Details</strong>
                     <div class="tab-content pt-3">
                       <div class="tab-pane active">
                         <div *ngIf="!editing">
@@ -355,7 +295,7 @@ style="display: block"
                           <div class="row">
                             <div class="col d-flex justify-content-end">
                               <button
-                                class="btn btn-primary"
+                                class="btn btn-submit"
                                 (click)="editing = true"
                               >
                                 Edit Profile
@@ -556,7 +496,7 @@ style="display: block"
                   <!-- Change Password Form -->
                   <form class="form" (ngSubmit)="changePassword()" novalidate>
                     <div class="mb-4">
-                      <h4 class="text-primary">Change Password</h4>
+                      <h4 class="sidebar-title">Change Password</h4>
                     </div>
                     <div class="form-group">
                       <label for="currentPassword">Current Password</label>
@@ -598,7 +538,7 @@ style="display: block"
                     </div>
 
                     <div class="d-flex justify-content-end">
-                      <button class="btn btn-primary" type="submit">
+                      <button class="btn btn-submit" type="submit">
                         Change Password
                       </button>
                     </div>

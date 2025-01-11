@@ -65,6 +65,22 @@
                     <p class="card-text"><strong>Bed Type: </strong>{{room.bedType}}</p>
                     <p class="card-text"><strong>Bed Number: </strong>{{room.numBeds}}</p>
                     <p class="card-text"><strong>Room Price: </strong>{{room.roomPrice}}</p>
+
+                    <!-- Daftar Fasilitas -->
+                    <div class="facility-list" *ngIf="room.facilities">
+                      <p><strong>Facilities:</strong></p>
+                      <ul>
+                        <li *ngIf="room.facilities?.parking">Parking</li>
+                        <li *ngIf="room.facilities?.swimmingPool">Swimming Pool</li>
+                        <li *ngIf="room.facilities?.airConditioner">Air Conditioner</li>
+                        <li *ngIf="room.facilities?.balcony">Balcony</li>
+                        <li *ngIf="room.facilities?.towel">Towel</li>
+                        <li *ngIf="room.facilities?.bathAmenities">Bath Amenities</li>
+                        <li *ngIf="room.facilities?.sunBed">Sun Bed</li>
+                        <li *ngIf="room.facilities?.outdoorShower">Outdoor Shower</li>
+                      
+                      </ul>
+                    </div>
                 
                     <button class="btn custom-btn" (click)="onEdit(room)">Edit</button>
                   <button class="btn custom-btn" (click)="onDelete(room._id)">Delete</button>

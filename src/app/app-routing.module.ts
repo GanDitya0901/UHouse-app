@@ -17,6 +17,8 @@ import { ReservationComponent } from './reservation/reservation.component';
 import { ReserveHistoryComponent } from './reserve-history/reserve-history.component';
 import { ReviewRatingComponent } from './review-rating/review-rating.component';
 import { ManageRoomAvailabilityComponent } from './manage-room-availability/manage-room-availability.component';
+import { ReportComponent } from './report/report.component';
+import { OnsiteReservationComponent } from './onsite-reservation/onsite-reservation.component';
 
 const routes: Routes = [
   { path: 'reset-password/:token', component: SignInComponent }, 
@@ -36,7 +38,9 @@ const routes: Routes = [
   {path: 'reservation', component: ReservationComponent},
   {path: 'reserveHistory', component:ReserveHistoryComponent},
   {path: 'review-rating/:id', component:ReviewRatingComponent},
-  {path: 'manageRoom', component:ManageRoomAvailabilityComponent}
+  {path: 'manageRoom', component:ManageRoomAvailabilityComponent}, 
+  {path: 'analyticReport', component: ReportComponent}, 
+  {path: 'onsiteReservation', component: OnsiteReservationComponent}
 ];
 
 @NgModule({

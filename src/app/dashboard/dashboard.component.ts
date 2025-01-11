@@ -3,9 +3,11 @@ import { UserService } from '../services/user.service';
 import { Router } from '@angular/router';
 import { Modal } from 'bootstrap';  // Import Bootstrap's Modal component
 import { HttpClient } from '@angular/common/http';
+import { ReservationService } from '../services/reservastion.service';
 
 interface Reservation {
   id: number;  // Ensure `id` is part of the Reservation interface
+  _id: string,
   name: string;
   email: string;
   checkInDate: string;
@@ -18,6 +20,8 @@ interface Reservation {
   status?: string; 
   paymentMethod:string;
 }
+
+declare const Swal: any;
 
 @Component({
   selector: 'app-dashboard',
@@ -61,6 +65,7 @@ export class DashboardComponent implements AfterViewInit, OnInit{
     private http: HttpClient,
     private cdr: ChangeDetectorRef, 
     private userService: UserService, 
+    private reservationService: ReservationService,
     private router: Router,
   
   ) {}
@@ -222,6 +227,65 @@ export class DashboardComponent implements AfterViewInit, OnInit{
         (!startDateTimestamp || reservationCheckInDate >= startDateTimestamp) &&
         (!endDateTimestamp || reservationCheckOutDate <= endDateTimestamp)
       );
+    });
+  }
+
+  sendEmailReminder(reservation: Reservation){
+
+    Swal.fire({
+      icon: "question",
+      title: 'Reservation Reminder Email',
+      html: `Are you sure want send Reservation Reminder Email to <b>${reservation.email}</b>?`,
+      showCancelButton: true,
+      confirmButtonText: "Yes",
+      cancelButtonText: "Cancel",
+      confirmButtonColor: "#3085d6",
+    }).then((result: any) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        Swal.fire({
+          icon: 'info',
+          title: 'Sending email',
+          text: `Please wait ...`,
+          showConfirmButton: false,
+          allowOutsideClick: false,
+          didOpen: () => {
+            Swal.showLoading();
+          }
+        });
+
+        const token = this.userService.getToken(); // Retrieve the token
+        
+        if (!token) {
+          console.error('Token is missing');
+          alert('Error: Token is missing. Please log in again.');
+          return;
+        }
+
+        const reservationId = reservation._id;
+        
+        this.reservationService.sendEmailReminder(reservationId).subscribe({
+          next: (value: any) => {
+            console.log(value);
+            Swal.fire({
+              icon: 'success',
+              text: value.message,
+              confirmButtonColor: "#3085d6",
+              allowOutsideClick: false
+            });
+          },
+          error: (error: any) => {
+            console.error('Error sending email:', error);
+            Swal.fire({
+              icon: 'error',
+              title: 'Sending email failed!',
+              text: 'Sorry, something went wrong. Please try again later.',
+              confirmButtonColor: "#3085d6",
+              allowOutsideClick: false
+            });
+          },
+        });
+      }
     });
   }
 }

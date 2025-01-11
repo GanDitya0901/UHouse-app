@@ -44,10 +44,11 @@ export class ReviewRatingComponent implements AfterViewInit, OnInit {
   rating: number = 0;
   hoverRatingValue: number = 0;
   reviewText: string = '';
-  reviewTitle: string = '';
   reviewerName: string = '';
+  reviewRatingImg: File | null = null;
+  reviewRatingImgUrl: string | null = null;
   review: string = ''; 
-  isSubmitDisabled: boolean = true;
+  isSubmitDisabled: boolean = false;
   showError: boolean = false;
 
   rooms: any[] = [];
@@ -70,6 +71,7 @@ export class ReviewRatingComponent implements AfterViewInit, OnInit {
 
   // Set rating value
   setRating(value: number): void {
+    if(this.isSubmitDisabled) return
     this.rating = value; 
     this.showError = false; 
   }
@@ -85,12 +87,17 @@ export class ReviewRatingComponent implements AfterViewInit, OnInit {
 
     // Validate form completeness
     checkFormValidity() {
-      this.isSubmitDisabled = !(this.reviewText && this.reviewTitle && this.reviewerName && this.rating > 0);
+      this.isSubmitDisabled = !(this.reviewText && this.reviewerName && this.rating > 0);
     }
   
+    onFileSelected(event: any) {
+      this.reviewRatingImg = event.target.files[0];
+      console.log('File selected:', this.reviewRatingImg);
+    }
+    
   // Submit review
   submitReview() {
-    if (!this.reservationId || !this.reviewerName || !this.reviewTitle || !this.reviewText || this.rating === 0) {
+    if (!this.reservationId || !this.reviewerName || !this.reviewText || this.rating === 0) {
       Swal.fire({
         icon: 'warning',
         title: 'Incomplete Information',
@@ -102,12 +109,24 @@ export class ReviewRatingComponent implements AfterViewInit, OnInit {
   
     const reviewData = {
       reviewerName: this.reviewerName,
-      reviewTitle: this.reviewTitle,
       reviewText: this.reviewText,
+      reviewRatingImg: this.reviewRatingImg,
       rating: this.rating,
     };
   
-    const token = this.userService.getToken(); // Ensure token is fetched from a service or storage
+    const formData = new FormData();
+  
+    if (this.reviewRatingImg) {
+      formData.append('reviewRatingImg', this.reviewRatingImg, this.reviewRatingImg.name);
+    }
+  
+    for (const key in reviewData) {
+      if (reviewData[key as keyof typeof reviewData] !== null) {
+        formData.append(key, String(reviewData[key as keyof typeof reviewData]));
+      }
+    }
+  
+    const token = this.userService.getToken();
     if (!token) {
       Swal.fire({
         icon: 'error',
@@ -120,7 +139,7 @@ export class ReviewRatingComponent implements AfterViewInit, OnInit {
   
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
   
-    this.http.post(`http://localhost:3000/reviews/${this.reservationId}`, reviewData, { headers })
+    this.http.post(`http://localhost:3000/reviews/${this.reservationId}`, formData, { headers })
       .subscribe({
         next: (response) => {
           console.log('Review submitted successfully:', response);
@@ -129,6 +148,9 @@ export class ReviewRatingComponent implements AfterViewInit, OnInit {
             title: 'Review Submitted',
             text: 'Your review has been successfully submitted.',
             confirmButtonText: 'OK',
+          }).then(() => {
+            // Redirect to the home page after the alert
+            this.router.navigate(['/dashboardGuest']);
           });
         },
         error: (error) => {
@@ -153,14 +175,22 @@ export class ReviewRatingComponent implements AfterViewInit, OnInit {
   }
   
   
+  
     // Reset form fields after successful submission
     resetForm() {
       this.rating = 0;
       this.reviewText = '';
-      this.reviewTitle = '';
       this.reviewerName = '';
       this.isSubmitDisabled = true;
     }
+
+  refreshComponent() {
+    // Navigate to the same route to trigger component reinitialization
+    const currentUrl = this.router.url;
+    this.router.navigateByUrl('/').then(() => {
+      this.router.navigate([currentUrl]);
+    });
+  }
 
   // Fetch reservation data
   fetchReservationData(reservationId: string) {
@@ -173,6 +203,7 @@ export class ReviewRatingComponent implements AfterViewInit, OnInit {
     this.userService.fetchReservationById(token, reservationId).subscribe({
       next: (data: Reservation) => {
         this.reservationData = data;
+        this.reviewerName = this.reservationData.name
         console.log('Reservation Data:', this.reservationData);
       },
       error: (error) => {
@@ -210,16 +241,31 @@ export class ReviewRatingComponent implements AfterViewInit, OnInit {
   
     try {
       // Fetch reviews
-      const reviews = await this.fetchReviews(this.reservationId);
+      const fetchReviews = await this.fetchReviews(this.reservationId);
+      const reviews = fetchReviews.reviews[0]
       console.log('Reviews fetched successfully:', reviews);
   
       if (!reviews || reviews.length === 0) {
-        console.warn('No reviews found for this reservation.');
-        alert('No reviews exist for this reservation. Please add one.');
+        console.log('No reviews found for this reservation.');
+        Swal.fire({
+          icon: 'info',
+          title: 'No Reviews Found',
+          text: 'No reviews exist for this reservation. Please add one.',
+          confirmButtonText: 'OK',
+          confirmButtonColor: '#ffa500', // Optional: Adjust to match your site's color theme
+        });
+      
+      
+      }else{
+        this.isSubmitDisabled = true
+        this.reviewRatingImgUrl = reviews.reviewRatingImg != null ? 'http://localhost:3000/' + reviews.reviewRatingImg : null
+        this.reviewerName = reviews.reviewerName
+        this.reviewText = reviews.reviewText
+        this.rating = reviews.rating
       }
     } catch (error: any) {
       if (error.status === 404) {
-        console.warn('No reviews found for this reservation.');
+        console.log('No reviews found for this reservation.');
         alert('No reviews exist for this reservation. Please add one.');
       } else {
         console.error('Error fetching reviews:', error);

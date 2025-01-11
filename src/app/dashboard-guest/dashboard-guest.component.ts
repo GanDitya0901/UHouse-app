@@ -2,6 +2,13 @@ import { Component, ViewChild, ElementRef, AfterViewInit, ChangeDetectorRef, OnI
 import { UserService } from '../services/user.service'; 
 import { Router } from '@angular/router';
 
+interface Review {
+  reviewerName: string;
+  reviewText: string;
+  rating: number;
+  reviewRatingImg: string | null;
+  email: string;
+}
 
 @Component({
   selector: 'app-dashboard-guest',
@@ -23,7 +30,10 @@ export class DashboardGuestComponent {
   token: string | null = null;
   username: string | null = null;
 
+  reviews: Review[] = [];
+  visibleReviewsCount: number = 4; // Initially show only 4 reviews
   rooms: any[] = [];
+  favRoomId: string = '';
 
   user: any = {
     fullname: '',
@@ -56,7 +66,12 @@ export class DashboardGuestComponent {
       console.log('Token retrieved from storage:', this.token);
     }
 
+    this.fetchReviews();
     this.fetchRooms();
+    this.fetchFavRoom();
+    console.log('Total Reviews:', this.reviews.length);
+    console.log('Visible Reviews Count:', this.visibleReviewsCount);
+
     this.userService.tokenEmitter.subscribe((token: string) => {
       // Retrieve username from the UserService
       this.username = this.userService.getUsername();})
@@ -71,7 +86,31 @@ export class DashboardGuestComponent {
   }
 
 
-
+  fetchReviews() {
+    this.userService.getReviewRatings().subscribe(
+      
+      data => {
+        // Memastikan bahwa data yang diterima mengandung email
+        this.reviews = data.map((review: any) => ({
+          ...review,
+          reviewRatingImgUrl: `http://localhost:3000/${review.reviewRatingImg}`,
+          email: review.reservationId.email, // Ambil email dari reservationId
+        }));
+        console.log('Reviews fetched successfully:', this.reviews);
+      },
+      error => {
+        console.error('Error fetching reviews:', error);
+        this.error = 'Failed to fetch reviews. Please try again.';
+      }
+    );
+  }
+  
+  getRatingStars(rating: number): boolean[] {
+    const filledStars = Array(Math.floor(rating)).fill(true); // Filled stars
+    const emptyStars = Array(5 - Math.floor(rating)).fill(false); // Empty stars
+    return [...filledStars, ...emptyStars];
+  }
+  
   fetchUserProfile() {
     this.userService.getUserProfile().subscribe(
       data => {
@@ -113,6 +152,29 @@ export class DashboardGuestComponent {
         console.error('Error fetching rooms:', error);
       }
     });
+  }
+
+  fetchFavRoom() {
+    this.userService.generateFavRooms().subscribe(
+      data => {
+        const dataFetched = data as unknown as any
+        this.favRoomId = dataFetched.roomId[0]
+
+        const index = this.rooms.findIndex(obj => obj._id === this.favRoomId);
+
+        if (index !== -1) {
+          const [targetObject] = this.rooms.splice(index, 1);
+          this.rooms.unshift(targetObject);
+        }
+      },
+      error => {
+        console.error('Error fetching fav profile:', error);
+        if (error.status === 401) {
+          console.log('Token invalid or expired, redirecting to login.');
+          this.router.navigate(['/login']);
+        }
+      }
+    );
   }
 
   ngAfterViewInit() {
@@ -157,4 +219,16 @@ export class DashboardGuestComponent {
     this.router.navigate(['/room-details']);
   }
 
+
+  toggleReviews(): void {
+    // If all reviews are shown, reduce the count; otherwise, show all reviews
+    if (this.visibleReviewsCount < this.reviews.length) {
+      this.visibleReviewsCount = this.reviews.length; // Show all reviews
+    } else {
+      this.visibleReviewsCount = 4; // Show only the first 4 reviews
+    }
+  
+  }
 }
+
+

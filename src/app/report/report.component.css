@@ -1,0 +1,133 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 20px;
+  background-color: #f4f4f4;
+}
+
+/* Main container adjustments */
+.container1 {
+  flex: 1;
+  background-color: #efe9e2; /* Replace with your desired background color */
+  display: flex;
+  flex-direction: column;
+  margin-top: 50px;
+  padding: 10px; /* Add padding for smaller screens */
+}
+
+/* Report container */
+.report-container {
+  width: 100%;
+  max-width: 1250px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  margin-top: 30px;
+}
+
+/* Header styling */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap; /* Allow wrapping for smaller screens */
+}
+
+/* Input and select controls */
+.controls {
+  display: flex;
+  flex-wrap: wrap; /* Make controls stack on smaller screens */
+  gap: 10px; /* Add spacing between controls */
+  margin-bottom: 20px;
+}
+
+.controls label {
+  font-weight: bold;
+  margin-right: 5px;
+}
+
+.controls input,
+.controls select {
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  max-width: 150px;
+}
+
+/* Chart container */
+.chart-container {
+  margin-top: 20px;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  /* Tablet adjustments */
+  .report-container {
+      padding: 15px;
+  }
+
+  .controls input,
+  .controls select {
+      max-width: 120px;
+  }
+
+  .header {
+      flex-direction: column; /* Stack header items */
+      align-items: flex-start;
+  }
+}
+
+@media (max-width: 768px) {
+  /* Mobile adjustments */
+  .container1 {
+      margin-top: 20px;
+      padding: 10px;
+  }
+
+  .report-container {
+      margin-top: 20px;
+      padding: 10px;
+  }
+
+  .controls {
+      flex-direction: column; /* Stack controls vertically */
+      gap: 5px;
+  }
+
+  .controls input,
+  .controls select {
+      max-width: 100%; /* Full width on small screens */
+  }
+
+  .header {
+      flex-direction: column;
+      align-items: flex-start;
+  }
+
+  h1 {
+      font-size: 1.5rem; /* Adjust heading size for small screens */
+  }
+}
+
+@media (max-width: 480px) {
+  /* Extra small devices */
+  body {
+      padding: 10px;
+  }
+
+  .report-container {
+      padding: 10px;
+  }
+
+  h1 {
+      font-size: 1.2rem; /* Smaller heading size */
+      text-align: center; /* Center align on small screens */
+  }
+
+  .controls {
+      align-items: flex-start;
+  }
+}

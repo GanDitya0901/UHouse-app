@@ -112,12 +112,11 @@
                                         <h5 class="card-title">Room Types</h5>
                                         <form [formGroup]="facilitiesForm" (ngSubmit)="addFacility()">
                                           <div class="form-group">
-                                            <label for="roomType">Room Type</label>
-                                            <select class="form-control" formControlName="roomType" id="roomType">
-                                              <option value="Standard">Standard</option>
-                                              <option value="Queen">Queen</option>
-                                              <option value="Family">Family</option>
-                                            </select>
+                                            <label for="roomType">Room Type</label> 
+                                            <br>              
+                                            <select formControlName="roomTypeId" class="form-control custom-select">
+                                              <option *ngFor="let room of roomTypes" [value]="room._id">{{ room.roomType }} </option>
+                                          </select>   
                                           </div>
                                           <button type="submit" class="btn btn-primary mt-3">Save changes</button>
                                         </form>

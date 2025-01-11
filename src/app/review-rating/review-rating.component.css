@@ -159,7 +159,12 @@ body {
   font-size: 1.5rem;
   font-weight: bold;
   color: #785025;
-  margin-bottom: 15px;
+}
+
+.review-subtitle{
+  text-align: center;
+  font-size: 1rem;
+  color: black;
 }
 
 .form-group {
@@ -224,4 +229,9 @@ body {
 
 .submit-button:hover {
   background-color: #6d4620;
+}
+
+img{
+  height: 300px;
+  width: auto;
 }

@@ -54,6 +54,7 @@ export class ReservationComponent implements OnInit {
   roomImgUrl: string = '';
 
   reservation = {
+    roomManageId: '',
     name: '',
     email: '',
     checkInDate: '',
@@ -107,6 +108,8 @@ export class ReservationComponent implements OnInit {
       data => {
         this.user = data;
         console.log('User profile fetched:', this.user);
+        this.reservation.name = this.user.username;
+        this.reservation.email = this.user.email;
       },
       error => {
         console.error('Error fetching user profile:', error);
@@ -150,6 +153,22 @@ export class ReservationComponent implements OnInit {
     console.log('usr', this.user);
     const total = this.calculateTotal();
     this.reservation.total = this.totalPrice;
+
+    this.userService.getAvailability(this.reservation.roomType, this.reservation.checkInDate, this.reservation.checkOutDate).subscribe(
+      (availability) => {
+        // Check if any of the selected dates are closed or sold out
+        const isDateAvailable = availability.every(item => item.status !== 'closed' && item.status !== 'sold-out');
+  
+        if (!isDateAvailable) {
+          // If any date is closed or sold out, show an alert with SweetAlert2 and return early
+          Swal.fire({
+            icon: 'error',
+            title: 'Dates Not Available',
+            text: 'The selected dates are not available for booking. Please choose different dates.',
+            confirmButtonText: 'Ok'
+          });
+          return; // Exit early if dates are not available, stop further execution
+        }
   
 // Add a payment method selection to the reservation object
 if (!this.reservation.paymentMethod) {
@@ -173,6 +192,7 @@ if (!this.reservation.paymentMethod) {
         confirmButtonText: 'Yes, Confirm',
         cancelButtonText: 'Cancel',
       }).then((result: any) => {
+        
         if (result.isConfirmed) {
           Swal.fire({
             icon: 'success',
@@ -258,7 +278,7 @@ if (!this.reservation.paymentMethod) {
                           setTimeout(() => {
                             this.router.navigate(['/dashboardGuest']);
                             console.log('Redirected to dashboard');
-                          }, 20000); // 20 seconds delay
+                          }, 2000); // 20 seconds delay
                         });
                       }
                     },
@@ -308,6 +328,17 @@ if (!this.reservation.paymentMethod) {
         }
       });
     }
+  },
+  (error) => {
+    console.error('Error checking availability:', error);
+    Swal.fire({
+      icon: 'error',
+      title: 'Error',
+      text: 'An error occurred while checking availability. Please try again later.',
+      confirmButtonText: 'Ok'
+    });
+  }
+);
   }
   
 
@@ -339,6 +370,7 @@ if (!this.reservation.paymentMethod) {
     const selectedRoom = this.rooms.find(room => room.roomType === this.reservation.roomType);
     if (selectedRoom) {
       this.reservation.roomDesc = selectedRoom.roomDesc;
+      this.reservation.roomManageId = selectedRoom._id
       this.calculateTotal();  // Recalculate total price
     }
   }

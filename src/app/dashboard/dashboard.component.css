@@ -23,7 +23,7 @@ body {
 }
 .container{
     width: 100%; 
-    max-width: 1500px;
+    max-width: 1350px;
     margin: 0 auto; 
     padding: 20px;
     background-color: #f9f9f9; 
@@ -649,6 +649,10 @@ h1{
     align-items: center;
     justify-content: center;
   }
+
+  .action-button:disabled {
+    background-color: #5a6268;
+  }
   
   .action-button:hover {
     background-color: #5a6268;
@@ -659,17 +663,20 @@ h1{
   }
   
   .new-appointment {
-    background-color: #28a745;
-  }
+    background-color: #90693E;
+}
   
-  .new-appointment:hover {
-    background-color: #218838;
-  }
+.new-appointment:hover {
+    background-color: #B88917;
+}
   
   .table-container {
     overflow-x: auto;
   }
   
+
+
+
   table {
     width: 100%;
     border-collapse: collapse;
@@ -697,9 +704,9 @@ h1{
     background-color: #f1f1f1;
   }
   
-  tbody tr.approved td {
-    color: #4CAF50;
-  }
+  tbody tr.pending td {
+    color: #D9C4AD;
+}
   
   tbody tr.pending td {
     color: #FFC107;
@@ -717,18 +724,51 @@ h1{
     cursor: pointer;
     transition: background-color 0.2s;
   }
-  
+
+  .action-btn.send-email {
+    background-color: #90693E;
+    color: #fff;
+}
+
+.action-btn.send-email:disabled {
+    background-color: #D9C4AD;
+    color: #fff;
+    cursor: not-allowed;
+}
+
+.action-btn:disabled:hover {
+    background-color: #D9C4AD;
+    opacity: 1;
+}
+
   .action-btn.view {
-    background-color: #2196F3;
+    background-color: #B88917;
     color: #fff;
   }
   
   .action-btn.review {
-    background-color: #4CAF50;
+    background-color: #90693E;
     color: #fff;
     margin-left: 5px;
-  }
+}
   
   .action-btn:hover {
     opacity: 0.8;
   }
+  
+  .btn-spacing {
+    margin-right: 100px; /* Adjust the value as needed */
+  }
+
+  .btn-outline-custom {
+    color: #B88917;
+    border: 2px solid #B88917;
+    background-color: transparent;
+}
+
+.btn-outline-custom:hover {
+    background-color: #B88917;
+    color: #FFFFFF;
+}
+
+  

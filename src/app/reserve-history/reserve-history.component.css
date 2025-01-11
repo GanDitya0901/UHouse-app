@@ -497,7 +497,42 @@ h1{
     height: 36px;
   }
   
+  .action-button,
+  .btn-outline-custom {
+    background: transparent;
+    color: #ff7e5f;
+    border: 2px solid #ff7e5f;
+    border-radius: 5px;
+    font-weight: bold;
+    padding: 10px 15px;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+  }
   
+  .action-button:hover,
+  .btn-outline-custom:hover {
+    background: #ff7e5f;
+    color: white;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  }
+  
+  .new-appointment {
+    font-size: 16px;
+  }
+  
+  .btn-outline-custom {
+    margin: 5px;
+  }
+  
+
+.new-appointment {
+  font-size: 16px;
+}
+
+.btn-outline-custom {
+  margin: 5px;
+}
+
   
   .actions {
     display: flex;
@@ -539,6 +574,7 @@ h1{
   
   .table-container {
     overflow-x: auto;
+    
   }
   
   table {
@@ -658,6 +694,82 @@ button {
 }
 
 
+.btn-spacing {
+    margin-right: 100px; /* Adjust the value as needed */
+  }
+
+  .btn-outline-custom {
+    color: #ffa500;
+    border: 2px solid #ffa500;
+    background-color: transparent;
+}
+
+.btn-outline-custom:hover {
+    background-color: #ffa500;
+    color: #FFFFFF;
+}
 
   
+.table-container table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: 'Roboto', sans-serif;
+    background: #fdeddf; /* Subtle background for the table */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  
+  .table-container th,
+  .table-container td {
+    text-align: center;
+    padding: 15px;
+    border: 1px solid #e5e5e5;
+  }
+  
+  .table-container thead {
+    color: #ffffff;
+  }
+  
+  .table-container th {
+    font-weight: 600;
+    font-size: 16px;
+  }
+  
+  .table-container tbody tr {
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .table-container tbody tr:nth-child(odd) {
+    background: #fff5eb; /* Light alternating row color */
+  }
+  
+  .table-container tbody tr:hover {
+    background: #ffe4c4;
+    transform: scale(1.01);
+  }
+  
+  .table-container td {
+    font-size: 14px;
+    color: #444;
+  }
+  
+  .table-container td button {
+    padding: 8px 12px;
+    border: 2px solid transparent;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .table-container td button.btn-outline-custom {
+    background: transparent;
+    color: #b88917;
+    border: 2px solid #b88917;
+  }
+  
+  .table-container td button.btn-outline-custom:hover {
+    color:  #B88917;;
+  }
   

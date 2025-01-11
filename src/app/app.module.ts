@@ -30,6 +30,8 @@ import { ReviewRatingComponent } from './review-rating/review-rating.component';
 import { ReserveHistoryComponent } from './reserve-history/reserve-history.component';
 import { ManageRoomAvailabilityComponent } from './manage-room-availability/manage-room-availability.component';
 import { ManagePaymentComponent } from './manage-payment/manage-payment.component';
+import { ReportComponent } from './report/report.component';
+import { OnsiteReservationComponent } from './onsite-reservation/onsite-reservation.component';
 
 
 @NgModule({
@@ -55,7 +57,9 @@ import { ManagePaymentComponent } from './manage-payment/manage-payment.componen
     ReviewRatingComponent,
     ReserveHistoryComponent,
     ManageRoomAvailabilityComponent,
-    ManagePaymentComponent
+    ManagePaymentComponent,
+    ReportComponent,
+    OnsiteReservationComponent
 
 
   ],

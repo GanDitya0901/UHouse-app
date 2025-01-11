@@ -7,23 +7,24 @@ import { Observable } from 'rxjs';
 })
 export class FacilitiesService {
 
-  private apiUrl = 'http://localhost:3000/facilities'; // Update the endpoint as necessary
+  private apiUrl = 'http://localhost:3000/api/facilities';  // Your API endpoint
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
-  getFacilities(): Observable<any> {
-    return this.http.get<any>(this.apiUrl);
+  getFacilities(): Observable<any[]> {
+    return this.http.get<any[]>(this.apiUrl);
+  }
+
+  getFacilityByRoomTypeId(roomTypeId: string): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/room/${roomTypeId}`);
   }
 
   addFacility(facilityData: any): Observable<any> {
     return this.http.post<any>(this.apiUrl, facilityData);
   }
 
-  updateFacility(id: string, facilityData: any): Observable<any> {
-    return this.http.put<any>(`${this.apiUrl}/${id}`, facilityData);
+  updateFacility(roomTypeId: string, facilityData: any): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/${roomTypeId}`, facilityData);
   }
-
-  deleteFacility(id: string): Observable<any> {
-    return this.http.delete<any>(`${this.apiUrl}/${id}`);
-  }
+  
 }

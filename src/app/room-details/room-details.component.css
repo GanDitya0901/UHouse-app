@@ -1,6 +1,4 @@
-
-
-*{
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -10,161 +8,325 @@
     font-family: 'Lato', sans-serif;
 }
 
+/* Global Image Styles */
 .image img {
-    height: 100%;
     width: 100%;
+    height: auto;
     margin-bottom: 20px;
 }
 
-
-
+/* Paragraph Styles */
 p {
     margin-top: 20px;
-    font-size: large;
+    font-size: 16px;
+    line-height: 1.6;
 }
 
-/* Content */
+/* Room Description */
 .roomDesc h3 {
-    color: #ffa500; 
+    color: #ffa500;
     font-weight: bold;
 }
 
+/* Card Styles */
 .card {
-    border: 0px;
+    border: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    margin-bottom: 20px;
+    transition: transform 0.3s;
+}
+
+.card:hover {
+    transform: scale(1.05);
 }
 
 .card i {
-    margin: 10px 0 0 0; 
-    color: #ffa500; 
-    font-size: 35px;
-    text-align: center;
+    font-size: 40px;
+    color: #ffa500;
+}
+.rules i {
+    color: #ffa500;
+    margin-right: 10px;
 }
 
 .card-body p {
-    margin: 0 0 0 0; 
-    text-align: center;
-    font-size: medium;
+    font-size: 14px;
+    font-weight: 500;
 }
 
-/* Availability Section End */
-
-.grid{
+/* Grid Layout */
+.grid {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
-    grid-gap: 20px; 
+    gap: 20px;
 }
 
-input{
+/* Input Fields */
+input {
     outline: none;
     border: none;
+    padding: 10px;
     width: 100%;
 }
 
+/* Booking Section */
 #availability {
-    background-color: rgba(202, 192, 180, 0.8); /* Adjusted opacity */
-}
-.book {
-    background-color: #CAC0B4;
-    padding: 50px;
-    display: flex; /* Add flex display */
-    justify-content: center; /* Center horizontally */
-    align-items: center; /* Center vertically */
-    flex-direction: column; /* Ensure content is in a column */
+    background-color: rgba(202, 192, 180, 0.8);
 }
 
-.book h1{
+.book {
+    background-color: #cac0b4;
+    padding: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+}
+
+
+.book h1 {
     font-weight: 600;
     font-size: 28px;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
 }
 
-.book h1 span{
+.book h1 span {
     color: #ffa500;
 }
-.book input{
-    padding: 20px;
 
+
+.book input {
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 5px;
 }
-.book input:nth-last-child(1){
+
+.book input:nth-last-child(1) {
     background: #ffa500;
     color: #fff;
+    cursor: pointer;
 }
+
 
 /* Availability Section End */
 
-/* Footer */ 
-#footer{
+/* Footer Styles */
+#footer {
     width: 100%;
     margin-top: 150px;
     text-align: center;
     background: #f9f9f9;
+    padding: 30px 0;
 }
-#footer h1{
+
+#footer h1 {
     font-weight: 600;
-    padding-top: 30px;
-    text-shadow: 0px 0px 1px black;
-}
-
-#footer p{
     margin-bottom: 10px;
+    text-shadow: 0px 1px 1px black;
 }
 
-#footer h1 span{
+
+#footer h1 span {
     color: #ffa500;
 }
-.social-links i{
+
+#footer p {
+    margin-bottom: 15px;
+    font-size: 14px;
+    color: #555;
+}
+
+.social-links i {
     padding: 10px;
     border-radius: 5px;
     font-size: 20px;
     background: #ffa500;
     color: white;
-    text-align: center;
     margin: 5px;
-    margin-bottom: 10px;
-    transition: 0.5s ease;
+    transition: background 0.3s;
     cursor: pointer;
 }
-.social-links i:hover{
-    background: #ffa500;
-}
-/* Nav Bar */
 
+.social-links i:hover {
+    background: #cc8400;
+}
+
+
+/* Nav Bar */
 #navbar {
     background-color: rgba(202, 192, 180, 1);
-  
-    }
+}
+
+#logo {
+    font-size: 36px;
+    font-weight: 550;
+    color: black;
+    text-shadow: 0px 1px 1px black;
+}
+
+#logo span {
+    color: #785025;
+}
+
     
-    #logo {
-      font-size: 36px;
-      font-weight: 550;
-      color: black;
-      text-shadow: 0px 1px 1px black;
-      margin-bottom: 5px;
-    }
-    
-    #logo span {
-      color: #785025;
-    }
-    
-    .navbar-toggler span {
-      color: #785025;
-    }
+.navbar-toggler span {
+    color: #785025;
+}
+
+.nav-item .nav-link {
+    font-size: 16px;
+    font-weight: 550;
+    color: black;
+    transition: 0.5s ease;
+    padding: 10px 15px;
+}
+
+.nav-item .nav-link:hover {
+    background: #785025;
+    color: white;
+}
     
     .navbar-nav {
       gap: 20px;
     }
-    
-    .nav-item .nav-link {
-      font-size: 16px;
-      font-weight: 550;
-      color: black;
-      letter-spacing: 1px;
-      border-radius: 3px;
-      transition: 0.5s ease;
-      padding: 10px 15px;
+
+
+
+
+    /* Global Styles */
+body {
+    font-family: 'Lato', sans-serif;
+    background-color: #f5f5f5;
+}
+
+.card-container {
+    max-width: 1350px;
+    margin: 50px auto;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.room-image img {
+    width: 100%;
+    height: 500px;
+    border-bottom: 2px solid #ffa500;
+}
+
+    .room-header {
+        background-color: #ffa500;
+        color: white;
+        padding: 20px;
+        text-align: center;
+    }
+
+    .room-header h1 {
+        font-size: 28px;
+        margin: 0;
+    }
+
+    .room-header p {
+        margin: 5px 0;
+    }
+
+    .room-content {
+        padding: 20px;
+        background-color: #ffffff;
+    }
+
+    .room-content h2 {
+        color: #ffa500;
+        font-weight: bold;
+        margin-top: 20px;
     }
     
-    .nav-item .nav-link:hover {
-      background: #785025;
-      color: white;
+    .room-content p {
+        font-size: 16px;
+        margin-bottom: 20px;
+    }
+
+    .amenities .card {
+        border: none;
+        text-align: center;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+    }
+
+    .amenities .card i {
+        font-size: 40px;
+        color: #ffa500;
+        margin-top: 15px;
+    }
+
+    .rules i {
+        color: #ffa500;
+        margin-right: 10px;
+    }
+
+    .footer {
+        text-align: center;
+        padding: 30px;
+        background-color: #f9f9f9;
+        margin-top: 50px;
+    }
+    
+    .footer h1 {
+        font-size: 24px;
+        color: black;
+    }
+    
+    .footer p {
+        font-size: 14px;
+        margin: 5px 0;
+    }
+
+    .social-links i {
+        margin: 10px;
+        font-size: 20px;
+        color: white;
+        background-color: #ffa500;
+        padding: 10px;
+        border-radius: 50%;
+        transition: 0.3s;
+    }
+    
+    .social-links i:hover {
+        background-color: #cc8400;
+    }
+    
+
+    .btn-spacing {
+        margin-right: 100px; /* Adjust the value as needed */
+      }
+    
+      .btn-outline-custom {
+        color: #ffa500;
+        border: 5px solid#ffa500;
+        background-color: transparent;
+    }
+    
+    .btn-outline-custom:hover {
+        background-color: #ffa500;
+        color: #FFFFFF;
+    }
+    
+    .main-text h1{
+        text-align: center;
+        text-shadow: 0px 1px 1px black;
+        font-weight: 600;
+    }
+    .main-text h1 span{
+        color: #ffa500;
+    }
+
+    .main-txt h1{
+        text-align: left;
+        margin-top: 30px;
+        font-weight: 600;
+        text-shadow: 0px 1px 1px black;
+    }
+    .main-txt h1 span{
+        color: #ffa500;
     }

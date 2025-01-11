@@ -366,10 +366,10 @@ saveBulkChanges(): void {
             );
   
             if (availability) {
-              room.roomsToSell[index] = availability.roomsToSell; // Assign fetched value
+              room.roomsToSell[index] = availability.roomsToSell; 
               room.netBooked[index] = availability.netBooked || 0;
               room.statuses[index] = availability.status;
-              room.standardRates[index] = availability.standardRate || 0; // Populate standard rate
+              room.standardRates[index] = availability.standardRate || 0; 
             }
           });
         });

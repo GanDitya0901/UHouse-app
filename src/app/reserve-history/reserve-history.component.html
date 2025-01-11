@@ -1,61 +1,84 @@
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Travel Website</title>
-    
-        <link rel="stylesheet" href="reserve-history.component.css" />
-    
-        <!-- Bootstrap Link -->
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-        <!-- Bootstrap Link -->
-    
-    
-        <!-- Font Awesome Cdn -->
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
-        <!-- Font Awesome Cdn -->
-    
-    
-        <!-- Google Fonts -->
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap" rel="stylesheet">
-        <!-- Google Fonts -->
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Travel Website</title>
 
-        <!-- Add this in the <head> section of index.html -->
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="reserve-history.component.css" />
 
-    </head>
+    <!-- Bootstrap Link -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+    <!-- Bootstrap Link -->
+
+    <!-- Font Awesome Cdn -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+    />
+    <!-- Font Awesome Cdn -->
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Google Fonts -->
+
+    <!-- Add this in the <head> section of index.html -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+  </head>
 
   <body>
+    <!--NavBar-->
+    <app-guest-navbar></app-guest-navbar>
 
-<!--NavBar-->
-<app-guest-navbar></app-guest-navbar>
+    <!-- Isi -->
 
-<!-- Isi -->
+    <div class="container">
+      <h2>Reservations History</h2>
 
-<div class="container">
-    <h2>Reservations History</h2>
-    
-    <!-- Filter and Action Buttons Section -->
-    <div class="top-bar">
+      <!-- Filter and Action Buttons Section -->
+      <div class="top-bar">
         <div class="filters">
-          <input type="text" placeholder="Name" [(ngModel)]="filters.name" class="filter-input" />
-          
+          <input
+            type="text"
+            placeholder="Name"
+            [(ngModel)]="filters.name"
+            class="filter-input"
+          />
+
           <div class="filter-input-wrapper">
             <i class="fas fa-calendar-alt"></i>
-            <select (change)="setDateFilter($event)" class="filter-input-select">
-                <option value="">Any time</option>
-                <option value="yesterday">Yesterday</option>
-                <option value="last7Days">Last 7 Days</option>
-                <option value="last30Days">Last 30 Days</option>
-                <option value="thisMonth">This Month</option>
-              </select>
+            <select
+              (change)="setDateFilter($event)"
+              class="filter-input-select"
+            >
+              <option value="">Any time</option>
+              <option value="yesterday">Yesterday</option>
+              <option value="last7Days">Last 7 Days</option>
+              <option value="last30Days">Last 30 Days</option>
+              <option value="thisMonth">This Month</option>
+            </select>
           </div>
-      
-          <input type="text" placeholder="Room Type" [(ngModel)]="filters.roomType" class="filter-input" />
-          
+
+          <input
+            type="text"
+            placeholder="Room Type"
+            [(ngModel)]="filters.roomType"
+            class="filter-input"
+          />
+
           <select [(ngModel)]="filters.status" class="filter-select">
             <option value="">All Status</option>
             <option value="Approved">Approved</option>
@@ -64,104 +87,123 @@
           </select>
         </div>
       </div>
-  
+
       <!-- Action Buttons -->
       <div class="actions">
-        <button class="action-button new-appointment">+ Book Again</button>
+        <button class="btn-outline-custom" (click)="navigateToReservation()">
+          + Book Again
+        </button>
       </div>
     </div>
-  
+
     <!-- Table Section -->
     <div class="container">
-        <div class="table-container">
-            <table>
-                <thead>
-                  <tr>
-                    <th>Name</th>
-                    <th>Room Type</th>
-                    <th>Check-In</th>
-                    <th>Check-Out</th>
-                    <th>Total</th>
-                    <th></th>
-                    <th></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let reservation of filteredReservations()">
-                    <td>{{ reservation.name }}</td>
-                    <td>{{ reservation.roomType }}</td>
-                    <td>{{ reservation.checkInDate | date:'shortDate' }}</td>
-                    <td>{{ reservation.checkOutDate | date:'shortDate' }}</td>
-                    <td>{{ reservation.total | currency }}</td>
-                    <td>
-                      <button class="action-btn view" (click)="openModal(reservation)">View</button>
-                    </td>
-                    <td>
-                      <button (click)="goToReview(reservation)" *ngIf="reservation._id" class="action-btn review">
-                        Review & Rating
-                    </button> 
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-              
-        </div>
-      </div>
-
-<!-- Modal for Reservation Details -->
-<div class="modal fade" id="reserveModals" tabindex="-1" aria-labelledby="reserveModalsLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content modal-content-custom">
-      <div class="modal-header modal-header-custom">
-        <h5 class="modal-title" id="reserveModalsLabel">Reservation Details</h5>
-        <button type="button" class="btn-close btn-close-custom" (click)="closeModal()" aria-label="Close"></button>
-      </div>
-      <div class="modal-body modal-body-custom">
-        <div class="modal-info">
-          <p><strong>Name:</strong> {{ selectedReservation?.name }}</p>
-          <p><strong>Email:</strong> {{ selectedReservation?.email }}</p>
-          <p><strong>Check-In Date:</strong> {{ selectedReservation?.checkInDate | date: 'MMM d, y h:mm a' }}</p>
-          <p><strong>Check-Out Date:</strong> {{ selectedReservation?.checkOutDate | date: 'MMM d, y h:mm a' }}</p>
-          <p><strong>Adults:</strong> {{ selectedReservation?.adults }}</p>
-          <p><strong>Children:</strong> {{ selectedReservation?.children }}</p>
-          <p><strong>Room Type:</strong> {{ selectedReservation?.roomType }}</p>
-          <p><strong>Room Description:</strong> {{ selectedReservation?.roomDesc }}</p>
-          <p><strong>Total:</strong> {{ selectedReservation?.total | currency }}</p>
-        </div>
-      </div>
-      <div class="modal-footer modal-footer-custom">
-        <button type="button" class="btn btn-primary btn-close-custom" (click)="closeModal()">Close</button>
+      <div class="table-container">
+        <table>
+          <thead
+>
+            <tr>
+              <th>Name</th>
+              <th>Room Type</th>
+              <th>Check-In</th>
+              <th>Check-Out</th>
+              <th>Total</th>
+              <th></th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let reservation of filteredReservations()">
+              <td>{{ reservation.name }}</td>
+              <td>{{ reservation.roomType }}</td>
+              <td>{{ reservation.checkInDate | date : "shortDate" }}</td>
+              <td>{{ reservation.checkOutDate | date : "shortDate" }}</td>
+              <td>{{ reservation.total | currency }}</td>
+              <td>
+                <button
+                  class="btn-outline-custom"
+                  (click)="openModal(reservation)"
+                >
+                  View
+                </button>
+              </td>
+              <td>
+                <button
+                  (click)="goToReview(reservation)"
+                  *ngIf="reservation._id"
+                  class="btn-outline-custom"
+                >
+                  Review & Rating
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
-  </div>
+
+   <!-- Modal for Reservation Details -->
+   <div class="modal fade" id="reserveModals" tabindex="-1" aria-labelledby="reserveModalsLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header text-white" style="background-color: #B88917;">
+                <h5 class="modal-title" id="reserveModalsLabel">Reservation Details</h5>
+                <button type="button" class="btn-close btn-close-white" (click)="closeModal()" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <p><strong>Name:</strong> <span>{{ selectedReservation?.name }}</span></p>
+                        <p><strong>Email:</strong> <span>{{ selectedReservation?.email }}</span></p>
+                        <p><strong>Check-In Date:</strong> <span>{{ selectedReservation?.checkInDate | date: 'MMM d, y h:mm a' }}</span></p>
+                        <p><strong>Check-Out Date:</strong> <span>{{ selectedReservation?.checkOutDate | date: 'MMM d, y h:mm a' }}</span></p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>Adults:</strong> <span>{{ selectedReservation?.adults }}</span></p>
+                        <p><strong>Children:</strong> <span>{{ selectedReservation?.children }}</span></p>
+                        <p><strong>Room Type:</strong> <span>{{ selectedReservation?.roomType }}</span></p>
+                        <p><strong>Room Status:</strong> <span>{{ selectedReservation?.paymentMethod }}</span></p>
+                    </div>
+                </div>
+                <div class="border-top pt-3">
+                    <p><strong>Room Description:</strong></p>
+                    <p class="text-muted">{{ selectedReservation?.roomDesc }}</p>
+                </div>
+                <div class="border-top pt-3">
+                    <h6 class="text-end">
+                        <strong>Total:</strong> <span class="text-success">{{ selectedReservation?.total | currency }}</span>
+                    </h6>
+                </div>
+            </div>
+            <div class="modal-footer justify-content-center">
+                <button type="button" class="btn btn-secondary" (click)="closeModal()">Close</button>
+            </div>
+        </div>
+    </div>
 </div>
 
-
-
-
-      <!-- Footer Start -->
+    <!-- Footer Start -->
     <footer id="footer">
-        <h1><span>U </span>House</h1>
-        <p>
-        </p>
-        <div class="social-links">
-          <i class="fa-brands fa-twitter"></i>
-          <i class="fa-brands fa-facebook"></i>
-          <i class="fa-brands fa-instagram"></i>
-        </div>
-        <div class="credit">
-          <p>Designed by <a href="#">UHouse Group</a></p>
-        </div>
-        <div class="copyright">
-          <p> Copyright &copy; U House. All Rights Reserved. </p>
-        </div>
+      <h1><span>U </span>House</h1>
+      <p></p>
+      <div class="social-links">
+        <i class="fa-brands fa-twitter"></i>
+        <i class="fa-brands fa-facebook"></i>
+        <i class="fa-brands fa-instagram"></i>
+      </div>
+      <div class="credit">
+        <p>Designed by <a href="#">UHouse Group</a></p>
+      </div>
+      <div class="copyright">
+        <p>Copyright &copy; U House. All Rights Reserved.</p>
+      </div>
     </footer>
-      <!-- Footer End -->
+    <!-- Footer End -->
 
-  <script
-  src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-  integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-  crossorigin="anonymous"
-></script>
-    </body>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"
+    ></script>
+  </body>
 </html>

@@ -95,9 +95,10 @@
         </div>        
         <div class="col-md-8 review-container mt-4">
           <div class="card shadow-sm p-4">
-            <h3 class="review-title mb-4">Write a Review</h3>
-            <div *ngIf="reviews.length > 0" class="alert alert-warning">
-              <strong>Warning:</strong> A review already exists for this reservation. You cannot submit another one.
+            <h3 class="review-title mb-2">Write a Review</h3>
+            <p class="review-subtitle mb-4">Your feedback helps us improve - tell us how we did!</p>
+            <div *ngIf="isSubmitDisabled" class="alert alert-info">
+              You've already review this reservation.
             </div>
             
             <form (ngSubmit)="submitReview()" *ngIf="reviews.length === 0">
@@ -111,11 +112,12 @@
                   name="reviewerName"
                   required
                   placeholder="Enter your name"
+                  [disabled]="isSubmitDisabled"
                 />
                 <span *ngIf="!reviewerName && showError" class="text-danger">Name is required</span>
               </div>
             
-              <div class="form-group mt-3">
+              <!-- <div class="form-group mt-3">
                 <label for="reviewTitle">Title</label>
                 <input
                   type="text"
@@ -127,7 +129,7 @@
                   placeholder="Enter review title"
                 />
                 <span *ngIf="!reviewTitle && showError" class="text-danger">Title is required</span>
-              </div>
+              </div> -->
             
               <div class="form-group mt-3">
                 <label for="reviewText">Comment</label>
@@ -138,9 +140,24 @@
                   name="reviewText"
                   required
                   placeholder="Write your comment"
+                  [disabled]="isSubmitDisabled"
                 ></textarea>
                 <span *ngIf="!reviewText && showError" class="text-danger">Comment is required</span>
               </div>
+
+              <div *ngIf="!isSubmitDisabled && (reviewRatingImgUrl == null)" class="form-group mt-3">
+                <label for="rating">Review Image</label>
+                <div *ngIf="!isSubmitDisabled" class="rating-stars">
+                  <input
+                  id="reviewRatingImg"
+                  type="file"
+                  class="form-control"
+                  name="reviewImage"
+                  (change)="onFileSelected($event)"
+                />
+                </div>
+              </div>
+              <img *ngIf="isSubmitDisabled && (reviewRatingImgUrl != null)" [src]="reviewRatingImgUrl" />
             
               <div class="form-group mt-3">
                 <label for="rating">Rating</label>
@@ -155,7 +172,7 @@
                 <span *ngIf="rating === 0 && showError" class="text-danger">Rating is required</span>
               </div>
             
-              <button type="submit" class="btn btn-primary mt-3">Submit Review</button>
+              <button type="submit" class="btn btn-primary mt-3" [disabled]="isSubmitDisabled">{{ isSubmitDisabled ? "Thanks for your review!" : "Submit Review" }}</button>
             </form>          
           </div>
         </div>
