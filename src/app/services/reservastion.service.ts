@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class ReservationService {
 
-  private apiUrl = 'http://localhost:3000/api/reservation';  // Your API endpoint
+  private apiUrl = 'https://u-house-app.vercel.app/api/reservation';  // Your API endpoint
 
   constructor(private http: HttpClient) {}
 
