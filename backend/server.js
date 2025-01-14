@@ -15,10 +15,18 @@ const fs = require ('fs');
 const multer = require('multer');
 const { parseHTML } = require('jquery');
 const app = express();
+const allowedOrigin = ['http://localhost:4200', 'https://u-house-app.vercel.app'];
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use(cors({ origin: 'http://localhost:4200' }));
+app.use(cors({
+  origin: function (origin, callback) {
+    if(!origin || allowedOrigin.includes(origin)) {
+      return callback(null, true);
+    }
+    return callback(new Error("Not allowed CORS"));
+  }
+}))
 
 // Configure nodemailer
 const transporter = nodemailer.createTransport({
