@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class FacilitiesService {
 
-  private apiUrl = 'https://u-house-app.vercel.app/api/facilities';  // Your API endpoint
+  private apiUrl = 'http://localhost:3000/api/facilities';  // Your API endpoint
 
   constructor(private http: HttpClient) {}
 

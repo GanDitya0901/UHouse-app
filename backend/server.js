@@ -55,7 +55,7 @@ const upload = multer({ storage: storage });
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 //connection to MongoDB
-mongoose.connect('mongodb+srv://ganaaditya:29aG8pasnlIsQiUZ@uhousedb.st9wn.mongodb.net/user')
+mongoose.connect('mongodb://127.0.0.1:27017/user')
   .then(() => console.log('Connected to MongoDB'))
   .catch(err => console.error('Failed to connect to MongoDB', err));
 
