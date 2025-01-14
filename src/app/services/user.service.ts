@@ -24,7 +24,7 @@ interface Availability {
   providedIn: 'root'
 })
 export class UserService {
-  private apiUrl = 'https://u-house-app.vercel.app';
+  private apiUrl = 'http://localhost:3000';
   private tokenKey = 'jwtToken';
   private username: string | null = null;
   private userProfileSource = new BehaviorSubject<any>(null);
@@ -37,7 +37,7 @@ export class UserService {
   constructor(private http: HttpClient) {}
 
   fetchUserProfile() {
-    this.http.get('https://u-house-app.vercel.app/user-profile').subscribe(
+    this.http.get('http://localhost:3000/user-profile').subscribe(
       (data) => {
         console.log('User profile data:', data);
         this.userProfileSource.next(data); // Update the observable
@@ -60,7 +60,7 @@ export class UserService {
     return this.username;
   }
     getReviewRatings(): Observable<any> {
-      return this.http.get<any>(`https://u-house-app.vercel.app/reviews`);
+      return this.http.get<any>(`http://localhost:3000/reviews`);
     }
 
 
@@ -313,7 +313,7 @@ updateRequestStatus(requestId: string, requestType: string, status: string, decl
 
 fetchReviews(token: string, reservationId: string): Observable<any> {
 const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-const url = `https://u-house-app.vercel.app/api/reviews/${reservationId}`;
+const url = `http://localhost:3000/api/reviews/${reservationId}`;
 
 return this.http.get<any>(url, { headers }).pipe(
   catchError((error) => {
@@ -330,7 +330,7 @@ return this.http.get(`${this.apiUrl}`);
 }
 
 makeReservation(reservation: any): Observable<any> {
-return this.http.post('https://u-house-app.vercel.app/reservation', reservation, {
+return this.http.post('http://localhost:3000/reservation', reservation, {
   headers: { Authorization: `Bearer ${this.getToken()}` }
 }).pipe(
   catchError(error => {
@@ -348,7 +348,7 @@ return this.http.delete(`${this.apiUrl}/${reservationId}`);
 // user.service.ts
 fetchReservationById(token: string, _id: string): Observable<any> {
 const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-const url = `https://u-house-app.vercel.app/api/reservation/${_id}`; // Ensure `apiUrl` includes `/api`
+const url = `http://localhost:3000/api/reservation/${_id}`; // Ensure `apiUrl` includes `/api`
 console.log('Request URL:', url); // Log the exact URL
 return this.http.get<any>(url, { headers });
 }
@@ -411,7 +411,7 @@ status: string,
 roomsToSell: number,
 standardRate: number
 ): Observable<any> {
-return this.http.put('https://u-house-app.vercel.app/availability/update', {
+return this.http.put('http://localhost:3000/availability/update', {
   roomType,
   date,
   status,
@@ -422,7 +422,7 @@ return this.http.put('https://u-house-app.vercel.app/availability/update', {
 
 // Format `standardRate` with 'IDR' for UI display
 getAvailability(roomType: string, startDate: string, endDate: string): Observable<Availability[]> {
-return this.http.get<Availability[]>(`https://u-house-app.vercel.app/availability`, {
+return this.http.get<Availability[]>(`http://localhost:3000/availability`, {
   params: { roomType, startDate, endDate },
 }).pipe(
   map((data: Availability[]) =>
