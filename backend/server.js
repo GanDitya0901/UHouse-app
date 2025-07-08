@@ -1800,7 +1800,7 @@ app.get('/api/reviews/:reservationId', verifyToken, async (req, res) => {
 });
 
 
-//paymeny
+//payment
 
 const midtransClient = require('midtrans-client');
 
